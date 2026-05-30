@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+  <rect width="1080" height="1920" fill="#000000"/>
+  <rect x="80" y="80" width="40" height="2" fill="#FFFFFF" opacity="0.2"/>
+  <rect x="80" y="80" width="2" height="40" fill="#FFFFFF" opacity="0.2"/>
+  <rect x="960" y="80" width="40" height="2" fill="#FFFFFF" opacity="0.2"/>
+  <rect x="998" y="80" width="2" height="40" fill="#FFFFFF" opacity="0.2"/>
+  <rect x="80" y="1840" width="40" height="2" fill="#FFFFFF" opacity="0.2"/>
+  <rect x="80" y="1800" width="2" height="40" fill="#FFFFFF" opacity="0.2"/>
+  <rect x="960" y="1840" width="40" height="2" fill="#FFFFFF" opacity="0.2"/>
+  <rect x="998" y="1800" width="2" height="40" fill="#FFFFFF" opacity="0.2"/>
+
+  <!-- Lowercase k — custom geometric letterform -->
+  <!-- Vertical stem -->
+  <rect x="470" y="660" width="16" height="600" fill="#FFFFFF" rx="8"/>
+  <!-- Upper diagonal arm -->
+  <line x1="486" y1="900" x2="650" y2="750" stroke="#FFFFFF" stroke-width="16" stroke-linecap="round"/>
+  <!-- Lower diagonal leg -->
+  <line x1="486" y1="960" x2="670" y2="1170" stroke="#FFFFFF" stroke-width="16" stroke-linecap="round"/>
+
+  <text x="540" y="1620" font-size="32" font-weight="400" letter-spacing="12" fill="#FFFFFF" opacity="0.4" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" text-anchor="middle">kÖr</text>
+</svg>

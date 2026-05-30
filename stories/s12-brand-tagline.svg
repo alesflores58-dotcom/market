@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+  <rect width="1080" height="1920" fill="#000000"/>
+
+  <rect x="80" y="140" width="60" height="2" fill="#FFFFFF" opacity="0.3"/>
+  <text x="80" y="190" font-size="28" font-weight="400" letter-spacing="8" fill="#FFFFFF" opacity="0.5" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif">kÖr</text>
+
+  <!-- Centered composition -->
+  <text x="540" y="820" font-size="96" font-weight="900" fill="#FFFFFF" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" text-anchor="middle" letter-spacing="-2">Train your</text>
+
+  <!-- kÖr big inverted -->
+  <rect x="180" y="850" width="720" height="130" fill="#FFFFFF" rx="4"/>
+  <text x="540" y="952" font-size="110" font-weight="900" fill="#000000" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" text-anchor="middle" letter-spacing="-2">kÖr.</text>
+
+  <text x="540" y="1080" font-size="96" font-weight="900" fill="#FFFFFF" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" text-anchor="middle" letter-spacing="-2">Wear your</text>
+  <text x="540" y="1180" font-size="96" font-weight="900" fill="#FFFFFF" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" text-anchor="middle" letter-spacing="-2">power. 🖤</text>
+
+  <!-- Tagline -->
+  <text x="540" y="1360" font-size="28" font-weight="300" fill="#FFFFFF" opacity="0.4" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" text-anchor="middle" letter-spacing="4">DISEÑADO PARA LOS QUE NO PARAN</text>
+
+  <text x="80" y="1780" font-size="30" font-weight="400" letter-spacing="4" fill="#FFFFFF" opacity="0.4" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif">@_korsv</text>
+  <rect x="80" y="1800" width="920" height="1" fill="#FFFFFF" opacity="0.1"/>
+  <text x="80" y="1840" font-size="22" font-weight="300" letter-spacing="3" fill="#FFFFFF" opacity="0.25" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif">ACTIVEWEAR PREMIUM · EL SALVADOR</text>
+</svg>
