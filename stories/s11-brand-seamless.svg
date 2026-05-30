@@ -9,24 +9,24 @@
   <line x1="0" y1="1600" x2="1080" y2="1600" stroke="#FFFFFF" stroke-width="1" opacity="0.04"/>
 
   <rect x="80" y="140" width="60" height="2" fill="#FFFFFF" opacity="0.3"/>
-  <text x="80" y="190" font-size="28" font-weight="400" letter-spacing="8" fill="#FFFFFF" opacity="0.5" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif">kÖr</text>
+  <text x="80" y="190" font-size="28" font-weight="400" letter-spacing="8" fill="#FFFFFF" opacity="0.5" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif">kÖr</text>
 
   <!-- Manifesto lines — bold + light alternating -->
-  <text x="80" y="700" font-size="64" font-weight="900" fill="#FFFFFF" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" letter-spacing="-1">Activewear</text>
-  <text x="80" y="780" font-size="64" font-weight="300" fill="#FFFFFF" opacity="0.7" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" letter-spacing="-1">seamless de alto</text>
-  <text x="80" y="860" font-size="64" font-weight="900" fill="#FFFFFF" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" letter-spacing="-1">rendimiento.</text>
+  <text x="80" y="700" font-size="64" font-weight="900" fill="#FFFFFF" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif" letter-spacing="-1">Activewear</text>
+  <text x="80" y="780" font-size="64" font-weight="300" fill="#FFFFFF" opacity="0.7" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif" letter-spacing="-1">seamless de alto</text>
+  <text x="80" y="860" font-size="64" font-weight="900" fill="#FFFFFF" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif" letter-spacing="-1">rendimiento.</text>
 
   <rect x="80" y="910" width="60" height="2" fill="#FFFFFF" opacity="0.3"/>
 
-  <text x="80" y="1010" font-size="64" font-weight="300" fill="#FFFFFF" opacity="0.7" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" letter-spacing="-1">Diseñado</text>
-  <text x="80" y="1090" font-size="64" font-weight="900" fill="#FFFFFF" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" letter-spacing="-1">para entrenar.</text>
+  <text x="80" y="1010" font-size="64" font-weight="300" fill="#FFFFFF" opacity="0.7" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif" letter-spacing="-1">Diseñado</text>
+  <text x="80" y="1090" font-size="64" font-weight="900" fill="#FFFFFF" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif" letter-spacing="-1">para entrenar.</text>
 
   <rect x="80" y="1140" width="60" height="2" fill="#FFFFFF" opacity="0.3"/>
 
-  <text x="80" y="1240" font-size="64" font-weight="300" fill="#FFFFFF" opacity="0.7" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" letter-spacing="-1">Hecho</text>
-  <text x="80" y="1320" font-size="64" font-weight="900" fill="#FFFFFF" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" letter-spacing="-1">para destacar.</text>
+  <text x="80" y="1240" font-size="64" font-weight="300" fill="#FFFFFF" opacity="0.7" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif" letter-spacing="-1">Hecho</text>
+  <text x="80" y="1320" font-size="64" font-weight="900" fill="#FFFFFF" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif" letter-spacing="-1">para destacar.</text>
 
-  <text x="80" y="1780" font-size="30" font-weight="400" letter-spacing="4" fill="#FFFFFF" opacity="0.4" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif">@_korsv</text>
+  <text x="80" y="1780" font-size="30" font-weight="400" letter-spacing="4" fill="#FFFFFF" opacity="0.4" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif">@_korsv</text>
   <rect x="80" y="1800" width="920" height="1" fill="#FFFFFF" opacity="0.1"/>
-  <text x="80" y="1840" font-size="22" font-weight="300" letter-spacing="3" fill="#FFFFFF" opacity="0.25" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif">ACTIVEWEAR PREMIUM · EL SALVADOR</text>
+  <text x="80" y="1840" font-size="22" font-weight="300" letter-spacing="3" fill="#FFFFFF" opacity="0.25" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif">ACTIVEWEAR PREMIUM · EL SALVADOR</text>
 </svg>

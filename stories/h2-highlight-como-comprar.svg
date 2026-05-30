@@ -13,5 +13,5 @@
   <line x1="240" y1="960" x2="840" y2="960" stroke="#FFFFFF" stroke-width="14" stroke-linecap="round"/>
   <polyline points="680,820 840,960 680,1100" fill="none" stroke="#FFFFFF" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
 
-  <text x="540" y="1620" font-size="32" font-weight="400" letter-spacing="12" fill="#FFFFFF" opacity="0.4" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" text-anchor="middle">CÓMO COMPRAR</text>
+  <text x="540" y="1620" font-size="32" font-weight="400" letter-spacing="12" fill="#FFFFFF" opacity="0.4" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif" text-anchor="middle">CÓMO COMPRAR</text>
 </svg>

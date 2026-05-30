@@ -19,5 +19,5 @@
   <!-- Arrowhead vertical -->
   <line x1="820" y1="680" x2="820" y2="800" stroke="#FFFFFF" stroke-width="14" stroke-linecap="round"/>
 
-  <text x="540" y="1620" font-size="32" font-weight="400" letter-spacing="12" fill="#FFFFFF" opacity="0.4" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" text-anchor="middle">HOMBRES</text>
+  <text x="540" y="1620" font-size="32" font-weight="400" letter-spacing="12" fill="#FFFFFF" opacity="0.4" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif" text-anchor="middle">HOMBRES</text>
 </svg>

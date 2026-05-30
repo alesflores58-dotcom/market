@@ -7,23 +7,23 @@
 
   <!-- Brand top -->
   <rect x="80" y="140" width="60" height="2" fill="#FFFFFF" opacity="0.3"/>
-  <text x="80" y="190" font-size="28" font-weight="400" letter-spacing="8" fill="#FFFFFF" opacity="0.5" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif">kÖr</text>
+  <text x="80" y="190" font-size="28" font-weight="400" letter-spacing="8" fill="#FFFFFF" opacity="0.5" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif">kÖr</text>
 
   <!-- Giant kÖr center -->
-  <text x="540" y="1020" font-size="340" font-weight="900" fill="#FFFFFF" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" text-anchor="middle" letter-spacing="-8" opacity="0.06">kÖr</text>
+  <text x="540" y="1020" font-size="340" font-weight="900" fill="#FFFFFF" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif" text-anchor="middle" letter-spacing="-8" opacity="0.06">kÖr</text>
 
   <!-- Main text -->
-  <text x="80" y="760" font-size="72" font-weight="900" fill="#FFFFFF" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" letter-spacing="-2">kÖr nació en</text>
-  <text x="80" y="856" font-size="72" font-weight="900" fill="#FFFFFF" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" letter-spacing="-2">El Salvador 🇸🇻</text>
+  <text x="80" y="760" font-size="72" font-weight="900" fill="#FFFFFF" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif" letter-spacing="-2">kÖr nació en</text>
+  <text x="80" y="856" font-size="72" font-weight="900" fill="#FFFFFF" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif" letter-spacing="-2">El Salvador 🇸🇻</text>
 
   <!-- Divider -->
   <rect x="80" y="900" width="80" height="2" fill="#FFFFFF" opacity="0.4"/>
 
-  <text x="80" y="990" font-size="52" font-weight="300" fill="#FFFFFF" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" letter-spacing="-1">para los que</text>
-  <text x="80" y="1058" font-size="52" font-weight="300" fill="#FFFFFF" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" letter-spacing="-1">no paran.</text>
+  <text x="80" y="990" font-size="52" font-weight="300" fill="#FFFFFF" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif" letter-spacing="-1">para los que</text>
+  <text x="80" y="1058" font-size="52" font-weight="300" fill="#FFFFFF" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif" letter-spacing="-1">no paran.</text>
 
   <!-- Bottom -->
-  <text x="80" y="1780" font-size="30" font-weight="400" letter-spacing="4" fill="#FFFFFF" opacity="0.4" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif">@_korsv</text>
+  <text x="80" y="1780" font-size="30" font-weight="400" letter-spacing="4" fill="#FFFFFF" opacity="0.4" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif">@_korsv</text>
   <rect x="80" y="1800" width="920" height="1" fill="#FFFFFF" opacity="0.1"/>
-  <text x="80" y="1840" font-size="22" font-weight="300" letter-spacing="3" fill="#FFFFFF" opacity="0.25" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif">ACTIVEWEAR PREMIUM · EL SALVADOR</text>
+  <text x="80" y="1840" font-size="22" font-weight="300" letter-spacing="3" fill="#FFFFFF" opacity="0.25" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif">ACTIVEWEAR PREMIUM · EL SALVADOR</text>
 </svg>

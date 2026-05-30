@@ -7,24 +7,24 @@
   <line x1="540" y1="0" x2="540" y2="1920" stroke="#FFFFFF" stroke-width="1" opacity="0.04"/>
 
   <rect x="80" y="140" width="60" height="2" fill="#FFFFFF" opacity="0.3"/>
-  <text x="80" y="190" font-size="28" font-weight="400" letter-spacing="8" fill="#FFFFFF" opacity="0.5" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif">kÖr</text>
+  <text x="80" y="190" font-size="28" font-weight="400" letter-spacing="8" fill="#FFFFFF" opacity="0.5" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif">kÖr</text>
 
-  <text x="80" y="680" font-size="22" font-weight="600" letter-spacing="8" fill="#FFFFFF" opacity="0.35" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif">COLECCIÓN</text>
+  <text x="80" y="680" font-size="22" font-weight="600" letter-spacing="8" fill="#FFFFFF" opacity="0.35" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif">COLECCIÓN</text>
 
-  <text x="72" y="1000" font-size="320" font-weight="900" fill="#FFFFFF" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" letter-spacing="-10">TOP</text>
+  <text x="72" y="1000" font-size="320" font-weight="900" fill="#FFFFFF" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif" letter-spacing="-10">TOP</text>
 
   <!-- Diagonal accent line -->
   <line x1="80" y1="1060" x2="1000" y2="1060" stroke="#FFFFFF" stroke-width="2" opacity="0.15"/>
 
   <rect x="80" y="1100" width="360" height="78" fill="#FFFFFF" rx="3"/>
-  <text x="260" y="1153" font-size="42" font-weight="900" fill="#000000" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" text-anchor="middle" letter-spacing="-1">Desde $11</text>
+  <text x="260" y="1153" font-size="42" font-weight="900" fill="#000000" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif" text-anchor="middle" letter-spacing="-1">Desde $11</text>
 
-  <text x="80" y="1260" font-size="40" font-weight="300" fill="#FFFFFF" opacity="0.6" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif">DM para pedir 🖤</text>
+  <text x="80" y="1260" font-size="40" font-weight="300" fill="#FFFFFF" opacity="0.6" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif">DM para pedir 🖤</text>
 
-  <text x="80" y="1420" font-size="30" font-weight="300" fill="#FFFFFF" opacity="0.35" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif">Pequeño · Largo</text>
-  <text x="80" y="1468" font-size="30" font-weight="300" fill="#FFFFFF" opacity="0.35" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif">Negro · Blanco · Rojo · Celeste · Burdeos</text>
+  <text x="80" y="1420" font-size="30" font-weight="300" fill="#FFFFFF" opacity="0.35" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif">Pequeño · Largo</text>
+  <text x="80" y="1468" font-size="30" font-weight="300" fill="#FFFFFF" opacity="0.35" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif">Negro · Blanco · Rojo · Celeste · Burdeos</text>
 
-  <text x="80" y="1780" font-size="30" font-weight="400" letter-spacing="4" fill="#FFFFFF" opacity="0.4" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif">@_korsv</text>
+  <text x="80" y="1780" font-size="30" font-weight="400" letter-spacing="4" fill="#FFFFFF" opacity="0.4" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif">@_korsv</text>
   <rect x="80" y="1800" width="920" height="1" fill="#FFFFFF" opacity="0.1"/>
-  <text x="80" y="1840" font-size="22" font-weight="300" letter-spacing="3" fill="#FFFFFF" opacity="0.25" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif">ACTIVEWEAR PREMIUM · EL SALVADOR</text>
+  <text x="80" y="1840" font-size="22" font-weight="300" letter-spacing="3" fill="#FFFFFF" opacity="0.25" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif">ACTIVEWEAR PREMIUM · EL SALVADOR</text>
 </svg>

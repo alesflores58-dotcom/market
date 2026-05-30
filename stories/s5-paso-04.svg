@@ -1,27 +1,27 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
   <rect width="1080" height="1920" fill="#000000"/>
-  <text x="800" y="700" font-size="480" font-weight="900" fill="#FFFFFF" opacity="0.03" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" text-anchor="middle">04</text>
+  <text x="800" y="700" font-size="480" font-weight="900" fill="#FFFFFF" opacity="0.03" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif" text-anchor="middle">04</text>
 
   <rect x="80" y="140" width="60" height="2" fill="#FFFFFF" opacity="0.3"/>
-  <text x="80" y="190" font-size="28" font-weight="400" letter-spacing="8" fill="#FFFFFF" opacity="0.5" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif">kÖr</text>
+  <text x="80" y="190" font-size="28" font-weight="400" letter-spacing="8" fill="#FFFFFF" opacity="0.5" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif">kÖr</text>
 
-  <text x="80" y="760" font-size="22" font-weight="600" letter-spacing="6" fill="#FFFFFF" opacity="0.4" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif">PASO</text>
-  <text x="80" y="900" font-size="140" font-weight="900" fill="#FFFFFF" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" letter-spacing="-4">04</text>
+  <text x="80" y="760" font-size="22" font-weight="600" letter-spacing="6" fill="#FFFFFF" opacity="0.4" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif">PASO</text>
+  <text x="80" y="900" font-size="140" font-weight="900" fill="#FFFFFF" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif" letter-spacing="-4">04</text>
   <rect x="80" y="940" width="80" height="2" fill="#FFFFFF"/>
 
-  <text x="80" y="1040" font-size="58" font-weight="700" fill="#FFFFFF" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" letter-spacing="-1">Entrega a todo</text>
+  <text x="80" y="1040" font-size="58" font-weight="700" fill="#FFFFFF" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif" letter-spacing="-1">Entrega a todo</text>
   <!-- Flag inline approx -->
-  <text x="80" y="1116" font-size="58" font-weight="700" fill="#FFFFFF" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" letter-spacing="-1">El Salvador 🇸🇻</text>
+  <text x="80" y="1116" font-size="58" font-weight="700" fill="#FFFFFF" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif" letter-spacing="-1">El Salvador 🇸🇻</text>
 
   <!-- Time badge -->
   <rect x="80" y="1160" width="440" height="90" fill="#FFFFFF" rx="4"/>
-  <text x="300" y="1222" font-size="52" font-weight="900" fill="#000000" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" text-anchor="middle" letter-spacing="-1">24 – 48 h</text>
+  <text x="300" y="1222" font-size="52" font-weight="900" fill="#000000" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif" text-anchor="middle" letter-spacing="-1">24 – 48 h</text>
 
-  <text x="80" y="1340" font-size="34" font-weight="300" fill="#FFFFFF" opacity="0.5" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif">Horas hábiles después</text>
-  <text x="80" y="1388" font-size="34" font-weight="300" fill="#FFFFFF" opacity="0.5" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif">de confirmar el pago.</text>
-  <text x="80" y="1440" font-size="34" font-weight="300" fill="#FFFFFF" opacity="0.5" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif">Envío: $4 a nivel nacional.</text>
+  <text x="80" y="1340" font-size="34" font-weight="300" fill="#FFFFFF" opacity="0.5" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif">Horas hábiles después</text>
+  <text x="80" y="1388" font-size="34" font-weight="300" fill="#FFFFFF" opacity="0.5" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif">de confirmar el pago.</text>
+  <text x="80" y="1440" font-size="34" font-weight="300" fill="#FFFFFF" opacity="0.5" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif">Envío: $4 a nivel nacional.</text>
 
-  <text x="80" y="1780" font-size="30" font-weight="400" letter-spacing="4" fill="#FFFFFF" opacity="0.4" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif">@_korsv</text>
+  <text x="80" y="1780" font-size="30" font-weight="400" letter-spacing="4" fill="#FFFFFF" opacity="0.4" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif">@_korsv</text>
   <rect x="80" y="1800" width="920" height="1" fill="#FFFFFF" opacity="0.1"/>
-  <text x="80" y="1840" font-size="22" font-weight="300" letter-spacing="3" fill="#FFFFFF" opacity="0.25" font-family="'Inter','Helvetica Neue',Helvetica,Arial,sans-serif">ACTIVEWEAR PREMIUM · EL SALVADOR</text>
+  <text x="80" y="1840" font-size="22" font-weight="300" letter-spacing="3" fill="#FFFFFF" opacity="0.25" font-family="'PP Neue Montreal','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif">ACTIVEWEAR PREMIUM · EL SALVADOR</text>
 </svg>
