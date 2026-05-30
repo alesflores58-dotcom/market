@@ -21,6 +21,7 @@
       --gray:  #888888;
       --light-gray: #CCCCCC;
       --font: 'PP Neue Montreal', 'Neue Haas Grotesk', 'Helvetica Neue', Arial, sans-serif;
+      --font-logo: 'Cormorant Garamond', 'Didot', 'Bodoni MT', 'Playfair Display', Georgia, serif;
       --transition: 0.3s ease;
     }
     html { scroll-behavior: smooth; }
@@ -38,6 +39,7 @@
 
     /* ─── GOOGLE FONTS ─────────────────────────────── */
     @import url('https://fonts.cdnfonts.com/css/pp-neue-montreal');
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&display=swap');
 
     /* ─── NAVIGATION ───────────────────────────────── */
     nav {
@@ -57,9 +59,10 @@
     }
     .nav-logo {
       font-size: 26px;
-      font-weight: 800;
+      font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
+      font-family: var(--font-logo);
     }
     .nav-links {
       display: flex;
@@ -168,11 +171,12 @@
     }
     .hero-brand {
       font-size: clamp(72px, 14vw, 180px);
-      font-weight: 900;
+      font-weight: 700;
       letter-spacing: 0.06em;
       line-height: 1;
       margin-bottom: 20px;
       text-shadow: 0 0 60px rgba(0,0,0,0.8);
+      font-family: var(--font-logo);
     }
     .hero-tagline {
       font-size: clamp(14px, 2.5vw, 20px);
@@ -416,9 +420,10 @@
     }
     .footer-logo {
       font-size: 36px;
-      font-weight: 900;
+      font-weight: 700;
       letter-spacing: 0.12em;
       margin-bottom: 12px;
+      font-family: var(--font-logo);
     }
     .footer-sub {
       font-size: 12px;
