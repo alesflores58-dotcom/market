@@ -1,0 +1,2147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>kÖr — Activewear Premium El Salvador</title>
+  <meta name="description" content="Ropa deportiva seamless de alto rendimiento. Diseñado para los que no paran. Envíos a todo El Salvador." />
+  <meta property="og:title" content="kÖr — Activewear Premium El Salvador" />
+  <meta property="og:description" content="Ropa deportiva seamless de alto rendimiento. Diseñado para los que no paran." />
+  <meta property="og:type" content="website" />
+  <!-- Google Analytics placeholder -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script> -->
+  <style>
+    /* ─── RESET & BASE ─────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #000000;
+      --white: #FFFFFF;
+      --dark:  #1A1A1A;
+      --mid:   #2D2D2D;
+      --gray:  #888888;
+      --light-gray: #CCCCCC;
+      --font: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+      --transition: 0.3s ease;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    button { cursor: pointer; border: none; background: none; font-family: var(--font); }
+
+    /* ─── GOOGLE FONTS ─────────────────────────────── */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+    /* ─── NAVIGATION ───────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 0 40px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      transition: background var(--transition);
+    }
+    .nav-logo {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--light-gray);
+      transition: color var(--transition);
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a.active { color: var(--white); }
+    .nav-cta {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--white);
+      padding: 10px 24px;
+      transition: background var(--transition), color var(--transition);
+    }
+    .nav-cta:hover { background: var(--light-gray); }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--white);
+      transition: var(--transition);
+    }
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 72px; left: 0; right: 0; bottom: 0;
+      background: var(--black);
+      z-index: 999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ─── PAGES ────────────────────────────────────── */
+    .page { display: none; min-height: 100vh; }
+    .page.active { display: block; }
+
+    /* ─── HERO ─────────────────────────────────────── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: var(--dark);
+    }
+    .hero-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 40%, #0a0a0a 100%);
+    }
+    .hero-placeholder-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.6;
+      /* SVG placeholder silhouette */
+      background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.4) 100%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 900'%3E%3Crect width='800' height='900' fill='%23111'/%3E%3Cellipse cx='400' cy='200' rx='80' ry='90' fill='%23222'/%3E%3Crect x='310' y='280' width='180' height='260' rx='20' fill='%23222'/%3E%3Crect x='280' y='290' width='70' height='200' rx='15' fill='%23222'/%3E%3Crect x='450' y='290' width='70' height='200' rx='15' fill='%23222'/%3E%3Crect x='330' y='530' width='65' height='250' rx='15' fill='%23222'/%3E%3Crect x='405' y='530' width='65' height='250' rx='15' fill='%23222'/%3E%3C/svg%3E") center/cover no-repeat;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 100%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 0 20px;
+    }
+    .hero-brand {
+      font-size: clamp(72px, 14vw, 180px);
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      line-height: 1;
+      margin-bottom: 20px;
+      text-shadow: 0 0 60px rgba(0,0,0,0.8);
+    }
+    .hero-tagline {
+      font-size: clamp(14px, 2.5vw, 20px);
+      font-weight: 300;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--light-gray);
+      margin-bottom: 48px;
+    }
+    .btn-primary {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--white);
+      padding: 16px 48px;
+      transition: background var(--transition), transform var(--transition);
+    }
+    .btn-primary:hover {
+      background: var(--light-gray);
+      transform: translateY(-2px);
+    }
+    .btn-outline {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--white);
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.5);
+      padding: 16px 48px;
+      transition: border-color var(--transition), background var(--transition);
+    }
+    .btn-outline:hover {
+      border-color: var(--white);
+      background: rgba(255,255,255,0.08);
+    }
+    .hero-scroll {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      z-index: 2;
+    }
+    .hero-scroll span {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--gray), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.4; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.1); }
+    }
+
+    /* ─── COLLECTIONS SPLIT ────────────────────────── */
+    .collections-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: 80vh;
+      min-height: 500px;
+    }
+    .collection-item {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .collection-item .col-bg {
+      position: absolute;
+      inset: 0;
+      transition: transform 0.6s ease;
+    }
+    .collection-item:hover .col-bg { transform: scale(1.04); }
+    .col-bg-women {
+      background: linear-gradient(160deg, #1a1a1a 0%, #0d0d0d 50%, #2a1a1a 100%);
+    }
+    .col-bg-men {
+      background: linear-gradient(160deg, #0d0d0d 0%, #1a1a1a 50%, #1a1a2a 100%);
+    }
+    .col-silhouette {
+      position: absolute;
+      inset: 0;
+      opacity: 0.25;
+    }
+    .col-silhouette-women {
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 700'%3E%3Cellipse cx='250' cy='110' rx='60' ry='65' fill='%23fff'/%3E%3Cpath d='M140 200 Q160 180 250 185 Q340 180 360 200 L380 450 Q360 470 320 465 L295 580 Q280 600 250 598 Q220 600 205 580 L180 465 Q140 470 120 450 Z' fill='%23fff'/%3E%3Cpath d='M140 200 Q100 230 80 350 L110 370 Q130 280 160 260 Z' fill='%23fff'/%3E%3Cpath d='M360 200 Q400 230 420 350 L390 370 Q370 280 340 260 Z' fill='%23fff'/%3E%3C/svg%3E") center 15%/40% no-repeat;
+    }
+    .col-silhouette-men {
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 700'%3E%3Cellipse cx='250' cy='100' rx='65' ry='72' fill='%23fff'/%3E%3Cpath d='M120 190 Q170 170 250 175 Q330 170 380 190 L400 460 Q370 480 320 475 L300 620 Q275 635 250 633 Q225 635 200 620 L180 475 Q130 480 100 460 Z' fill='%23fff'/%3E%3Cpath d='M120 190 Q70 220 55 360 L90 375 Q110 275 150 250 Z' fill='%23fff'/%3E%3Cpath d='M380 190 Q430 220 445 360 L410 375 Q390 275 350 250 Z' fill='%23fff'/%3E%3C/svg%3E") center 10%/45% no-repeat;
+    }
+    .collection-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 60%);
+    }
+    .collection-content {
+      position: absolute;
+      bottom: 48px;
+      left: 48px;
+      right: 48px;
+    }
+    .collection-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 10px;
+    }
+    .collection-title {
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 1;
+      margin-bottom: 24px;
+    }
+    .collection-arrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--white);
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .collection-item:hover .collection-arrow {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .collection-arrow::after {
+      content: '→';
+      font-size: 18px;
+    }
+    .col-divider {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 50%;
+      width: 1px;
+      background: rgba(255,255,255,0.08);
+      z-index: 1;
+    }
+
+    /* ─── SECTION HEADERS ──────────────────────────── */
+    .section-header {
+      text-align: center;
+      padding: 100px 40px 60px;
+    }
+    .section-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-size: clamp(28px, 4vw, 52px);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 1.1;
+    }
+
+    /* ─── INSTAGRAM STRIP ──────────────────────────── */
+    .instagram-strip {
+      padding: 80px 40px;
+      background: var(--dark);
+    }
+    .instagram-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .instagram-handle {
+      font-size: clamp(20px, 3.5vw, 36px);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+    .instagram-sub {
+      font-size: 13px;
+      color: var(--gray);
+      letter-spacing: 0.1em;
+    }
+    .instagram-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      max-width: 960px;
+      margin: 0 auto 40px;
+    }
+    .ig-item {
+      aspect-ratio: 1;
+      overflow: hidden;
+      background: var(--mid);
+      position: relative;
+    }
+    .ig-item:hover::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.06);
+    }
+    .ig-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      opacity: 0.15;
+      background: linear-gradient(135deg, #1e1e1e, #2d2d2d);
+    }
+    .instagram-cta {
+      text-align: center;
+    }
+
+    /* ─── FOOTER ────────────────────────────────────── */
+    footer {
+      background: var(--black);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 64px 40px 40px;
+      text-align: center;
+    }
+    .footer-logo {
+      font-size: 36px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      margin-bottom: 12px;
+    }
+    .footer-sub {
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 32px;
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-bottom: 32px;
+    }
+    .footer-links a {
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gray);
+      transition: color var(--transition);
+    }
+    .footer-links a:hover { color: var(--white); }
+    .footer-instagram {
+      font-size: 13px;
+      color: var(--gray);
+      margin-bottom: 8px;
+    }
+    .footer-dm {
+      font-size: 12px;
+      color: var(--gray);
+      margin-bottom: 40px;
+      letter-spacing: 0.06em;
+    }
+    .footer-copy {
+      font-size: 11px;
+      color: rgba(255,255,255,0.25);
+      letter-spacing: 0.1em;
+    }
+    .footer-divider {
+      width: 40px;
+      height: 1px;
+      background: var(--mid);
+      margin: 32px auto;
+    }
+
+    /* ─── CATALOG ───────────────────────────────────── */
+    .catalog-page { padding-top: 72px; }
+    .catalog-hero {
+      height: 40vh;
+      min-height: 300px;
+      display: flex;
+      align-items: flex-end;
+      padding: 60px 60px;
+      background: linear-gradient(160deg, #111 0%, #1a1a1a 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .catalog-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.08;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 40px,
+        rgba(255,255,255,0.03) 40px,
+        rgba(255,255,255,0.03) 41px
+      );
+    }
+    .catalog-hero-title {
+      font-size: clamp(48px, 8vw, 100px);
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 1;
+      position: relative;
+      z-index: 1;
+    }
+    .catalog-hero-sub {
+      position: relative;
+      z-index: 1;
+      font-size: 13px;
+      color: var(--gray);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-top: 12px;
+    }
+    .catalog-filters {
+      padding: 32px 60px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gray);
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 8px 20px;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .filter-btn:hover, .filter-btn.active {
+      color: var(--white);
+      border-color: var(--white);
+      background: rgba(255,255,255,0.05);
+    }
+    .catalog-section-title {
+      padding: 48px 60px 24px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gray);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      padding: 2px;
+    }
+    .product-card {
+      background: var(--dark);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .product-card:hover .product-card-overlay {
+      opacity: 1;
+    }
+    .product-card:hover .product-image-wrap img,
+    .product-card:hover .product-image-wrap .product-placeholder {
+      transform: scale(1.04);
+    }
+    .product-image-wrap {
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      position: relative;
+    }
+    .product-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.5s ease;
+      position: relative;
+    }
+    .product-placeholder-inner {
+      position: absolute;
+      inset: 0;
+    }
+    .product-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity var(--transition);
+      z-index: 2;
+    }
+    .product-card-overlay span {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white);
+      border: 1px solid var(--white);
+      padding: 10px 24px;
+    }
+    .product-info {
+      padding: 20px 20px 24px;
+    }
+    .product-name {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .product-price {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .product-sizes {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .size-tag {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 3px 8px;
+    }
+
+    /* ─── PRODUCT PAGE ──────────────────────────────── */
+    .product-detail-page { padding-top: 72px; }
+    .product-detail-layout {
+      display: grid;
+      grid-template-columns: 60% 40%;
+      min-height: calc(100vh - 72px);
+    }
+    .product-detail-image {
+      position: sticky;
+      top: 72px;
+      height: calc(100vh - 72px);
+      background: var(--dark);
+      overflow: hidden;
+    }
+    .product-detail-image .product-placeholder {
+      height: 100%;
+    }
+    .product-detail-info {
+      padding: 64px 52px;
+      border-left: 1px solid rgba(255,255,255,0.06);
+    }
+    .product-breadcrumb {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 32px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .product-breadcrumb span { color: rgba(255,255,255,0.2); }
+    .product-detail-name {
+      font-size: clamp(24px, 3vw, 38px);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+    .product-detail-price {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 40px;
+    }
+    .size-selector-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 14px;
+    }
+    .size-selector {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 40px;
+    }
+    .size-btn {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255,255,255,0.18);
+      color: var(--white);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .size-btn:hover, .size-btn.selected {
+      background: var(--white);
+      color: var(--black);
+      border-color: var(--white);
+    }
+    .product-detail-desc {
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--light-gray);
+      margin-bottom: 40px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 32px;
+    }
+    .product-features {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+    .product-feature {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      font-size: 13px;
+      color: var(--gray);
+    }
+    .product-feature::before {
+      content: '—';
+      color: rgba(255,255,255,0.2);
+      flex-shrink: 0;
+    }
+    .btn-buy {
+      display: block;
+      width: 100%;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--white);
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 16px;
+      transition: background var(--transition);
+    }
+    .btn-buy:hover { background: var(--light-gray); }
+    .product-shipping-note {
+      font-size: 12px;
+      color: var(--gray);
+      text-align: center;
+      letter-spacing: 0.06em;
+    }
+    .product-shipping-note span {
+      color: rgba(255,255,255,0.4);
+      margin: 0 8px;
+    }
+
+    /* ─── FAQ PAGE ──────────────────────────────────── */
+    .faq-page { padding-top: 72px; }
+    .faq-hero {
+      padding: 100px 60px 60px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .faq-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 16px;
+    }
+    .faq-title {
+      font-size: clamp(32px, 5vw, 64px);
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      line-height: 1.1;
+      max-width: 700px;
+    }
+    .how-to-buy {
+      padding: 80px 60px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      margin-top: 48px;
+    }
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .step-number {
+      font-size: 56px;
+      font-weight: 900;
+      color: rgba(255,255,255,0.06);
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .step-title {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .step-desc {
+      font-size: 13px;
+      color: var(--gray);
+      line-height: 1.7;
+    }
+    .faq-section {
+      padding: 80px 60px;
+      max-width: 800px;
+    }
+    .faq-section-title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 40px;
+    }
+    .faq-item {
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .faq-question {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 0;
+      font-size: 15px;
+      font-weight: 500;
+      text-align: left;
+      color: var(--white);
+      cursor: pointer;
+      gap: 16px;
+    }
+    .faq-icon {
+      font-size: 20px;
+      font-weight: 300;
+      color: var(--gray);
+      flex-shrink: 0;
+      transition: transform var(--transition);
+    }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+    }
+    .faq-item.open .faq-answer { max-height: 200px; padding-bottom: 24px; }
+    .faq-answer p {
+      font-size: 14px;
+      color: var(--gray);
+      line-height: 1.8;
+    }
+
+    /* ─── CONTACT PAGE ──────────────────────────────── */
+    .contact-page { padding-top: 72px; }
+    .contact-layout {
+      min-height: calc(100vh - 72px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 40px;
+      text-align: center;
+    }
+    .contact-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 20px;
+    }
+    .contact-title {
+      font-size: clamp(40px, 7vw, 80px);
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    .contact-sub {
+      font-size: 18px;
+      color: var(--gray);
+      margin-bottom: 72px;
+    }
+    .contact-card {
+      background: var(--dark);
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 52px 64px;
+      max-width: 520px;
+      width: 100%;
+      margin-bottom: 40px;
+    }
+    .contact-card-icon {
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+    .contact-card-title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 10px;
+    }
+    .contact-card-handle {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      margin-bottom: 32px;
+    }
+    .btn-instagram {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--white);
+      padding: 16px 40px;
+      transition: background var(--transition);
+    }
+    .btn-instagram:hover { background: var(--light-gray); }
+    .contact-hours {
+      font-size: 13px;
+      color: var(--gray);
+      line-height: 2;
+      margin-top: 48px;
+    }
+    .contact-hours strong {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 12px;
+    }
+
+    /* ─── FLOATING IG BUTTON ─────────────────────────── */
+    .float-ig {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      width: 52px;
+      height: 52px;
+      background: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 900;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      transition: transform var(--transition), box-shadow var(--transition);
+      cursor: pointer;
+    }
+    .float-ig:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 28px rgba(0,0,0,0.6);
+    }
+    .float-ig svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    /* ─── SCROLL ANIMATIONS ──────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+
+    /* ─── COLOR SWATCH PALETTES ─────────────────────── */
+    .swatch-amarillo  { background: linear-gradient(135deg, #1a1208, #2a2010, #d4a813 80%); }
+    .swatch-rosa      { background: linear-gradient(135deg, #1a0d10, #2a151a, #c85a7a 80%); }
+    .swatch-rojo      { background: linear-gradient(135deg, #1a0808, #2a1010, #cc2222 80%); }
+    .swatch-marron    { background: linear-gradient(135deg, #130e09, #1e1610, #7a5c3e 80%); }
+    .swatch-negro     { background: linear-gradient(135deg, #080808, #111, #333 80%); }
+    .swatch-celeste   { background: linear-gradient(135deg, #080e1a, #0d1526, #2a7ab8 80%); }
+    .swatch-blanco    { background: linear-gradient(135deg, #101010, #1a1a1a, #888 80%); }
+    .swatch-burdeos   { background: linear-gradient(135deg, #1a0810, #260d18, #8b1a3a 80%); }
+    .swatch-azulmarin { background: linear-gradient(135deg, #060810, #0a0d1a, #1a2a5e 80%); }
+    .swatch-azulreal  { background: linear-gradient(135deg, #08091a, #0d1230, #2233cc 80%); }
+    .swatch-plum      { background: linear-gradient(135deg, #120a1a, #1a1026, #6633aa 80%); }
+    .swatch-verde     { background: linear-gradient(135deg, #081008, #0d1a0d, #2a7a2a 80%); }
+    .swatch-gris      { background: linear-gradient(135deg, #0e0e0e, #151515, #505050 80%); }
+    .swatch-azulcomp  { background: linear-gradient(135deg, #060a1a, #0a1026, #1a4499 80%); }
+    .swatch-yoga      { background: linear-gradient(135deg, #060e1a, #0a1826, #3399cc 80%); }
+    .swatch-default   { background: linear-gradient(135deg, #111, #1e1e1e, #333 80%); }
+
+    /* model silhouette overlay for product cards */
+    .fig-women {
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400'%3E%3Cellipse cx='150' cy='60' rx='38' ry='42' fill='rgba(255,255,255,0.06)'/%3E%3Cpath d='M80 115 Q110 100 150 105 Q190 100 220 115 L235 260 Q210 272 185 268 L172 340 Q162 352 150 350 Q138 352 128 340 L115 268 Q90 272 65 260 Z' fill='rgba(255,255,255,0.06)'/%3E%3Cpath d='M80 115 Q50 135 42 210 L65 220 Q78 165 95 148 Z' fill='rgba(255,255,255,0.06)'/%3E%3Cpath d='M220 115 Q250 135 258 210 L235 220 Q222 165 205 148 Z' fill='rgba(255,255,255,0.06)'/%3E%3C/svg%3E") center 15%/70% no-repeat;
+    }
+    .fig-men {
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400'%3E%3Cellipse cx='150' cy='56' rx='42' ry='46' fill='rgba(255,255,255,0.06)'/%3E%3Cpath d='M68 110 Q108 94 150 98 Q192 94 232 110 L248 265 Q218 278 188 272 L174 350 Q163 362 150 360 Q137 362 126 350 L112 272 Q82 278 52 265 Z' fill='rgba(255,255,255,0.06)'/%3E%3Cpath d='M68 110 Q32 134 24 218 L52 228 Q68 162 92 144 Z' fill='rgba(255,255,255,0.06)'/%3E%3Cpath d='M232 110 Q268 134 276 218 L248 228 Q232 162 208 144 Z' fill='rgba(255,255,255,0.06)'/%3E%3C/svg%3E") center 10%/75% no-repeat;
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .product-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps-grid { grid-template-columns: repeat(2, 1fr); }
+      .product-detail-layout { grid-template-columns: 1fr; }
+      .product-detail-image { position: relative; top: 0; height: 60vw; }
+    }
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+      .collections-split { grid-template-columns: 1fr; height: auto; }
+      .collection-item { height: 60vw; min-height: 260px; }
+      .collection-content { bottom: 28px; left: 28px; right: 28px; }
+      .collection-arrow { opacity: 1; transform: none; }
+      .instagram-grid { grid-template-columns: repeat(2, 1fr); }
+      .product-grid { grid-template-columns: repeat(2, 1fr); }
+      .catalog-hero { padding: 60px 24px 40px; }
+      .catalog-filters { padding: 20px 24px; }
+      .catalog-section-title { padding: 32px 24px 16px; }
+      .faq-hero { padding: 60px 24px 40px; }
+      .how-to-buy { padding: 48px 24px; }
+      .steps-grid { grid-template-columns: 1fr; gap: 32px; }
+      .faq-section { padding: 48px 24px; }
+      .contact-card { padding: 36px 28px; }
+      .section-header { padding: 60px 24px 40px; }
+      .instagram-strip { padding: 60px 24px; }
+      footer { padding: 48px 24px 32px; }
+      .footer-links { flex-wrap: wrap; gap: 16px; }
+      .product-detail-info { padding: 40px 24px; }
+    }
+    @media (max-width: 480px) {
+      .hero-brand { font-size: 72px; }
+      .product-detail-layout { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAVIGATION ═══════════════════════════════════════ -->
+<nav id="mainNav">
+  <div class="nav-logo" onclick="showPage('home')" style="cursor:pointer">kÖr</div>
+  <ul class="nav-links">
+    <li><a href="#" onclick="showPage('home');return false">Inicio</a></li>
+    <li><a href="#" onclick="showPage('women');return false">Mujeres</a></li>
+    <li><a href="#" onclick="showPage('men');return false">Hombres</a></li>
+    <li><a href="#" onclick="showPage('faq');return false">Cómo Comprar</a></li>
+    <li><a href="#" onclick="showPage('contact');return false">Contacto</a></li>
+  </ul>
+  <a class="nav-cta" href="https://instagram.com/_korsv" target="_blank" rel="noopener">@_korsv</a>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#" onclick="showPage('home');toggleMenu();return false">Inicio</a>
+  <a href="#" onclick="showPage('women');toggleMenu();return false">Mujeres</a>
+  <a href="#" onclick="showPage('men');toggleMenu();return false">Hombres</a>
+  <a href="#" onclick="showPage('faq');toggleMenu();return false">Cómo Comprar</a>
+  <a href="#" onclick="showPage('contact');toggleMenu();return false">Contacto</a>
+  <a href="https://instagram.com/_korsv" target="_blank" rel="noopener" onclick="toggleMenu()">@_korsv ↗</a>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 1 — HOME
+════════════════════════════════════════════════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-placeholder hero-placeholder-img"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-brand">kÖr</h1>
+      <p class="hero-tagline">Diseñado para los que no paran.</p>
+      <a class="btn-primary" href="#" onclick="showPage('women');return false">Ver Colección</a>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- COLLECTIONS SPLIT -->
+  <section class="collections-split">
+    <div class="col-divider"></div>
+    <div class="collection-item" onclick="showPage('women')">
+      <div class="col-bg col-bg-women"></div>
+      <div class="col-silhouette col-silhouette-women"></div>
+      <div class="collection-overlay"></div>
+      <div class="collection-content">
+        <p class="collection-label">Nueva Colección</p>
+        <h2 class="collection-title">Mujeres</h2>
+        <span class="collection-arrow">Ver Catálogo</span>
+      </div>
+    </div>
+    <div class="collection-item" onclick="showPage('men')">
+      <div class="col-bg col-bg-men"></div>
+      <div class="col-silhouette col-silhouette-men"></div>
+      <div class="collection-overlay"></div>
+      <div class="collection-content">
+        <p class="collection-label">Nueva Colección</p>
+        <h2 class="collection-title">Hombres</h2>
+        <span class="collection-arrow">Ver Catálogo</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- BRAND STATEMENT -->
+  <section style="padding: 120px 60px; text-align:center; border-top: 1px solid rgba(255,255,255,0.04);">
+    <p class="reveal" style="font-size:11px;font-weight:600;letter-spacing:0.3em;text-transform:uppercase;color:var(--gray);margin-bottom:24px;">Activewear Premium · El Salvador</p>
+    <h2 class="reveal reveal-delay-1" style="font-size:clamp(24px,4vw,48px);font-weight:300;letter-spacing:0.06em;max-width:700px;margin:0 auto 24px;line-height:1.5;">Tela seamless de alto rendimiento.<br>Diseñada para moverse contigo.</h2>
+    <div class="reveal reveal-delay-2" style="display:flex;gap:48px;justify-content:center;margin-top:56px;flex-wrap:wrap;">
+      <div style="text-align:center;">
+        <div style="font-size:32px;font-weight:800;letter-spacing:0.04em;">28+</div>
+        <div style="font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--gray);margin-top:6px;">Productos</div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,0.08);"></div>
+      <div style="text-align:center;">
+        <div style="font-size:32px;font-weight:800;letter-spacing:0.04em;">SV</div>
+        <div style="font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--gray);margin-top:6px;">El Salvador</div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,0.08);"></div>
+      <div style="text-align:center;">
+        <div style="font-size:32px;font-weight:800;letter-spacing:0.04em;">24h</div>
+        <div style="font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--gray);margin-top:6px;">Entrega</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTAGRAM STRIP -->
+  <section class="instagram-strip">
+    <div class="instagram-header reveal">
+      <h2 class="instagram-handle">@_korsv</h2>
+      <p class="instagram-sub">Síguenos en Instagram · Ver más looks</p>
+    </div>
+    <div class="instagram-grid reveal reveal-delay-1">
+      <a class="ig-item" href="https://instagram.com/_korsv" target="_blank" rel="noopener">
+        <div class="ig-placeholder fig-women swatch-negro" style="width:100%;height:100%;"></div>
+      </a>
+      <a class="ig-item" href="https://instagram.com/_korsv" target="_blank" rel="noopener">
+        <div class="ig-placeholder fig-women swatch-rosa" style="width:100%;height:100%;"></div>
+      </a>
+      <a class="ig-item" href="https://instagram.com/_korsv" target="_blank" rel="noopener">
+        <div class="ig-placeholder fig-women swatch-rojo" style="width:100%;height:100%;"></div>
+      </a>
+      <a class="ig-item" href="https://instagram.com/_korsv" target="_blank" rel="noopener">
+        <div class="ig-placeholder fig-women swatch-amarillo" style="width:100%;height:100%;"></div>
+      </a>
+    </div>
+    <div class="instagram-cta reveal reveal-delay-2">
+      <a class="btn-outline" href="https://instagram.com/_korsv" target="_blank" rel="noopener">Ver en Instagram</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">kÖr</div>
+    <p class="footer-sub">Activewear Premium · El Salvador</p>
+    <div class="footer-links">
+      <a href="#" onclick="showPage('women');return false">Mujeres</a>
+      <a href="#" onclick="showPage('men');return false">Hombres</a>
+      <a href="#" onclick="showPage('faq');return false">Cómo Comprar</a>
+      <a href="#" onclick="showPage('contact');return false">Contacto</a>
+    </div>
+    <div class="footer-divider"></div>
+    <p class="footer-instagram">Instagram: <a href="https://instagram.com/_korsv" target="_blank" rel="noopener" style="color:var(--white);">@_korsv</a></p>
+    <p class="footer-dm">Para comprar escríbenos por DM</p>
+    <p class="footer-copy">© 2025 kÖr. Todos los derechos reservados.</p>
+  </footer>
+</div><!-- /page-home -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 2 — MUJERES
+════════════════════════════════════════════════════════ -->
+<div id="page-women" class="page catalog-page">
+  <div class="catalog-hero">
+    <div>
+      <h1 class="catalog-hero-title">Mujeres</h1>
+      <p class="catalog-hero-sub">Colección Completa · 28 prendas disponibles</p>
+    </div>
+  </div>
+
+  <div class="catalog-filters" id="women-filters">
+    <button class="filter-btn active" onclick="filterCatalog('women','all',this)">Todo</button>
+    <button class="filter-btn" onclick="filterCatalog('women','conjunto',this)">Conjuntos</button>
+    <button class="filter-btn" onclick="filterCatalog('women','licra-corta',this)">Licras Cortas</button>
+    <button class="filter-btn" onclick="filterCatalog('women','top',this)">Tops</button>
+    <button class="filter-btn" onclick="filterCatalog('women','licra-larga',this)">Licras Largas</button>
+    <button class="filter-btn" onclick="filterCatalog('women','sujetador',this)">Sets Sujetador</button>
+    <button class="filter-btn" onclick="filterCatalog('women','yoga',this)">Yoga</button>
+  </div>
+
+  <div id="women-grid" class="product-grid">
+    <!-- Conjuntos -->
+    <div class="product-card" data-cat="conjunto" onclick="showProduct('Conjunto Amarillo','$23.89',['S','M'],'swatch-amarillo fig-women')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-amarillo fig-women product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Conjunto Amarillo</p>
+        <p class="product-price">$23.89</p>
+        <div class="product-sizes"><span class="size-tag">S</span><span class="size-tag">M</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="conjunto" onclick="showProduct('Conjunto Rosa','$25.07',['S','M'],'swatch-rosa fig-women')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-rosa fig-women product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Conjunto Rosa</p>
+        <p class="product-price">$25.07</p>
+        <div class="product-sizes"><span class="size-tag">S</span><span class="size-tag">M</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="conjunto" onclick="showProduct('Conjunto Rojo','$26.34',['S','M'],'swatch-rojo fig-women')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-rojo fig-women product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Conjunto Rojo</p>
+        <p class="product-price">$26.34</p>
+        <div class="product-sizes"><span class="size-tag">S</span><span class="size-tag">M</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="conjunto" onclick="showProduct('Conjunto Marrón Mocha','$25.07',['S'],'swatch-marron fig-women')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-marron fig-women product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Conjunto Marrón Mocha</p>
+        <p class="product-price">$25.07</p>
+        <div class="product-sizes"><span class="size-tag">S</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="conjunto" onclick="showProduct('Conjunto Negro','$28.29',['S','M'],'swatch-negro fig-women')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-negro fig-women product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Conjunto Negro</p>
+        <p class="product-price">$28.29</p>
+        <div class="product-sizes"><span class="size-tag">S</span><span class="size-tag">M</span></div>
+      </div>
+    </div>
+    <!-- Licras Cortas -->
+    <div class="product-card" data-cat="licra-corta" onclick="showProduct('Licra Corta Rosa','$16.24',['S'],'swatch-rosa fig-women')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-rosa fig-women product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Licra Corta Rosa</p>
+        <p class="product-price">$16.24</p>
+        <div class="product-sizes"><span class="size-tag">S</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="licra-corta" onclick="showProduct('Licra Corta Rojo','$16.24',['S','M'],'swatch-rojo fig-women')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-rojo fig-women product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Licra Corta Rojo</p>
+        <p class="product-price">$16.24</p>
+        <div class="product-sizes"><span class="size-tag">S</span><span class="size-tag">M</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="licra-corta" onclick="showProduct('Licra Corta Negro','$16.24',['S','M','L'],'swatch-negro fig-women')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-negro fig-women product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Licra Corta Negro</p>
+        <p class="product-price">$16.24</p>
+        <div class="product-sizes"><span class="size-tag">S</span><span class="size-tag">M</span><span class="size-tag">L</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="licra-corta" onclick="showProduct('Licra Corta Azul Marino','$14.69',['S','M','L'],'swatch-azulmarin fig-women')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-azulmarin fig-women product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Licra Corta Azul Marino</p>
+        <p class="product-price">$14.69</p>
+        <div class="product-sizes"><span class="size-tag">S</span><span class="size-tag">M</span><span class="size-tag">L</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="licra-corta" onclick="showProduct('Licra Corta Marrón Mocha','$14.69',['S','M'],'swatch-marron fig-women')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-marron fig-women product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Licra Corta Marrón Mocha</p>
+        <p class="product-price">$14.69</p>
+        <div class="product-sizes"><span class="size-tag">S</span><span class="size-tag">M</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="licra-corta" onclick="showProduct('Licra Corta Azul Real','$14.69',['M'],'swatch-azulreal fig-women')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-azulreal fig-women product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Licra Corta Azul Real</p>
+        <p class="product-price">$14.69</p>
+        <div class="product-sizes"><span class="size-tag">M</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="licra-corta" onclick="showProduct('Licra Corta Bold Plum','$14.03',['S','M'],'swatch-plum fig-women')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-plum fig-women product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Licra Corta Bold Plum</p>
+        <p class="product-price">$14.03</p>
+        <div class="product-sizes"><span class="size-tag">S</span><span class="size-tag">M</span></div>
+      </div>
+    </div>
+    <!-- Tops -->
+    <div class="product-card" data-cat="top" onclick="showProduct('Top Pequeño Negro','$11.31',['S'],'swatch-negro fig-women')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-negro fig-women product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Top Pequeño Negro</p>
+        <p class="product-price">$11.31</p>
+        <div class="product-sizes"><span class="size-tag">S</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="top" onclick="showProduct('Top Pequeño Celeste','$11.97',['S'],'swatch-celeste fig-women')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-celeste fig-women product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Top Pequeño Celeste</p>
+        <p class="product-price">$11.97</p>
+        <div class="product-sizes"><span class="size-tag">S</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="top" onclick="showProduct('Top Pequeño Burdeos','$11.43',['S'],'swatch-burdeos fig-women')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-burdeos fig-women product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Top Pequeño Burdeos</p>
+        <p class="product-price">$11.43</p>
+        <div class="product-sizes"><span class="size-tag">S</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="top" onclick="showProduct('Top Pequeño Blanco','$11.31',['S'],'swatch-blanco fig-women')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-blanco fig-women product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Top Pequeño Blanco</p>
+        <p class="product-price">$11.31</p>
+        <div class="product-sizes"><span class="size-tag">S</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="top" onclick="showProduct('Top Largo Negro','$15.31',['S'],'swatch-negro fig-women')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-negro fig-women product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Top Largo Negro</p>
+        <p class="product-price">$15.31</p>
+        <div class="product-sizes"><span class="size-tag">S</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="top" onclick="showProduct('Top Largo Blanco','$12.74',['S'],'swatch-blanco fig-women')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-blanco fig-women product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Top Largo Blanco</p>
+        <p class="product-price">$12.74</p>
+        <div class="product-sizes"><span class="size-tag">S</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="top" onclick="showProduct('Top Largo Rojo','$13.97',['S'],'swatch-rojo fig-women')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-rojo fig-women product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Top Largo Rojo</p>
+        <p class="product-price">$13.97</p>
+        <div class="product-sizes"><span class="size-tag">S</span></div>
+      </div>
+    </div>
+    <!-- Licras Largas -->
+    <div class="product-card" data-cat="licra-larga" onclick="showProduct('Licra Larga Negro','$23.62',['S','M','L'],'swatch-negro fig-women')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-negro fig-women product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Licra Larga Negro</p>
+        <p class="product-price">$23.62</p>
+        <div class="product-sizes"><span class="size-tag">S</span><span class="size-tag">M</span><span class="size-tag">L</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="licra-larga" onclick="showProduct('Licra Larga Rojo','$19.81',['S','M'],'swatch-rojo fig-women')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-rojo fig-women product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Licra Larga Rojo</p>
+        <p class="product-price">$19.81</p>
+        <div class="product-sizes"><span class="size-tag">S</span><span class="size-tag">M</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="licra-larga" onclick="showProduct('Licra Larga Rosa','$19.81',['S'],'swatch-rosa fig-women')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-rosa fig-women product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Licra Larga Rosa</p>
+        <p class="product-price">$19.81</p>
+        <div class="product-sizes"><span class="size-tag">S</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="licra-larga" onclick="showProduct('Licra Larga Azul Marino','$19.81',['S','M','L'],'swatch-azulmarin fig-women')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-azulmarin fig-women product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Licra Larga Azul Marino</p>
+        <p class="product-price">$19.81</p>
+        <div class="product-sizes"><span class="size-tag">S</span><span class="size-tag">M</span><span class="size-tag">L</span></div>
+      </div>
+    </div>
+    <!-- Sets Sujetador -->
+    <div class="product-card" data-cat="sujetador" onclick="showProduct('Set Sujetador Blanco','$12.88',['S','M'],'swatch-blanco fig-women')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-blanco fig-women product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Set Sujetador Blanco</p>
+        <p class="product-price">$12.88</p>
+        <div class="product-sizes"><span class="size-tag">S</span><span class="size-tag">M</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="sujetador" onclick="showProduct('Set Sujetador Negro','$12.88',['S','M'],'swatch-negro fig-women')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-negro fig-women product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Set Sujetador Negro</p>
+        <p class="product-price">$12.88</p>
+        <div class="product-sizes"><span class="size-tag">S</span><span class="size-tag">M</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="sujetador" onclick="showProduct('Set Sujetador Rosa','$12.88',['S','M'],'swatch-rosa fig-women')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-rosa fig-women product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Set Sujetador Rosa</p>
+        <p class="product-price">$12.88</p>
+        <div class="product-sizes"><span class="size-tag">S</span><span class="size-tag">M</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="sujetador" onclick="showProduct('Set Sujetador Marrón Mocha','$12.88',['S','M'],'swatch-marron fig-women')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-marron fig-women product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Set Sujetador Marrón Mocha</p>
+        <p class="product-price">$12.88</p>
+        <div class="product-sizes"><span class="size-tag">S</span><span class="size-tag">M</span></div>
+      </div>
+    </div>
+    <!-- Yoga -->
+    <div class="product-card" data-cat="yoga" onclick="showProduct('Conjunto Yoga Celeste','$26.58',['S'],'swatch-yoga fig-women')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-yoga fig-women product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Conjunto Yoga Celeste</p>
+        <p class="product-price">$26.58</p>
+        <div class="product-sizes"><span class="size-tag">S</span></div>
+      </div>
+    </div>
+  </div><!-- /women-grid -->
+
+  <!-- Footer repeated -->
+  <footer>
+    <div class="footer-logo">kÖr</div>
+    <p class="footer-sub">Activewear Premium · El Salvador</p>
+    <div class="footer-links">
+      <a href="#" onclick="showPage('home');return false">Inicio</a>
+      <a href="#" onclick="showPage('faq');return false">Cómo Comprar</a>
+      <a href="#" onclick="showPage('contact');return false">Contacto</a>
+    </div>
+    <div class="footer-divider"></div>
+    <p class="footer-instagram"><a href="https://instagram.com/_korsv" target="_blank" rel="noopener" style="color:var(--white);">@_korsv</a></p>
+    <p class="footer-copy">© 2025 kÖr. Todos los derechos reservados.</p>
+  </footer>
+</div><!-- /page-women -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 3 — HOMBRES
+════════════════════════════════════════════════════════ -->
+<div id="page-men" class="page catalog-page">
+  <div class="catalog-hero">
+    <div>
+      <h1 class="catalog-hero-title">Hombres</h1>
+      <p class="catalog-hero-sub">Colección Completa · 20 prendas disponibles</p>
+    </div>
+  </div>
+
+  <div class="catalog-filters" id="men-filters">
+    <button class="filter-btn active" onclick="filterCatalog('men','all',this)">Todo</button>
+    <button class="filter-btn" onclick="filterCatalog('men','compresion',this)">Compresión</button>
+    <button class="filter-btn" onclick="filterCatalog('men','camiseta',this)">Camisetas</button>
+    <button class="filter-btn" onclick="filterCatalog('men','manga-corta',this)">Manga Corta</button>
+    <button class="filter-btn" onclick="filterCatalog('men','manga-larga',this)">Manga Larga</button>
+    <button class="filter-btn" onclick="filterCatalog('men','short',this)">Shorts</button>
+  </div>
+
+  <div id="men-grid" class="product-grid">
+    <!-- Compresión Sin Manga -->
+    <div class="product-card" data-cat="compresion" onclick="showProduct('Set Compresión Sin Manga Azul','$10.09',['L'],'swatch-azulcomp fig-men')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-azulcomp fig-men product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Set Compresión Sin Manga Azul</p>
+        <p class="product-price">$10.09</p>
+        <div class="product-sizes"><span class="size-tag">L</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="compresion" onclick="showProduct('Set Compresión Sin Manga Blanco','$10.09',['L'],'swatch-blanco fig-men')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-blanco fig-men product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Set Compresión Sin Manga Blanco</p>
+        <p class="product-price">$10.09</p>
+        <div class="product-sizes"><span class="size-tag">L</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="compresion" onclick="showProduct('Set Compresión Sin Manga Negro','$10.09',['L'],'swatch-negro fig-men')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-negro fig-men product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Set Compresión Sin Manga Negro</p>
+        <p class="product-price">$10.09</p>
+        <div class="product-sizes"><span class="size-tag">L</span></div>
+      </div>
+    </div>
+    <!-- Camisetas Deportivas -->
+    <div class="product-card" data-cat="camiseta" onclick="showProduct('Camiseta Deportiva Negro','$9.56',['L'],'swatch-negro fig-men')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-negro fig-men product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Camiseta Deportiva Negro</p>
+        <p class="product-price">$9.56</p>
+        <div class="product-sizes"><span class="size-tag">L</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="camiseta" onclick="showProduct('Camiseta Deportiva Azul','$9.56',['L'],'swatch-azulcomp fig-men')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-azulcomp fig-men product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Camiseta Deportiva Azul</p>
+        <p class="product-price">$9.56</p>
+        <div class="product-sizes"><span class="size-tag">L</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="camiseta" onclick="showProduct('Camiseta Deportiva Blanco','$9.56',['L'],'swatch-blanco fig-men')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-blanco fig-men product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Camiseta Deportiva Blanco</p>
+        <p class="product-price">$9.56</p>
+        <div class="product-sizes"><span class="size-tag">L</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="camiseta" onclick="showProduct('Camiseta Deportiva Verde','$9.56',['L'],'swatch-verde fig-men')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-verde fig-men product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Camiseta Deportiva Verde</p>
+        <p class="product-price">$9.56</p>
+        <div class="product-sizes"><span class="size-tag">L</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="camiseta" onclick="showProduct('Camiseta Deportiva Gris','$9.56',['L'],'swatch-gris fig-men')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-gris fig-men product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Camiseta Deportiva Gris</p>
+        <p class="product-price">$9.56</p>
+        <div class="product-sizes"><span class="size-tag">L</span></div>
+      </div>
+    </div>
+    <!-- Camiseta Sin Manga -->
+    <div class="product-card" data-cat="camiseta" onclick="showProduct('Camiseta Sin Manga Negro','$10.24',['L'],'swatch-negro fig-men')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-negro fig-men product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Camiseta Sin Manga Negro</p>
+        <p class="product-price">$10.24</p>
+        <div class="product-sizes"><span class="size-tag">L</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="camiseta" onclick="showProduct('Camiseta Sin Manga Gris','$10.24',['L'],'swatch-gris fig-men')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-gris fig-men product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Camiseta Sin Manga Gris</p>
+        <p class="product-price">$10.24</p>
+        <div class="product-sizes"><span class="size-tag">L</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="camiseta" onclick="showProduct('Camiseta Sin Manga Blanco','$10.24',['L'],'swatch-blanco fig-men')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-blanco fig-men product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Camiseta Sin Manga Blanco</p>
+        <p class="product-price">$10.24</p>
+        <div class="product-sizes"><span class="size-tag">L</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="camiseta" onclick="showProduct('Camiseta Sin Manga Verde','$10.24',['L'],'swatch-verde fig-men')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-verde fig-men product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Camiseta Sin Manga Verde</p>
+        <p class="product-price">$10.24</p>
+        <div class="product-sizes"><span class="size-tag">L</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="camiseta" onclick="showProduct('Camiseta Sin Manga Azul','$10.24',['L'],'swatch-azulcomp fig-men')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-azulcomp fig-men product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Camiseta Sin Manga Azul</p>
+        <p class="product-price">$10.24</p>
+        <div class="product-sizes"><span class="size-tag">L</span></div>
+      </div>
+    </div>
+    <!-- Manga Corta -->
+    <div class="product-card" data-cat="manga-corta" onclick="showProduct('Camisa Manga Corta Blanca','$9.00',['L'],'swatch-blanco fig-men')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-blanco fig-men product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Camisa Manga Corta Blanca</p>
+        <p class="product-price">$9.00</p>
+        <div class="product-sizes"><span class="size-tag">L</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="manga-corta" onclick="showProduct('Camisa Manga Corta Gris','$9.00',['L'],'swatch-gris fig-men')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-gris fig-men product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Camisa Manga Corta Gris</p>
+        <p class="product-price">$9.00</p>
+        <div class="product-sizes"><span class="size-tag">L</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="manga-corta" onclick="showProduct('Camisa Manga Corta Negra','$9.00',['L'],'swatch-negro fig-men')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-negro fig-men product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Camisa Manga Corta Negra</p>
+        <p class="product-price">$9.00</p>
+        <div class="product-sizes"><span class="size-tag">L</span></div>
+      </div>
+    </div>
+    <!-- Manga Larga -->
+    <div class="product-card" data-cat="manga-larga" onclick="showProduct('Camisa Manga Larga Negra','$11.88',['L'],'swatch-negro fig-men')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-negro fig-men product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Camisa Manga Larga Negra</p>
+        <p class="product-price">$11.88</p>
+        <div class="product-sizes"><span class="size-tag">L</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="manga-larga" onclick="showProduct('Camisa Manga Larga Azul','$11.88',['L'],'swatch-azulcomp fig-men')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-azulcomp fig-men product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Camisa Manga Larga Azul</p>
+        <p class="product-price">$11.88</p>
+        <div class="product-sizes"><span class="size-tag">L</span></div>
+      </div>
+    </div>
+    <div class="product-card" data-cat="manga-larga" onclick="showProduct('Camisa Manga Larga Blanca','$11.88',['L'],'swatch-blanco fig-men')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-blanco fig-men product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Camisa Manga Larga Blanca</p>
+        <p class="product-price">$11.88</p>
+        <div class="product-sizes"><span class="size-tag">L</span></div>
+      </div>
+    </div>
+    <!-- Short -->
+    <div class="product-card" data-cat="short" onclick="showProduct('Short Negro','$15.14',['L'],'swatch-negro fig-men')">
+      <div class="product-image-wrap">
+        <div class="product-placeholder swatch-negro fig-men product-placeholder-inner"></div>
+        <div class="product-card-overlay"><span>Ver Producto</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-name">Short Negro</p>
+        <p class="product-price">$15.14</p>
+        <div class="product-sizes"><span class="size-tag">L</span></div>
+      </div>
+    </div>
+  </div><!-- /men-grid -->
+
+  <footer>
+    <div class="footer-logo">kÖr</div>
+    <p class="footer-sub">Activewear Premium · El Salvador</p>
+    <div class="footer-links">
+      <a href="#" onclick="showPage('home');return false">Inicio</a>
+      <a href="#" onclick="showPage('faq');return false">Cómo Comprar</a>
+      <a href="#" onclick="showPage('contact');return false">Contacto</a>
+    </div>
+    <div class="footer-divider"></div>
+    <p class="footer-instagram"><a href="https://instagram.com/_korsv" target="_blank" rel="noopener" style="color:var(--white);">@_korsv</a></p>
+    <p class="footer-copy">© 2025 kÖr. Todos los derechos reservados.</p>
+  </footer>
+</div><!-- /page-men -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 4 — PRODUCTO INDIVIDUAL
+════════════════════════════════════════════════════════ -->
+<div id="page-product" class="page product-detail-page">
+  <div class="product-detail-layout">
+    <div class="product-detail-image">
+      <div id="pd-image" class="product-placeholder swatch-negro fig-women" style="height:100%;"></div>
+    </div>
+    <div class="product-detail-info">
+      <div class="product-breadcrumb">
+        <a href="#" onclick="history.back();return false">← Volver</a>
+        <span>/</span>
+        <span id="pd-breadcrumb">Producto</span>
+      </div>
+      <h1 class="product-detail-name" id="pd-name">Nombre del Producto</h1>
+      <p class="product-detail-price" id="pd-price">$00.00</p>
+
+      <p class="size-selector-label">Talla</p>
+      <div class="size-selector" id="pd-sizes"></div>
+
+      <p class="product-detail-desc">
+        Confeccionado en tela seamless de alto rendimiento. Diseño ribbed con acabados premium. Tela de secado rápido, moldeadora y cómoda para entrenar.
+      </p>
+
+      <div class="product-features">
+        <div class="product-feature">Tela seamless de alto rendimiento</div>
+        <div class="product-feature">Secado rápido y transpirable</div>
+        <div class="product-feature">Diseño moldeador y ergonómico</div>
+        <div class="product-feature">Acabados premium ribbed</div>
+      </div>
+
+      <a class="btn-buy" href="https://instagram.com/_korsv" target="_blank" rel="noopener">
+        COMPRAR — Escríbenos por DM
+      </a>
+      <p class="product-shipping-note">
+        Envíos a todo El Salvador <span>·</span> Pago por transferencia bancaria
+      </p>
+    </div>
+  </div>
+</div><!-- /page-product -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 5 — FAQ / CÓMO COMPRAR
+════════════════════════════════════════════════════════ -->
+<div id="page-faq" class="page faq-page">
+  <div class="faq-hero">
+    <p class="faq-eyebrow">Proceso de Compra</p>
+    <h1 class="faq-title">¿Cómo comprar<br>en kÖr?</h1>
+  </div>
+
+  <div class="how-to-buy">
+    <p style="font-size:11px;font-weight:600;letter-spacing:0.26em;text-transform:uppercase;color:var(--gray);">Paso a Paso</p>
+    <div class="steps-grid">
+      <div class="step-item reveal">
+        <div class="step-number">01</div>
+        <h3 class="step-title">Elige tu prenda</h3>
+        <p class="step-desc">Navega el catálogo y selecciona la prenda y talla que deseas.</p>
+      </div>
+      <div class="step-item reveal reveal-delay-1">
+        <div class="step-number">02</div>
+        <h3 class="step-title">Escríbenos por DM</h3>
+        <p class="step-desc">Envíanos un mensaje directo a Instagram <strong>@_korsv</strong> con tu pedido.</p>
+      </div>
+      <div class="step-item reveal reveal-delay-2">
+        <div class="step-number">03</div>
+        <h3 class="step-title">Confirmamos disponibilidad</h3>
+        <p class="step-desc">Te confirmamos stock, precio final y datos de pago.</p>
+      </div>
+      <div class="step-item reveal reveal-delay-3">
+        <div class="step-number">04</div>
+        <h3 class="step-title">Transferencia bancaria</h3>
+        <p class="step-desc">Realizas el pago por transferencia bancaria local.</p>
+      </div>
+      <div class="step-item reveal reveal-delay-4">
+        <div class="step-number">05</div>
+        <h3 class="step-title">Envías comprobante</h3>
+        <p class="step-desc">Nos envías la captura del comprobante por DM.</p>
+      </div>
+      <div class="step-item reveal reveal-delay-5">
+        <div class="step-number">06</div>
+        <h3 class="step-title">Recibe en 24–48h</h3>
+        <p class="step-desc">Coordinamos la entrega. Tu pedido llega en 24 a 48 horas hábiles.</p>
+      </div>
+    </div>
+    <div style="margin-top:56px;text-align:center;">
+      <a class="btn-primary" href="https://instagram.com/_korsv" target="_blank" rel="noopener">Escribir a @_korsv</a>
+    </div>
+  </div>
+
+  <div class="faq-section">
+    <p class="faq-section-title">Preguntas Frecuentes</p>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        ¿Hacen envíos a todo El Salvador?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer"><p>Sí, enviamos a todo el país. El costo de envío es de $4 a nivel nacional.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        ¿Cuánto cuesta el envío?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer"><p>El costo de envío es de $4 a nivel nacional, sin importar la cantidad de prendas en tu pedido.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        ¿Cuánto tarda en llegar mi pedido?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer"><p>Entre 24 y 48 horas hábiles después de confirmar el pago. Te avisamos cuando tu pedido esté en camino.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        ¿Cómo pago?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer"><p>Aceptamos transferencia bancaria local. Te enviamos los datos al confirmar tu pedido por DM.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        ¿Qué tallas manejan?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer"><p>Manejamos tallas S, M y L según disponibilidad por prenda. Revisa las tallas disponibles en cada producto del catálogo.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        ¿Aceptan devoluciones o cambios?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer"><p>Por el momento no aceptamos cambios ni devoluciones. Te recomendamos consultar bien tu talla antes de confirmar el pedido.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        ¿Tienen tienda física?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer"><p>Somos 100% online. Puedes ver todo nuestro catálogo aquí y hacer tu pedido por DM en Instagram @_korsv.</p></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">kÖr</div>
+    <p class="footer-sub">Activewear Premium · El Salvador</p>
+    <div class="footer-links">
+      <a href="#" onclick="showPage('home');return false">Inicio</a>
+      <a href="#" onclick="showPage('women');return false">Mujeres</a>
+      <a href="#" onclick="showPage('men');return false">Hombres</a>
+      <a href="#" onclick="showPage('contact');return false">Contacto</a>
+    </div>
+    <div class="footer-divider"></div>
+    <p class="footer-instagram"><a href="https://instagram.com/_korsv" target="_blank" rel="noopener" style="color:var(--white);">@_korsv</a></p>
+    <p class="footer-copy">© 2025 kÖr. Todos los derechos reservados.</p>
+  </footer>
+</div><!-- /page-faq -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 6 — CONTACTO
+════════════════════════════════════════════════════════ -->
+<div id="page-contact" class="page contact-page">
+  <div class="contact-layout">
+    <p class="contact-eyebrow">kÖr · El Salvador</p>
+    <h1 class="contact-title">Contáctanos</h1>
+    <p class="contact-sub">Estamos para ayudarte 🖤</p>
+
+    <div class="contact-card">
+      <div class="contact-card-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="20" height="20" rx="5" stroke="white" stroke-width="1.5"/>
+          <circle cx="12" cy="12" r="4" stroke="white" stroke-width="1.5"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="white"/>
+        </svg>
+      </div>
+      <p class="contact-card-title">Instagram</p>
+      <p class="contact-card-handle">@_korsv</p>
+      <a class="btn-instagram" href="https://instagram.com/_korsv" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <rect x="2" y="2" width="20" height="20" rx="5" stroke="black" stroke-width="1.8"/>
+          <circle cx="12" cy="12" r="4" stroke="black" stroke-width="1.8"/>
+          <circle cx="17.5" cy="6.5" r="0.9" fill="black"/>
+        </svg>
+        Escribir por Instagram
+      </a>
+    </div>
+
+    <div class="contact-hours">
+      <strong>Horario de Atención</strong>
+      Lunes a Sábado · 8:00 AM — 7:00 PM
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">kÖr</div>
+    <p class="footer-sub">Activewear Premium · El Salvador</p>
+    <div class="footer-links">
+      <a href="#" onclick="showPage('home');return false">Inicio</a>
+      <a href="#" onclick="showPage('women');return false">Mujeres</a>
+      <a href="#" onclick="showPage('men');return false">Hombres</a>
+      <a href="#" onclick="showPage('faq');return false">Cómo Comprar</a>
+    </div>
+    <div class="footer-divider"></div>
+    <p class="footer-instagram"><a href="https://instagram.com/_korsv" target="_blank" rel="noopener" style="color:var(--white);">@_korsv</a></p>
+    <p class="footer-copy">© 2025 kÖr. Todos los derechos reservados.</p>
+  </footer>
+</div><!-- /page-contact -->
+
+
+<!-- ═══ FLOATING INSTAGRAM BUTTON ═══════════════════════ -->
+<a class="float-ig" href="https://instagram.com/_korsv" target="_blank" rel="noopener" aria-label="Seguir en Instagram @_korsv">
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="2" y="2" width="20" height="20" rx="5" stroke="black" stroke-width="1.8"/>
+    <circle cx="12" cy="12" r="4" stroke="black" stroke-width="1.8"/>
+    <circle cx="17.5" cy="6.5" r="0.9" fill="black"/>
+  </svg>
+</a>
+
+
+<!-- ═══ JAVASCRIPT ════════════════════════════════════════ -->
+<script>
+  // ─── PAGE ROUTER ────────────────────────────────────────
+  function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    const target = document.getElementById('page-' + pageId);
+    if (target) {
+      target.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      updateNavActive(pageId);
+      initReveal();
+    }
+  }
+
+  function updateNavActive(pageId) {
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    const map = { home: 0, women: 1, men: 2, faq: 3, contact: 4 };
+    const links = document.querySelectorAll('.nav-links a');
+    if (map[pageId] !== undefined && links[map[pageId]]) {
+      links[map[pageId]].classList.add('active');
+    }
+  }
+
+  // ─── MOBILE MENU ────────────────────────────────────────
+  function toggleMenu() {
+    const menu = document.getElementById('mobileMenu');
+    const burger = document.getElementById('hamburger');
+    menu.classList.toggle('open');
+    burger.classList.toggle('open');
+  }
+
+  // ─── PRODUCT MODAL / DETAIL PAGE ────────────────────────
+  function showProduct(name, price, sizes, imageClass) {
+    document.getElementById('pd-name').textContent = name;
+    document.getElementById('pd-price').textContent = price;
+    document.getElementById('pd-breadcrumb').textContent = name;
+
+    const img = document.getElementById('pd-image');
+    img.className = 'product-placeholder ' + imageClass;
+    img.style.height = '100%';
+
+    const sizesEl = document.getElementById('pd-sizes');
+    sizesEl.innerHTML = sizes.map(s =>
+      `<button class="size-btn" onclick="selectSize(this)">${s}</button>`
+    ).join('');
+
+    showPage('product');
+  }
+
+  function selectSize(btn) {
+    document.querySelectorAll('#pd-sizes .size-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+  }
+
+  // ─── CATALOG FILTER ─────────────────────────────────────
+  function filterCatalog(gender, cat, btn) {
+    const grid = document.getElementById(gender + '-grid');
+    const filters = document.getElementById(gender + '-filters');
+
+    filters.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    grid.querySelectorAll('.product-card').forEach(card => {
+      if (cat === 'all' || card.dataset.cat === cat) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  // ─── FAQ ACCORDION ───────────────────────────────────────
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  }
+
+  // ─── SCROLL REVEAL ───────────────────────────────────────
+  function initReveal() {
+    setTimeout(() => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('visible');
+            observer.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      document.querySelectorAll('.page.active .reveal').forEach(el => {
+        el.classList.remove('visible');
+        observer.observe(el);
+      });
+    }, 50);
+  }
+
+  // ─── NAV SCROLL EFFECT ──────────────────────────────────
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('mainNav');
+    if (window.scrollY > 40) {
+      nav.style.background = 'rgba(0,0,0,0.96)';
+    } else {
+      nav.style.background = 'rgba(0,0,0,0.85)';
+    }
+  });
+
+  // ─── INIT ────────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+    initReveal();
+  });
+</script>
+
+</body>
+</html>
