@@ -21,7 +21,6 @@
       --gray:  #888888;
       --light-gray: #CCCCCC;
       --font: 'PP Neue Montreal', 'Neue Haas Grotesk', 'Helvetica Neue', Arial, sans-serif;
-      --font-logo: 'TAN Pearl', 'Bodoni Moda', 'Cormorant Garamond', 'Didot', 'Bodoni MT', Georgia, serif;
       --transition: 0.3s ease;
     }
     html { scroll-behavior: smooth; }
@@ -39,7 +38,6 @@
 
     /* ─── GOOGLE FONTS ─────────────────────────────── */
     @import url('https://fonts.cdnfonts.com/css/pp-neue-montreal');
-    @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;0,6..96,900&family=Cormorant+Garamond:wght@300;400;600;700&display=swap');
 
     /* ─── NAVIGATION ───────────────────────────────── */
     nav {
@@ -58,11 +56,13 @@
       transition: background var(--transition);
     }
     .nav-logo {
-      font-size: 26px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      font-family: var(--font-logo);
+      display: flex;
+      align-items: center;
+    }
+    .nav-logo img {
+      height: 32px;
+      width: auto;
+      display: block;
     }
     .nav-links {
       display: flex;
@@ -170,13 +170,15 @@
       padding: 0 20px;
     }
     .hero-brand {
-      font-size: clamp(72px, 14vw, 180px);
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      line-height: 1;
-      margin-bottom: 20px;
-      text-shadow: 0 0 60px rgba(0,0,0,0.8);
-      font-family: var(--font-logo);
+      margin-bottom: 28px;
+      display: flex;
+      justify-content: center;
+    }
+    .hero-brand img {
+      height: 80px;
+      width: auto;
+      display: block;
+      filter: drop-shadow(0 0 40px rgba(0,0,0,0.6));
     }
     .hero-tagline {
       font-size: clamp(14px, 2.5vw, 20px);
@@ -419,11 +421,14 @@
       text-align: center;
     }
     .footer-logo {
-      font-size: 36px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      margin-bottom: 12px;
-      font-family: var(--font-logo);
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+    }
+    .footer-logo img {
+      height: 40px;
+      width: auto;
+      display: block;
     }
     .footer-sub {
       font-size: 12px;
@@ -1052,7 +1057,7 @@
       .product-detail-info { padding: 40px 24px; }
     }
     @media (max-width: 480px) {
-      .hero-brand { font-size: 72px; }
+      .hero-brand img { height: 56px; }
       .product-detail-layout { grid-template-columns: 1fr; }
     }
   </style>
@@ -1061,7 +1066,9 @@
 
 <!-- ═══ NAVIGATION ═══════════════════════════════════════ -->
 <nav id="mainNav">
-  <div class="nav-logo" onclick="showPage('home')" style="cursor:pointer">kÖr</div>
+  <div class="nav-logo" onclick="showPage('home')" style="cursor:pointer">
+    <img src="kor.png" alt="kÖr" />
+  </div>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home');return false">Inicio</a></li>
     <li><a href="#" onclick="showPage('women');return false">Mujeres</a></li>
@@ -1095,7 +1102,9 @@
     <div class="hero-placeholder hero-placeholder-img"></div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <h1 class="hero-brand">kÖr</h1>
+      <div class="hero-brand">
+        <img src="kor.png" alt="kÖr" />
+      </div>
       <p class="hero-tagline">Diseñado para los que no paran.</p>
       <a class="btn-primary" href="#" onclick="showPage('women');return false">Ver Colección</a>
     </div>
@@ -1179,7 +1188,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="footer-logo">kÖr</div>
+    <div class="footer-logo"><img src="kor.png" alt="kÖr" /></div>
     <p class="footer-sub">Activewear Premium · El Salvador</p>
     <div class="footer-links">
       <a href="#" onclick="showPage('women');return false">Mujeres</a>
@@ -1535,7 +1544,7 @@
 
   <!-- Footer repeated -->
   <footer>
-    <div class="footer-logo">kÖr</div>
+    <div class="footer-logo"><img src="kor.png" alt="kÖr" /></div>
     <p class="footer-sub">Activewear Premium · El Salvador</p>
     <div class="footer-links">
       <a href="#" onclick="showPage('home');return false">Inicio</a>
@@ -1799,7 +1808,7 @@
   </div><!-- /men-grid -->
 
   <footer>
-    <div class="footer-logo">kÖr</div>
+    <div class="footer-logo"><img src="kor.png" alt="kÖr" /></div>
     <p class="footer-sub">Activewear Premium · El Salvador</p>
     <div class="footer-links">
       <a href="#" onclick="showPage('home');return false">Inicio</a>
@@ -1958,7 +1967,7 @@
   </div>
 
   <footer>
-    <div class="footer-logo">kÖr</div>
+    <div class="footer-logo"><img src="kor.png" alt="kÖr" /></div>
     <p class="footer-sub">Activewear Premium · El Salvador</p>
     <div class="footer-links">
       <a href="#" onclick="showPage('home');return false">Inicio</a>
@@ -2009,7 +2018,7 @@
   </div>
 
   <footer>
-    <div class="footer-logo">kÖr</div>
+    <div class="footer-logo"><img src="kor.png" alt="kÖr" /></div>
     <p class="footer-sub">Activewear Premium · El Salvador</p>
     <div class="footer-links">
       <a href="#" onclick="showPage('home');return false">Inicio</a>
