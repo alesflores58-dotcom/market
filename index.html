@@ -63,7 +63,8 @@
       height: 56px;
       width: auto;
       display: block;
-      mix-blend-mode: screen;
+      mix-blend-mode: lighten;
+      filter: brightness(1.1) contrast(1.2);
     }
     .nav-links {
       display: flex;
@@ -179,7 +180,8 @@
       height: 160px;
       width: auto;
       display: block;
-      mix-blend-mode: screen;
+      mix-blend-mode: lighten;
+      filter: brightness(1.1) contrast(1.2);
     }
     .hero-tagline {
       font-size: clamp(14px, 2.5vw, 20px);
@@ -430,7 +432,8 @@
       height: 72px;
       width: auto;
       display: block;
-      mix-blend-mode: screen;
+      mix-blend-mode: lighten;
+      filter: brightness(1.1) contrast(1.2);
     }
     .footer-sub {
       font-size: 12px;
@@ -1059,7 +1062,8 @@
       .product-detail-info { padding: 40px 24px; }
     }
     @media (max-width: 480px) {
-      .hero-brand img { height: 110px; mix-blend-mode: screen; }
+      .hero-brand img { height: 110px; mix-blend-mode: lighten;
+      filter: brightness(1.1) contrast(1.2); }
       .product-detail-layout { grid-template-columns: 1fr; }
     }
   </style>
