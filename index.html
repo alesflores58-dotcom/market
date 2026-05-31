@@ -55,6 +55,15 @@
       border-bottom: 1px solid rgba(255,255,255,0.06);
       transition: background var(--transition);
     }
+    .logo-text-fallback {
+      font-family: 'Bodoni Moda', 'Cormorant Garamond', 'Didot', Georgia, serif;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: #FFFFFF;
+    }
+    .hero-brand .logo-text-fallback { font-size: 120px; letter-spacing: 0.06em; }
+    .footer-logo .logo-text-fallback { font-size: 36px; }
     .nav-logo {
       display: flex;
       align-items: center;
@@ -1073,7 +1082,7 @@
 <!-- ═══ NAVIGATION ═══════════════════════════════════════ -->
 <nav id="mainNav">
   <div class="nav-logo" onclick="showPage('home')" style="cursor:pointer">
-    <img src="kor.png" alt="kÖr" />
+    <img src="kor.png" alt="kÖr" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" /><span class="logo-text-fallback" style="display:none">kÖr</span>
   </div>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home');return false">Inicio</a></li>
@@ -1109,7 +1118,7 @@
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <div class="hero-brand">
-        <img src="kor.png" alt="kÖr" />
+        <img src="kor.png" alt="kÖr" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" /><span class="logo-text-fallback" style="display:none">kÖr</span>
       </div>
       <p class="hero-tagline">Diseñado para los que no paran.</p>
       <a class="btn-primary" href="#" onclick="showPage('women');return false">Ver Colección</a>
@@ -1194,7 +1203,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="footer-logo"><img src="kor.png" alt="kÖr" /></div>
+    <div class="footer-logo"><img src="kor.png" alt="kÖr" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" /><span class="logo-text-fallback" style="display:none">kÖr</span></div>
     <p class="footer-sub">Activewear Premium · El Salvador</p>
     <div class="footer-links">
       <a href="#" onclick="showPage('women');return false">Mujeres</a>
@@ -1550,7 +1559,7 @@
 
   <!-- Footer repeated -->
   <footer>
-    <div class="footer-logo"><img src="kor.png" alt="kÖr" /></div>
+    <div class="footer-logo"><img src="kor.png" alt="kÖr" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" /><span class="logo-text-fallback" style="display:none">kÖr</span></div>
     <p class="footer-sub">Activewear Premium · El Salvador</p>
     <div class="footer-links">
       <a href="#" onclick="showPage('home');return false">Inicio</a>
@@ -1814,7 +1823,7 @@
   </div><!-- /men-grid -->
 
   <footer>
-    <div class="footer-logo"><img src="kor.png" alt="kÖr" /></div>
+    <div class="footer-logo"><img src="kor.png" alt="kÖr" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" /><span class="logo-text-fallback" style="display:none">kÖr</span></div>
     <p class="footer-sub">Activewear Premium · El Salvador</p>
     <div class="footer-links">
       <a href="#" onclick="showPage('home');return false">Inicio</a>
@@ -1973,7 +1982,7 @@
   </div>
 
   <footer>
-    <div class="footer-logo"><img src="kor.png" alt="kÖr" /></div>
+    <div class="footer-logo"><img src="kor.png" alt="kÖr" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" /><span class="logo-text-fallback" style="display:none">kÖr</span></div>
     <p class="footer-sub">Activewear Premium · El Salvador</p>
     <div class="footer-links">
       <a href="#" onclick="showPage('home');return false">Inicio</a>
@@ -2024,7 +2033,7 @@
   </div>
 
   <footer>
-    <div class="footer-logo"><img src="kor.png" alt="kÖr" /></div>
+    <div class="footer-logo"><img src="kor.png" alt="kÖr" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" /><span class="logo-text-fallback" style="display:none">kÖr</span></div>
     <p class="footer-sub">Activewear Premium · El Salvador</p>
     <div class="footer-links">
       <a href="#" onclick="showPage('home');return false">Inicio</a>
