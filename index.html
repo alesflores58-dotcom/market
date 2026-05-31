@@ -55,20 +55,14 @@
       border-bottom: 1px solid rgba(255,255,255,0.06);
       transition: background var(--transition);
     }
-    .logo-kor {
-      font-family: 'Bodoni Moda', 'Cormorant Garamond', 'Didot', Georgia, serif;
-      font-weight: 500;
-      color: #FFFFFF;
-      line-height: 1;
-      display: inline-block;
-      letter-spacing: 0.02em;
-    }
     .nav-logo {
       display: flex;
       align-items: center;
     }
-    .nav-logo .logo-kor {
-      font-size: 32px;
+    .nav-logo img {
+      height: 38px;
+      width: auto;
+      display: block;
     }
     .nav-links {
       display: flex;
@@ -180,9 +174,13 @@
       display: flex;
       justify-content: center;
     }
-    .hero-brand .logo-kor {
-      font-size: clamp(96px, 18vw, 200px);
-      text-shadow: 0 0 60px rgba(0,0,0,0.6);
+    .hero-brand img {
+      height: 130px;
+      width: auto;
+      max-width: 90vw;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 0 50px rgba(0,0,0,0.5));
     }
     .hero-tagline {
       font-size: clamp(14px, 2.5vw, 20px);
@@ -429,8 +427,10 @@
       display: flex;
       justify-content: center;
     }
-    .footer-logo .logo-kor {
-      font-size: 48px;
+    .footer-logo img {
+      height: 52px;
+      width: auto;
+      display: block;
     }
     .footer-sub {
       font-size: 12px;
@@ -1059,6 +1059,7 @@
       .product-detail-info { padding: 40px 24px; }
     }
     @media (max-width: 480px) {
+      .hero-brand img { height: 84px; }
       .product-detail-layout { grid-template-columns: 1fr; }
     }
   </style>
@@ -1068,7 +1069,7 @@
 <!-- ═══ NAVIGATION ═══════════════════════════════════════ -->
 <nav id="mainNav">
   <div class="nav-logo" onclick="showPage('home')" style="cursor:pointer">
-    <span class="logo-kor">kÖr</span>
+    <img src="kor.png" alt="kÖr" />
   </div>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home');return false">Inicio</a></li>
@@ -1104,7 +1105,7 @@
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <div class="hero-brand">
-        <span class="logo-kor">kÖr</span>
+        <img src="kor.png" alt="kÖr" />
       </div>
       <p class="hero-tagline">Diseñado para los que no paran.</p>
       <a class="btn-primary" href="#" onclick="showPage('women');return false">Ver Colección</a>
@@ -1189,7 +1190,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="footer-logo"><span class="logo-kor">kÖr</span></div>
+    <div class="footer-logo"><img src="kor.png" alt="kÖr" /></div>
     <p class="footer-sub">Activewear Premium · El Salvador</p>
     <div class="footer-links">
       <a href="#" onclick="showPage('women');return false">Mujeres</a>
@@ -1545,7 +1546,7 @@
 
   <!-- Footer repeated -->
   <footer>
-    <div class="footer-logo"><span class="logo-kor">kÖr</span></div>
+    <div class="footer-logo"><img src="kor.png" alt="kÖr" /></div>
     <p class="footer-sub">Activewear Premium · El Salvador</p>
     <div class="footer-links">
       <a href="#" onclick="showPage('home');return false">Inicio</a>
@@ -1809,7 +1810,7 @@
   </div><!-- /men-grid -->
 
   <footer>
-    <div class="footer-logo"><span class="logo-kor">kÖr</span></div>
+    <div class="footer-logo"><img src="kor.png" alt="kÖr" /></div>
     <p class="footer-sub">Activewear Premium · El Salvador</p>
     <div class="footer-links">
       <a href="#" onclick="showPage('home');return false">Inicio</a>
@@ -1968,7 +1969,7 @@
   </div>
 
   <footer>
-    <div class="footer-logo"><span class="logo-kor">kÖr</span></div>
+    <div class="footer-logo"><img src="kor.png" alt="kÖr" /></div>
     <p class="footer-sub">Activewear Premium · El Salvador</p>
     <div class="footer-links">
       <a href="#" onclick="showPage('home');return false">Inicio</a>
@@ -2019,7 +2020,7 @@
   </div>
 
   <footer>
-    <div class="footer-logo"><span class="logo-kor">kÖr</span></div>
+    <div class="footer-logo"><img src="kor.png" alt="kÖr" /></div>
     <p class="footer-sub">Activewear Premium · El Salvador</p>
     <div class="footer-links">
       <a href="#" onclick="showPage('home');return false">Inicio</a>
