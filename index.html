@@ -59,10 +59,13 @@
       display: flex;
       align-items: center;
     }
-    .nav-logo img {
-      height: 38px;
-      width: auto;
-      display: block;
+    .nav-logo-symbol {
+      font-family: 'Cormorant Garamond', 'Playfair Display', 'Bodoni Moda', Georgia, serif;
+      font-size: 28px;
+      font-weight: 400;
+      color: #FFFFFF;
+      line-height: 1;
+      letter-spacing: 0;
     }
     .nav-links {
       display: flex;
@@ -1069,7 +1072,7 @@
 <!-- ═══ NAVIGATION ═══════════════════════════════════════ -->
 <nav id="mainNav">
   <div class="nav-logo" onclick="showPage('home')" style="cursor:pointer">
-    <img src="kor.png" alt="kÖr" />
+    <span class="nav-logo-symbol">Ö</span>
   </div>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home');return false">Inicio</a></li>
