@@ -55,25 +55,20 @@
       border-bottom: 1px solid rgba(255,255,255,0.06);
       transition: background var(--transition);
     }
-    .logo-text-fallback {
+    .logo-kor {
       font-family: 'Bodoni Moda', 'Cormorant Garamond', 'Didot', Georgia, serif;
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
+      font-weight: 500;
       color: #FFFFFF;
+      line-height: 1;
+      display: inline-block;
+      letter-spacing: 0.02em;
     }
-    .hero-brand .logo-text-fallback { font-size: 120px; letter-spacing: 0.06em; }
-    .footer-logo .logo-text-fallback { font-size: 36px; }
     .nav-logo {
       display: flex;
       align-items: center;
     }
-    .nav-logo img {
-      height: 56px;
-      width: auto;
-      display: block;
-      mix-blend-mode: lighten;
-      filter: brightness(1.1) contrast(1.2);
+    .nav-logo .logo-kor {
+      font-size: 32px;
     }
     .nav-links {
       display: flex;
@@ -185,12 +180,9 @@
       display: flex;
       justify-content: center;
     }
-    .hero-brand img {
-      height: 160px;
-      width: auto;
-      display: block;
-      mix-blend-mode: lighten;
-      filter: brightness(1.1) contrast(1.2);
+    .hero-brand .logo-kor {
+      font-size: clamp(96px, 18vw, 200px);
+      text-shadow: 0 0 60px rgba(0,0,0,0.6);
     }
     .hero-tagline {
       font-size: clamp(14px, 2.5vw, 20px);
@@ -437,12 +429,8 @@
       display: flex;
       justify-content: center;
     }
-    .footer-logo img {
-      height: 72px;
-      width: auto;
-      display: block;
-      mix-blend-mode: lighten;
-      filter: brightness(1.1) contrast(1.2);
+    .footer-logo .logo-kor {
+      font-size: 48px;
     }
     .footer-sub {
       font-size: 12px;
@@ -1071,8 +1059,6 @@
       .product-detail-info { padding: 40px 24px; }
     }
     @media (max-width: 480px) {
-      .hero-brand img { height: 110px; mix-blend-mode: lighten;
-      filter: brightness(1.1) contrast(1.2); }
       .product-detail-layout { grid-template-columns: 1fr; }
     }
   </style>
@@ -1082,7 +1068,7 @@
 <!-- ═══ NAVIGATION ═══════════════════════════════════════ -->
 <nav id="mainNav">
   <div class="nav-logo" onclick="showPage('home')" style="cursor:pointer">
-    <img src="kor.png" alt="kÖr" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" /><span class="logo-text-fallback" style="display:none">kÖr</span>
+    <span class="logo-kor">kÖr</span>
   </div>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home');return false">Inicio</a></li>
@@ -1118,7 +1104,7 @@
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <div class="hero-brand">
-        <img src="kor.png" alt="kÖr" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" /><span class="logo-text-fallback" style="display:none">kÖr</span>
+        <span class="logo-kor">kÖr</span>
       </div>
       <p class="hero-tagline">Diseñado para los que no paran.</p>
       <a class="btn-primary" href="#" onclick="showPage('women');return false">Ver Colección</a>
@@ -1203,7 +1189,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="footer-logo"><img src="kor.png" alt="kÖr" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" /><span class="logo-text-fallback" style="display:none">kÖr</span></div>
+    <div class="footer-logo"><span class="logo-kor">kÖr</span></div>
     <p class="footer-sub">Activewear Premium · El Salvador</p>
     <div class="footer-links">
       <a href="#" onclick="showPage('women');return false">Mujeres</a>
@@ -1559,7 +1545,7 @@
 
   <!-- Footer repeated -->
   <footer>
-    <div class="footer-logo"><img src="kor.png" alt="kÖr" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" /><span class="logo-text-fallback" style="display:none">kÖr</span></div>
+    <div class="footer-logo"><span class="logo-kor">kÖr</span></div>
     <p class="footer-sub">Activewear Premium · El Salvador</p>
     <div class="footer-links">
       <a href="#" onclick="showPage('home');return false">Inicio</a>
@@ -1823,7 +1809,7 @@
   </div><!-- /men-grid -->
 
   <footer>
-    <div class="footer-logo"><img src="kor.png" alt="kÖr" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" /><span class="logo-text-fallback" style="display:none">kÖr</span></div>
+    <div class="footer-logo"><span class="logo-kor">kÖr</span></div>
     <p class="footer-sub">Activewear Premium · El Salvador</p>
     <div class="footer-links">
       <a href="#" onclick="showPage('home');return false">Inicio</a>
@@ -1982,7 +1968,7 @@
   </div>
 
   <footer>
-    <div class="footer-logo"><img src="kor.png" alt="kÖr" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" /><span class="logo-text-fallback" style="display:none">kÖr</span></div>
+    <div class="footer-logo"><span class="logo-kor">kÖr</span></div>
     <p class="footer-sub">Activewear Premium · El Salvador</p>
     <div class="footer-links">
       <a href="#" onclick="showPage('home');return false">Inicio</a>
@@ -2033,7 +2019,7 @@
   </div>
 
   <footer>
-    <div class="footer-logo"><img src="kor.png" alt="kÖr" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" /><span class="logo-text-fallback" style="display:none">kÖr</span></div>
+    <div class="footer-logo"><span class="logo-kor">kÖr</span></div>
     <p class="footer-sub">Activewear Premium · El Salvador</p>
     <div class="footer-links">
       <a href="#" onclick="showPage('home');return false">Inicio</a>
