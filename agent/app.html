@@ -41,7 +41,7 @@
   .drop .ic { font-size:44px; margin-bottom:10px; }
   .drop .t { font-size:16px; font-weight:600; }
   .drop .s { font-size:13px; color:var(--text); margin-top:4px; }
-  #file { display:none; }
+  #file { position:absolute; width:1px; height:1px; opacity:0; overflow:hidden; }
 
   .thumbs { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
   .thumb { position:relative; width:74px; aspect-ratio:9/16; border-radius:10px;
@@ -124,11 +124,11 @@
   <!-- STEP 1: Upload -->
   <div id="s1">
     <p class="step-label">1 · Sube tu foto</p>
-    <div class="drop" id="drop" onclick="document.getElementById('file').click()">
+    <label class="drop" id="drop" for="file">
       <div class="ic">📸</div>
       <div class="t">Toca para subir</div>
       <div class="s">desde tu galería o cámara</div>
-    </div>
+    </label>
     <input type="file" id="file" accept="image/*">
     <div class="thumbs" id="thumbs"></div>
     <button class="btn btn-primary" id="genBtn" onclick="generate()" disabled>Crear historias ✦</button>
