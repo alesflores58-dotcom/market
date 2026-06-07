@@ -166,10 +166,64 @@
     },
     {
       "parameters": {
+        "operation": "page",
+        "formTitle": "Vista previa",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Preview",
+              "fieldType": "html",
+              "html": "={{ '<div style=\"text-align:center;padding:8px\"><img src=\"' + $json.url + '\" style=\"max-width:300px;width:100%;border-radius:18px;box-shadow:0 8px 30px rgba(0,0,0,.3)\"><p style=\"font-family:Inter,Helvetica,sans-serif;color:#555;font-size:14px;margin-top:16px\">Así se verá tu historia. ¿La envío a tu Telegram?</p></div>' }}"
+            },
+            {
+              "fieldLabel": "¿Confirmar?",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  { "option": "Sí, enviar a Telegram" },
+                  { "option": "No, cancelar" }
+                ]
+              },
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "preview-node",
+      "name": "Vista Previa",
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "position": [1800, 400],
+      "webhookId": "kor-preview"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": false, "leftValue": "", "typeValidation": "loose" },
+          "conditions": [
+            {
+              "leftValue": "={{ $json['¿Confirmar?'] }}",
+              "rightValue": "Sí",
+              "operator": { "type": "string", "operation": "contains" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "if-node",
+      "name": "¿Confirmó?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1980, 400]
+    },
+    {
+      "parameters": {
         "operation": "sendPhoto",
         "chatId": "TU_CHAT_ID_AQUI",
         "binaryData": false,
-        "file": "={{ $json.url }}",
+        "file": "={{ $('Render Imagen').first().json.url }}",
         "additionalFields": {
           "caption": "={{ $('Armar Historia HD').first().json.caption }}"
         }
@@ -178,7 +232,7 @@
       "name": "Enviar a Telegram",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
-      "position": [1800, 400],
+      "position": [2160, 300],
       "credentials": {
         "telegramApi": {
           "id": "telegram-cred",
@@ -197,8 +251,22 @@
       "name": "Listo",
       "type": "n8n-nodes-base.form",
       "typeVersion": 1,
-      "position": [1840, 400],
+      "position": [2340, 300],
       "webhookId": "kor-done"
+    },
+    {
+      "parameters": {
+        "operation": "completion",
+        "respondWith": "showText",
+        "responseText": "<div style=\"font-family:Helvetica,Arial,sans-serif;text-align:center;padding:60px 20px;background:#0a0a0a;color:#fff;min-height:100vh\"><div style=\"font-family:Georgia,serif;font-size:30px;letter-spacing:3px;margin-bottom:20px\">kÖr</div><div style=\"font-size:40px;margin-bottom:14px\">✋</div><div style=\"font-size:18px;font-weight:700\">Cancelado</div><div style=\"font-size:13px;color:#888;margin-top:10px\">No se envió nada. Vuelve a empezar cuando quieras.</div></div>",
+        "options": {}
+      },
+      "id": "cancel-node",
+      "name": "Cancelado",
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "position": [2160, 500],
+      "webhookId": "kor-cancel"
     }
   ],
   "connections": {
@@ -209,7 +277,9 @@
     "Armar Previews": { "main": [[{ "node": "Elegir Historia", "type": "main", "index": 0 }]] },
     "Elegir Historia": { "main": [[{ "node": "Armar Historia HD", "type": "main", "index": 0 }]] },
     "Armar Historia HD": { "main": [[{ "node": "Render Imagen", "type": "main", "index": 0 }]] },
-    "Render Imagen": { "main": [[{ "node": "Enviar a Telegram", "type": "main", "index": 0 }]] },
+    "Render Imagen": { "main": [[{ "node": "Vista Previa", "type": "main", "index": 0 }]] },
+    "Vista Previa": { "main": [[{ "node": "¿Confirmó?", "type": "main", "index": 0 }]] },
+    "¿Confirmó?": { "main": [[{ "node": "Enviar a Telegram", "type": "main", "index": 0 }], [{ "node": "Cancelado", "type": "main", "index": 0 }]] },
     "Enviar a Telegram": { "main": [[{ "node": "Listo", "type": "main", "index": 0 }]] }
   },
   "settings": { "executionOrder": "v1" },
