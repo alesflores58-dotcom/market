@@ -1,0 +1,84 @@
+{
+  "name": "kÖr Content Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "kor-content",
+        "options": {
+          "binaryPropertyName": "foto"
+        },
+        "responseMode": "lastNode"
+      },
+      "id": "webhook-node",
+      "name": "Recibir Foto",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 400],
+      "webhookId": "kor-content-agent"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Convierte la foto recibida a base64 para Claude\nconst items = [];\nfor (const item of $input.all()) {\n  const binaryKeys = Object.keys(item.binary || {});\n  if (binaryKeys.length === 0) {\n    throw new Error('No se recibió ninguna foto. Envía la imagen en el campo \"foto\".');\n  }\n  const key = binaryKeys[0];\n  const binary = item.binary[key];\n  const base64 = binary.data; // n8n ya guarda base64 en .data\n  let mediaType = binary.mimeType || 'image/jpeg';\n  if (!['image/jpeg','image/png','image/webp','image/gif'].includes(mediaType)) {\n    mediaType = 'image/jpeg';\n  }\n  // Modo: ?mode=both|stories|tiktok  (default both)\n  const mode = ($json.query && $json.query.mode) || $json.mode || 'both';\n  items.push({ json: { base64, mediaType, mode, filename: binary.fileName || 'foto' } });\n}\nreturn items;"
+      },
+      "id": "prep-node",
+      "name": "Preparar Imagen",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 400]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "anthropic-version", "value": "2023-06-01" },
+            { "name": "content-type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({\n  model: 'claude-opus-4-8',\n  max_tokens: 4096,\n  system: 'Eres el agente de contenido de kÖr, marca de activewear premium de El Salvador (@_korsv).\\nTono: autentico, empoderador, como una chica real que entrena — nunca corporativo, nunca IA.\\nSiempre en espanol excepto los prompts de Higgsfield.\\nFORMATOS: Stories S1 PRODUCTO, S2 LIFESTYLE, S3 MOTIVACIONAL, S4 BTS, S5 UGC. TikTok F1 GRWM, F2 ANTES/DESPUES, F3 HAUL, F4 WORKOUT, F5 VLOG, F6 TREND, F7 EDUCATIVO, F8 COMPARATIVA, F9 BTS MARCA.\\nREGLAS: catalogo != lifestyle (nada de fondo negro de estudio), vida real (gym, espejo, exterior, golden hour). Hashtags mezcla grande + nicho + marca (#kor #korsv). Precio en dolares. RESPONDE SOLO CON JSON VALIDO, sin texto antes o despues.',\n  messages: [{\n    role: 'user',\n    content: [\n      { type: 'image', source: { type: 'base64', media_type: $json.mediaType, data: $json.base64 } },\n      { type: 'text', text: 'Analiza esta foto para kÖr activewear. Modo: ' + $json.mode + ' (both=stories+tiktok, stories=solo stories, tiktok=solo tiktok).\\n\\nRetorna JSON:\\n{\\n  \"analysis\": \"que se ve y por que funciona\",\\n  \"stories\": [{\"type\":\"S1\",\"overlay_text\":\"texto corto\",\"caption\":\"caption historia\",\"sticker\":\"encuesta si aplica\"}],\\n  \"tiktok\": {\"format\":\"F1\",\"duration\":\"30s\",\"script\":[{\"time\":\"0:00-0:03\",\"action\":\"descripcion\"}],\"audio\":\"musica\",\"on_screen_text\":\"texto\"},\\n  \"instagram_caption\": \"caption listo para publicar\",\\n  \"hashtags\": [\"activewear\",\"fitness\",\"korsv\"],\\n  \"higgsfield_prompts\": [\"Fully clothed female fitness model wearing [ropa exacta], [gym/outdoor/golden hour], natural light, authentic, not posed, shot on phone\"]\\n}' }\n    ]\n  }]\n}) }}",
+        "options": {}
+      },
+      "id": "claude-node",
+      "name": "Claude — Generar Contenido",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [680, 400],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "anthropic-api-key",
+          "name": "Anthropic API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extrae y parsea el JSON que devuelve Claude\nconst out = [];\nfor (const item of $input.all()) {\n  const text = item.json.content?.[0]?.text || '';\n  const start = text.indexOf('{');\n  const end = text.lastIndexOf('}') + 1;\n  let plan;\n  try {\n    plan = JSON.parse(text.slice(start, end));\n  } catch (e) {\n    plan = { error: 'No se pudo parsear', raw: text };\n  }\n  out.push({ json: plan });\n}\nreturn out;"
+      },
+      "id": "parse-node",
+      "name": "Parsear Resultado",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 400]
+    }
+  ],
+  "connections": {
+    "Recibir Foto": {
+      "main": [[{ "node": "Preparar Imagen", "type": "main", "index": 0 }]]
+    },
+    "Preparar Imagen": {
+      "main": [[{ "node": "Claude — Generar Contenido", "type": "main", "index": 0 }]]
+    },
+    "Claude — Generar Contenido": {
+      "main": [[{ "node": "Parsear Resultado", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {}
+}
