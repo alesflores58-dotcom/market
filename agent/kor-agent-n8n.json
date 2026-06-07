@@ -18,9 +18,9 @@
               "fieldType": "dropdown",
               "fieldOptions": {
                 "values": [
-                  { "option": "both" },
-                  { "option": "stories" },
-                  { "option": "tiktok" }
+                  { "option": "Stories" },
+                  { "option": "TikTok" },
+                  { "option": "Ambos" }
                 ]
               },
               "requiredField": true
@@ -39,7 +39,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Convierte la foto recibida a base64 real para Claude\nconst items = [];\nfor (let i = 0; i < $input.all().length; i++) {\n  const item = $input.all()[i];\n  const binaryKeys = Object.keys(item.binary || {});\n  if (binaryKeys.length === 0) {\n    throw new Error('No se recibió ninguna foto. Sube la imagen en el formulario.');\n  }\n  const key = binaryKeys[0];\n  const binary = item.binary[key];\n  // Obtiene el buffer real (funciona aunque n8n use filesystem) y lo pasa a base64\n  const buffer = await this.helpers.getBinaryDataBuffer(i, key);\n  const base64 = buffer.toString('base64');\n  let mediaType = binary.mimeType || 'image/jpeg';\n  if (!['image/jpeg','image/png','image/webp','image/gif'].includes(mediaType)) {\n    mediaType = 'image/jpeg';\n  }\n  // Modo desde el formulario (campo \"Qué generar\")\n  const mode = item.json['Qué generar'] || item.json.mode || 'both';\n  items.push({ json: { base64, mediaType, mode, filename: binary.fileName || 'foto' } });\n}\nreturn items;"
+        "jsCode": "const items = [];\nfor (let i = 0; i < $input.all().length; i++) {\n  const item = $input.all()[i];\n  const binaryKeys = Object.keys(item.binary || {});\n  if (binaryKeys.length === 0) throw new Error('No se recibió ninguna foto.');\n  const key = binaryKeys[0];\n  const binary = item.binary[key];\n  const buffer = await this.helpers.getBinaryDataBuffer(i, key);\n  const base64 = buffer.toString('base64');\n  let mediaType = binary.mimeType || 'image/jpeg';\n  if (!['image/jpeg','image/png','image/webp','image/gif'].includes(mediaType)) mediaType = 'image/jpeg';\n  const sel = (item.json['Qué generar'] || 'Ambos').toLowerCase();\n  const mode = sel.includes('stories') ? 'stories' : sel.includes('tiktok') ? 'tiktok' : 'both';\n  items.push({ json: { base64, mediaType, mode, filename: binary.fileName || 'foto' } });\n}\nreturn items;"
       },
       "id": "prep-node",
       "name": "Preparar Imagen",
@@ -62,7 +62,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({\n  model: 'claude-opus-4-8',\n  max_tokens: 4096,\n  system: 'Eres el agente de contenido de kÖr, marca de activewear premium de El Salvador (@_korsv).\\nTono: autentico, empoderador, como una chica real que entrena — nunca corporativo, nunca IA.\\nSiempre en espanol excepto los prompts de Higgsfield.\\nFORMATOS: Stories S1 PRODUCTO, S2 LIFESTYLE, S3 MOTIVACIONAL, S4 BTS, S5 UGC. TikTok F1 GRWM, F2 ANTES/DESPUES, F3 HAUL, F4 WORKOUT, F5 VLOG, F6 TREND, F7 EDUCATIVO, F8 COMPARATIVA, F9 BTS MARCA.\\nREGLAS: catalogo != lifestyle (nada de fondo negro de estudio), vida real (gym, espejo, exterior, golden hour). Hashtags mezcla grande + nicho + marca (#kor #korsv). Precio en dolares. RESPONDE SOLO CON JSON VALIDO, sin texto antes o despues.',\n  messages: [{\n    role: 'user',\n    content: [\n      { type: 'image', source: { type: 'base64', media_type: $json.mediaType, data: $json.base64 } },\n      { type: 'text', text: 'Analiza esta foto para kÖr activewear. Modo: ' + $json.mode + ' (both=stories+tiktok, stories=solo stories, tiktok=solo tiktok).\\n\\nRetorna JSON:\\n{\\n  \"analysis\": \"que se ve y por que funciona\",\\n  \"stories\": [{\"type\":\"S1\",\"overlay_text\":\"texto corto\",\"caption\":\"caption historia\",\"sticker\":\"encuesta si aplica\"}],\\n  \"tiktok\": {\"format\":\"F1\",\"duration\":\"30s\",\"script\":[{\"time\":\"0:00-0:03\",\"action\":\"descripcion\"}],\"audio\":\"musica\",\"on_screen_text\":\"texto\"},\\n  \"instagram_caption\": \"caption listo para publicar\",\\n  \"hashtags\": [\"activewear\",\"fitness\",\"korsv\"],\\n  \"higgsfield_prompts\": [\"Fully clothed female fitness model wearing [ropa exacta], [gym/outdoor/golden hour], natural light, authentic, not posed, shot on phone\"]\\n}' }\n    ]\n  }]\n}) }}",
+        "jsonBody": "={{ JSON.stringify({\n  model: 'claude-opus-4-8',\n  max_tokens: 4096,\n  system: 'Eres el agente de contenido de kÖr, marca de activewear premium de El Salvador (@_korsv).\\nTono: autentico, empoderador, como una chica real que entrena — nunca corporativo, nunca IA.\\nSiempre en espanol excepto los prompts de Higgsfield.\\nFORMATOS: Stories S1 PRODUCTO, S2 LIFESTYLE, S3 MOTIVACIONAL, S4 BTS, S5 UGC. TikTok F1 GRWM, F2 ANTES/DESPUES, F3 HAUL, F4 WORKOUT, F5 VLOG, F6 TREND, F7 EDUCATIVO, F8 COMPARATIVA, F9 BTS MARCA.\\nREGLAS: catalogo != lifestyle (nada de fondo negro de estudio), vida real (gym, espejo, exterior, golden hour). Hashtags mezcla grande + nicho + marca (#kor #korsv). Precio en dolares. RESPONDE SOLO CON JSON VALIDO, sin texto antes o despues.',\n  messages: [{\n    role: 'user',\n    content: [\n      { type: 'image', source: { type: 'base64', media_type: $json.mediaType, data: $json.base64 } },\n      { type: 'text', text: 'Analiza esta foto para kÖr activewear. Modo: ' + $json.mode + '.\\n\\nRetorna JSON:\\n{\\n  \"analysis\": \"que se ve y por que funciona\",\\n  \"stories\": [{\"type\":\"S1\",\"overlay_text\":\"texto corto max 8 palabras\",\"caption\":\"caption historia completo\",\"sticker\":\"encuesta si aplica\"}],\\n  \"tiktok\": {\"format\":\"F1\",\"duration\":\"30s\",\"script\":[{\"time\":\"0:00-0:03\",\"action\":\"descripcion\"}],\"audio\":\"tipo musica\",\"on_screen_text\":\"texto pantalla\"},\\n  \"instagram_caption\": \"caption listo para publicar con emojis naturales\",\\n  \"hashtags\": [\"activewear\",\"fitness\",\"korsv\",\"gymgirl\"],\\n  \"higgsfield_prompts\": [\"Fully clothed female fitness model wearing [describe ropa exacta], natural gym environment, golden hour light, authentic not posed, shot on phone\"]\\n}' }\n    ]\n  }]\n}) }}",
         "options": {}
       },
       "id": "claude-node",
@@ -79,13 +79,35 @@
     },
     {
       "parameters": {
-        "jsCode": "// Extrae y parsea el JSON que devuelve Claude\nconst out = [];\nfor (const item of $input.all()) {\n  const text = item.json.content?.[0]?.text || '';\n  const start = text.indexOf('{');\n  const end = text.lastIndexOf('}') + 1;\n  let plan;\n  try {\n    plan = JSON.parse(text.slice(start, end));\n  } catch (e) {\n    plan = { error: 'No se pudo parsear', raw: text };\n  }\n  out.push({ json: plan });\n}\nreturn out;"
+        "jsCode": "const out = [];\nfor (const item of $input.all()) {\n  const text = item.json.content?.[0]?.text || '';\n  const start = text.indexOf('{');\n  const end = text.lastIndexOf('}') + 1;\n  let plan;\n  try { plan = JSON.parse(text.slice(start, end)); }\n  catch (e) { plan = { error: 'No se pudo parsear', raw: text }; }\n  out.push({ json: plan });\n}\nreturn out;"
       },
       "id": "parse-node",
       "name": "Parsear Resultado",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [900, 400]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Genera HTML bonito con el resultado para mostrar en el formulario\nconst p = $input.first().json;\n\nif (p.error) {\n  return [{ json: { html: `<div style=\"font-family:sans-serif;padding:24px;color:#ff6b6b\">❌ Error: ${p.error}</div>` } }];\n}\n\nlet html = `<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n<style>\n*{box-sizing:border-box;margin:0;padding:0}\nbody{background:#0a0a0a;color:#fff;font-family:'Helvetica Neue',sans-serif;padding:20px}\n.logo{font-family:Georgia,serif;font-size:26px;letter-spacing:3px;margin-bottom:24px;color:#fff}\n.section{margin-bottom:28px}\n.section-title{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#888;margin-bottom:12px;border-left:3px solid #e8175d;padding-left:8px}\n.analysis{font-size:14px;color:#aaa;line-height:1.6;background:#1a1a1a;padding:14px;border-radius:8px}\n.story{background:#1a1a1a;border-radius:8px;padding:14px;margin-bottom:10px}\n.story-type{display:inline-block;background:#e8175d;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px;margin-bottom:8px}\n.story-overlay{font-size:18px;font-weight:700;margin-bottom:6px}\n.story-caption{font-size:13px;color:#aaa;line-height:1.5}\n.story-sticker{font-size:12px;color:#e8175d;margin-top:6px}\n.script-row{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid #222;font-size:13px}\n.script-time{color:#e8175d;font-weight:700;font-size:11px;min-width:90px}\n.audio-row{margin-top:10px;font-size:13px;color:#aaa}\n.caption-box{background:#1a1a1a;border-radius:8px;padding:16px;font-size:14px;line-height:1.7;white-space:pre-wrap}\n.hashtags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}\n.hashtag{background:rgba(232,23,93,.15);border:1px solid rgba(232,23,93,.3);color:#e8175d;padding:4px 10px;border-radius:20px;font-size:12px}\n.copy-btn{display:block;width:100%;margin-top:10px;background:#e8175d;color:#fff;border:none;border-radius:6px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:1px}\n.copy-btn:active{opacity:.8}\n.prompts{background:#1a1a1a;border-radius:8px;padding:14px;font-size:12px;color:#888;line-height:1.6}\n</style></head><body>\n<div class=\"logo\">kÖr</div>`;\n\n// Análisis\nif (p.analysis) {\n  html += `<div class=\"section\"><div class=\"section-title\">Análisis</div><div class=\"analysis\">${p.analysis}</div></div>`;\n}\n\n// Historias\nif (p.stories && p.stories.length) {\n  html += `<div class=\"section\"><div class=\"section-title\">📱 Historias</div>`;\n  p.stories.forEach(s => {\n    html += `<div class=\"story\">\n      <span class=\"story-type\">${s.type}</span>\n      <div class=\"story-overlay\">\"${s.overlay_text || ''}\"</div>\n      <div class=\"story-caption\">${s.caption || ''}</div>\n      ${s.sticker ? `<div class=\"story-sticker\">💬 ${s.sticker}</div>` : ''}\n    </div>`;\n  });\n  html += `</div>`;\n}\n\n// TikTok\nif (p.tiktok && p.tiktok.format) {\n  const tt = p.tiktok;\n  html += `<div class=\"section\"><div class=\"section-title\">🎬 TikTok [${tt.format}] — ${tt.duration || ''}</div>`;\n  if (tt.script) {\n    tt.script.forEach(step => {\n      html += `<div class=\"script-row\"><span class=\"script-time\">${step.time || ''}</span><span>${step.action || ''}</span></div>`;\n    });\n  }\n  if (tt.audio) html += `<div class=\"audio-row\">🎵 Audio: ${tt.audio}</div>`;\n  if (tt.on_screen_text) html += `<div class=\"audio-row\">📝 Texto: ${tt.on_screen_text}</div>`;\n  html += `</div>`;\n}\n\n// Caption\nif (p.instagram_caption) {\n  const cap = p.instagram_caption.replace(/'/g, \"&#39;\");\n  html += `<div class=\"section\"><div class=\"section-title\">✍️ Caption Instagram</div>\n    <div class=\"caption-box\" id=\"cap\">${p.instagram_caption}</div>\n    <button class=\"copy-btn\" onclick=\"navigator.clipboard.writeText(document.getElementById('cap').innerText).then(()=>{this.textContent='✓ Copiado';setTimeout(()=>this.textContent='Copiar Caption',1500)})\">Copiar Caption</button>\n  </div>`;\n}\n\n// Hashtags\nif (p.hashtags && p.hashtags.length) {\n  const tagStr = p.hashtags.map(t => t.startsWith('#') ? t : '#'+t).join(' ');\n  const tagStrEsc = tagStr.replace(/'/g, \"&#39;\");\n  html += `<div class=\"section\"><div class=\"section-title\">#️⃣ Hashtags</div>\n    <div class=\"hashtags\" id=\"tags\">${p.hashtags.map(t=>`<span class=\"hashtag\">${t.startsWith('#')?t:'#'+t}</span>`).join('')}</div>\n    <button class=\"copy-btn\" onclick=\"navigator.clipboard.writeText('${tagStrEsc}').then(()=>{this.textContent='✓ Copiado';setTimeout(()=>this.textContent='Copiar Hashtags',1500)})\">Copiar Hashtags</button>\n  </div>`;\n}\n\n// Prompts Higgsfield\nif (p.higgsfield_prompts && p.higgsfield_prompts.length) {\n  html += `<div class=\"section\"><div class=\"section-title\">🎨 Prompts Higgsfield</div><div class=\"prompts\">${p.higgsfield_prompts.join('<br><br>')}</div></div>`;\n}\n\nhtml += `</body></html>`;\n\nreturn [{ json: { html } }];"
+      },
+      "id": "render-node",
+      "name": "Mostrar Resultado",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1120, 400]
+    },
+    {
+      "parameters": {
+        "respondWith": "html",
+        "responseBody": "={{ $json.html }}",
+        "options": {}
+      },
+      "id": "respond-node",
+      "name": "Responder al Formulario",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1340, 400]
     }
   ],
   "connections": {
@@ -97,6 +119,12 @@
     },
     "Claude — Generar Contenido": {
       "main": [[{ "node": "Parsear Resultado", "type": "main", "index": 0 }]]
+    },
+    "Parsear Resultado": {
+      "main": [[{ "node": "Mostrar Resultado", "type": "main", "index": 0 }]]
+    },
+    "Mostrar Resultado": {
+      "main": [[{ "node": "Responder al Formulario", "type": "main", "index": 0 }]]
     }
   },
   "settings": { "executionOrder": "v1" },
