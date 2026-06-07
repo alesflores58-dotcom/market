@@ -241,6 +241,18 @@ function fileToB64(file){
     r.readAsDataURL(file);
   });
 }
+// Compress/resize for the API (iPhone photos are too big otherwise)
+function downscaleToB64(img){
+  const max = 1568; // Anthropic optimal max dimension
+  let w = img.width, h = img.height;
+  if (w > h && w > max){ h = Math.round(h*max/w); w = max; }
+  else if (h >= w && h > max){ w = Math.round(w*max/h); h = max; }
+  const c = document.createElement('canvas');
+  c.width = w; c.height = h;
+  c.getContext('2d').drawImage(img,0,0,w,h);
+  const dataUrl = c.toDataURL('image/jpeg', 0.85);
+  return { type:'image/jpeg', data: dataUrl.split(',')[1] };
+}
 
 /* ---------- Settings sheet ---------- */
 function openSheet(){ document.getElementById('sheetBg').style.display='block';
@@ -269,7 +281,7 @@ async function generate(){
   try {
     await ensureFonts();
     loadedImg = await fileToImg(files[0]);
-    const b64 = await fileToB64(files[0]);
+    const b64 = downscaleToB64(loadedImg);
     plan = await callClaude(key, b64);
     buildOptions();
     document.getElementById('load').style.display='none';
@@ -311,24 +323,32 @@ REGLAS:
 - Solo JSON, sin markdown` }
   ];
 
-  const resp = await fetch('https://api.anthropic.com/v1/messages',{
-    method:'POST',
-    headers:{
-      'x-api-key':key,
-      'anthropic-version':'2023-06-01',
-      'content-type':'application/json',
-      'anthropic-dangerous-direct-browser-client':'true'
-    },
-    body: JSON.stringify({
-      model:'claude-opus-4-8',
-      max_tokens:2048,
-      system:'Eres el director creativo de kÖr activewear. Respondes SOLO con JSON válido, sin texto extra.',
-      messages:[{ role:'user', content }]
-    })
-  });
+  let resp;
+  try {
+    resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'x-api-key':key,
+        'anthropic-version':'2023-06-01',
+        'content-type':'application/json',
+        'anthropic-dangerous-direct-browser-client':'true'
+      },
+      body: JSON.stringify({
+        model:'claude-opus-4-8',
+        max_tokens:2048,
+        system:'Eres el director creativo de kÖr activewear. Respondes SOLO con JSON válido, sin texto extra.',
+        messages:[{ role:'user', content }]
+      })
+    });
+  } catch(netErr){
+    throw new Error('No se pudo conectar a la API. Revisa tu internet o desactiva bloqueadores de Safari (Ajustes → Safari).');
+  }
   if (!resp.ok){
     const e = await resp.json().catch(()=>({}));
-    throw new Error(e.error?.message || ('Error API '+resp.status));
+    const msg = e.error?.message || ('Error '+resp.status);
+    if (resp.status===401) throw new Error('API Key inválida. Revísala en ⚙.');
+    if (resp.status===400 && /credit|balance/i.test(msg)) throw new Error('Sin créditos en tu cuenta Anthropic. Agrega saldo en Billing.');
+    throw new Error(msg);
   }
   const data = await resp.json();
   const txt = data.content[0].text;
