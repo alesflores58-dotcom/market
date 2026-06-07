@@ -170,10 +170,10 @@
 <!-- Settings -->
 <div class="sheet-bg" id="sheetBg" onclick="closeSheet()"></div>
 <div class="sheet" id="sheet">
-  <h3>Tu API Key de Anthropic</h3>
-  <p>Se guarda solo en tu teléfono. Consíguela en console.anthropic.com</p>
-  <label>API Key</label>
-  <input type="password" id="apiKey" placeholder="sk-ant-..." autocomplete="off">
+  <h3>Conexión</h3>
+  <p>Pega la URL de tu Cloudflare Worker (el puente). Se guarda solo en tu teléfono. Ej: https://kor-studio.tunombre.workers.dev</p>
+  <label>URL del Worker</label>
+  <input type="text" id="apiKey" placeholder="https://...workers.dev" autocomplete="off" autocapitalize="off" spellcheck="false">
   <button class="btn btn-primary" onclick="saveKey()">Guardar</button>
 </div>
 
@@ -259,9 +259,9 @@ function openSheet(){ document.getElementById('sheetBg').style.display='block';
   setTimeout(()=>document.getElementById('sheet').classList.add('open'),10); }
 function closeSheet(){ document.getElementById('sheet').classList.remove('open');
   setTimeout(()=>document.getElementById('sheetBg').style.display='none',250); }
-function saveKey(){ localStorage.setItem('kor_key', document.getElementById('apiKey').value.trim()); closeSheet(); }
+function saveKey(){ localStorage.setItem('kor_proxy', document.getElementById('apiKey').value.trim()); closeSheet(); }
 window.addEventListener('load',()=>{
-  const k = localStorage.getItem('kor_key');
+  const k = localStorage.getItem('kor_proxy');
   if (k) document.getElementById('apiKey').value = k;
 });
 
@@ -271,8 +271,8 @@ function clearErr(){ document.getElementById('errBox').innerHTML=''; }
 
 async function generate(){
   clearErr();
-  const key = (localStorage.getItem('kor_key')||'').trim();
-  if (!key){ showErr('Primero agrega tu API Key (toca ⚙ arriba).'); openSheet(); return; }
+  const proxy = (localStorage.getItem('kor_proxy')||'').trim();
+  if (!proxy){ showErr('Primero pega la URL de tu Worker (toca ⚙ arriba).'); openSheet(); return; }
   if (!files.length){ showErr('Sube una foto primero.'); return; }
 
   document.getElementById('s1').classList.add('hide');
@@ -282,7 +282,7 @@ async function generate(){
     await ensureFonts();
     loadedImg = await fileToImg(files[0]);
     const b64 = downscaleToB64(loadedImg);
-    plan = await callClaude(key, b64);
+    plan = await callClaude(proxy, b64);
     buildOptions();
     document.getElementById('load').style.display='none';
     document.getElementById('s2').style.display='block';
@@ -293,7 +293,7 @@ async function generate(){
   }
 }
 
-async function callClaude(key, photo){
+async function callClaude(proxyUrl, photo){
   const content = [
     { type:'image', source:{ type:'base64', media_type:photo.type, data:photo.data } },
     { type:'text', text:
@@ -325,14 +325,9 @@ REGLAS:
 
   let resp;
   try {
-    resp = await fetch('https://api.anthropic.com/v1/messages',{
+    resp = await fetch(proxyUrl,{
       method:'POST',
-      headers:{
-        'x-api-key':key,
-        'anthropic-version':'2023-06-01',
-        'content-type':'application/json',
-        'anthropic-dangerous-direct-browser-client':'true'
-      },
+      headers:{ 'content-type':'application/json' },
       body: JSON.stringify({
         model:'claude-opus-4-8',
         max_tokens:2048,
@@ -341,12 +336,12 @@ REGLAS:
       })
     });
   } catch(netErr){
-    throw new Error('No se pudo conectar a la API. Revisa tu internet o desactiva bloqueadores de Safari (Ajustes → Safari).');
+    throw new Error('No se pudo conectar al Worker. Revisa que la URL en ⚙ esté bien (https://...workers.dev).');
   }
   if (!resp.ok){
     const e = await resp.json().catch(()=>({}));
     const msg = e.error?.message || ('Error '+resp.status);
-    if (resp.status===401) throw new Error('API Key inválida. Revísala en ⚙.');
+    if (resp.status===401) throw new Error('API Key inválida (revísala en el Worker → Settings → Secrets).');
     if (resp.status===400 && /credit|balance/i.test(msg)) throw new Error('Sin créditos en tu cuenta Anthropic. Agrega saldo en Billing.');
     throw new Error(msg);
   }
