@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>kÖr Content Agent</title>
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #ffffff;
+    --accent: #e8175d;
+    --gray: #1a1a1a;
+    --lightgray: #2a2a2a;
+    --text: #cccccc;
+    --border: #333333;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height: 100vh;
+  }
+  header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .logo {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 28px;
+    font-weight: 400;
+    letter-spacing: 2px;
+  }
+  .badge {
+    background: var(--accent);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 3px 8px;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+  .container { max-width: 900px; margin: 0 auto; padding: 32px 24px; }
+
+  /* Upload zone */
+  .upload-zone {
+    border: 2px dashed var(--border);
+    border-radius: 8px;
+    padding: 48px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color .2s, background .2s;
+  }
+  .upload-zone:hover, .upload-zone.drag-over {
+    border-color: var(--accent);
+    background: rgba(232,23,93,0.04);
+  }
+  .upload-icon { font-size: 40px; margin-bottom: 12px; }
+  .upload-title { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+  .upload-sub { font-size: 13px; color: var(--text); }
+  #fileInput { display: none; }
+
+  /* Preview grid */
+  .preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+  }
+  .preview-item {
+    position: relative;
+    aspect-ratio: 9/16;
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--gray);
+  }
+  .preview-item img { width: 100%; height: 100%; object-fit: cover; }
+  .preview-remove {
+    position: absolute;
+    top: 4px; right: 4px;
+    background: rgba(0,0,0,.7);
+    border: none;
+    color: white;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* API key */
+  .field { margin-top: 24px; }
+  .field label { display: block; font-size: 12px; letter-spacing: 1px; color: var(--text); margin-bottom: 8px; text-transform: uppercase; }
+  .field input {
+    width: 100%;
+    background: var(--gray);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--white);
+    padding: 10px 14px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .field input:focus { border-color: var(--accent); }
+
+  /* Mode selector */
+  .mode-row { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+  .mode-btn {
+    flex: 1;
+    min-width: 140px;
+    background: var(--gray);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    padding: 10px 16px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all .2s;
+    text-align: center;
+  }
+  .mode-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+    font-weight: 600;
+  }
+  .mode-btn:hover:not(.active) { border-color: var(--accent); color: white; }
+
+  /* Generate button */
+  .btn-generate {
+    width: 100%;
+    margin-top: 24px;
+    background: var(--accent);
+    border: none;
+    border-radius: 6px;
+    color: white;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: opacity .2s;
+    text-transform: uppercase;
+  }
+  .btn-generate:hover { opacity: .88; }
+  .btn-generate:disabled { opacity: .4; cursor: not-allowed; }
+
+  /* Loading */
+  .loading {
+    display: none;
+    text-align: center;
+    padding: 32px;
+  }
+  .spinner {
+    width: 40px; height: 40px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+    margin: 0 auto 16px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Results */
+  .results { margin-top: 32px; }
+  .result-card {
+    background: var(--gray);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .result-header {
+    padding: 14px 18px;
+    background: var(--lightgray);
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .result-body { padding: 18px; }
+  .section { margin-bottom: 20px; }
+  .section-title {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: var(--text);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    border-left: 2px solid var(--accent);
+    padding-left: 8px;
+  }
+  .story-item {
+    background: var(--black);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 8px;
+  }
+  .story-type {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 2px;
+    margin-bottom: 6px;
+  }
+  .story-text { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .story-caption { font-size: 13px; color: var(--text); }
+  .tiktok-script { list-style: none; }
+  .tiktok-script li {
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .tiktok-script li:last-child { border: none; }
+  .timestamp { color: var(--accent); font-weight: 700; margin-right: 8px; font-size: 11px; }
+  .caption-box {
+    background: var(--black);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px;
+    font-size: 14px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+  }
+  .hashtag-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .hashtag {
+    background: rgba(232,23,93,.12);
+    border: 1px solid rgba(232,23,93,.3);
+    color: var(--accent);
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-size: 12px;
+  }
+  .prompt-box {
+    background: var(--black);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 12px;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.5;
+    cursor: pointer;
+    transition: border-color .2s;
+  }
+  .prompt-box:hover { border-color: var(--accent); color: var(--white); }
+
+  .copy-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    cursor: pointer;
+    margin-top: 6px;
+    transition: all .2s;
+  }
+  .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .calendar-box {
+    background: var(--black);
+    border-left: 3px solid var(--accent);
+    padding: 14px;
+    font-size: 13px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+  }
+
+  .error-box {
+    background: rgba(255,50,50,.1);
+    border: 1px solid rgba(255,50,50,.3);
+    border-radius: 6px;
+    padding: 16px;
+    color: #ff6b6b;
+    font-size: 14px;
+  }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header>
+  <div class="logo">kÖr</div>
+  <div class="badge">Content Agent</div>
+</header>
+
+<div class="container">
+
+  <div class="upload-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+    <div class="upload-icon">📸</div>
+    <div class="upload-title">Arrastra tus fotos aquí</div>
+    <div class="upload-sub">o haz clic para seleccionar · JPG, PNG, WEBP</div>
+  </div>
+  <input type="file" id="fileInput" multiple accept="image/*">
+  <div class="preview-grid" id="previewGrid"></div>
+
+  <div class="field">
+    <label>Anthropic API Key</label>
+    <input type="password" id="apiKey" placeholder="sk-ant-..." autocomplete="off">
+  </div>
+
+  <div style="margin-top:20px;">
+    <label style="font-size:12px;letter-spacing:1px;color:var(--text);text-transform:uppercase;">¿Qué quieres generar?</label>
+  </div>
+  <div class="mode-row" id="modeRow">
+    <div class="mode-btn active" data-mode="both">Stories + TikTok</div>
+    <div class="mode-btn" data-mode="stories">Solo Stories</div>
+    <div class="mode-btn" data-mode="tiktok">Solo TikTok</div>
+  </div>
+
+  <button class="btn-generate" id="generateBtn" onclick="generate()">
+    Generar Contenido
+  </button>
+
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <div>Claude está analizando tus fotos...</div>
+    <div style="font-size:12px;color:var(--text);margin-top:8px;">Esto tarda ~20 segundos</div>
+  </div>
+
+  <div class="results" id="results"></div>
+
+</div>
+
+<script>
+let files = [];
+let selectedMode = 'both';
+
+// Drag & drop
+const dropZone = document.getElementById('dropZone');
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropZone.classList.remove('drag-over');
+  addFiles(Array.from(e.dataTransfer.files));
+});
+document.getElementById('fileInput').addEventListener('change', e => {
+  addFiles(Array.from(e.target.files));
+  e.target.value = '';
+});
+
+function addFiles(newFiles) {
+  newFiles.filter(f => f.type.startsWith('image/')).forEach(f => {
+    files.push(f);
+  });
+  renderPreviews();
+}
+
+function renderPreviews() {
+  const grid = document.getElementById('previewGrid');
+  grid.innerHTML = '';
+  files.forEach((f, i) => {
+    const url = URL.createObjectURL(f);
+    const item = document.createElement('div');
+    item.className = 'preview-item';
+    item.innerHTML = `<img src="${url}"><button class="preview-remove" onclick="removeFile(${i})">×</button>`;
+    grid.appendChild(item);
+  });
+}
+
+function removeFile(i) {
+  files.splice(i, 1);
+  renderPreviews();
+}
+
+// Mode selection
+document.getElementById('modeRow').addEventListener('click', e => {
+  const btn = e.target.closest('.mode-btn');
+  if (!btn) return;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedMode = btn.dataset.mode;
+});
+
+// Load saved API key
+window.addEventListener('load', () => {
+  const saved = localStorage.getItem('kor_api_key');
+  if (saved) document.getElementById('apiKey').value = saved;
+});
+document.getElementById('apiKey').addEventListener('change', e => {
+  localStorage.setItem('kor_api_key', e.target.value);
+});
+
+async function generate() {
+  const apiKey = document.getElementById('apiKey').value.trim();
+  if (!apiKey) { alert('Ingresa tu Anthropic API Key'); return; }
+  if (files.length === 0) { alert('Sube al menos una foto'); return; }
+
+  document.getElementById('generateBtn').disabled = true;
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('results').innerHTML = '';
+
+  try {
+    const photoData = await Promise.all(files.map(toBase64));
+    const plan = await callClaude(apiKey, photoData);
+    renderResults(plan);
+  } catch(err) {
+    document.getElementById('results').innerHTML =
+      `<div class="error-box">❌ ${err.message}</div>`;
+  } finally {
+    document.getElementById('generateBtn').disabled = false;
+    document.getElementById('loading').style.display = 'none';
+  }
+}
+
+function toBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve({
+      name: file.name,
+      type: file.type,
+      data: reader.result.split(',')[1]
+    });
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function callClaude(apiKey, photos) {
+  const modeInstructions = {
+    both: 'Genera tanto historias (S1-S5) como scripts de TikTok (F1-F9).',
+    stories: 'Genera SOLO historias de Instagram (S1-S5). No TikToks.',
+    tiktok: 'Genera SOLO scripts de TikTok (F1-F9). No stories.'
+  };
+
+  const content = [];
+  for (const photo of photos) {
+    content.push({
+      type: 'image',
+      source: { type: 'base64', media_type: photo.type, data: photo.data }
+    });
+  }
+  content.push({
+    type: 'text',
+    text: `Analiza estas ${photos.map(p=>p.name).join(', ')} para kÖr activewear.
+${modeInstructions[selectedMode]}
+
+Para CADA foto retorna JSON con:
+{
+  "photos": [
+    {
+      "filename": "nombre",
+      "analysis": "qué se ve y por qué funciona",
+      "stories": [{"type":"S1","overlay_text":"texto corto","caption":"caption historia","sticker":"encuesta/pregunta si aplica"}],
+      "tiktok": {"format":"F1","duration":"30s","script":[{"time":"0:00-0:03","action":"descripción"}],"audio":"tipo de música","on_screen_text":"texto"},
+      "instagram_caption": "caption completo listo para publicar",
+      "hashtags": ["activewear","fitness","korsv","gymgirl"],
+      "higgsfield_prompts": ["prompt lifestyle 1 en inglés","prompt lifestyle 2 en inglés"]
+    }
+  ],
+  "content_calendar": "sugerencia de cuándo publicar"
+}
+
+REGLAS DE ORO:
+- Tono real, de chica que entrena, NO corporativo ni de AI
+- Textos en español, prompts Higgsfield en inglés
+- Prompts: "Fully clothed female fitness model wearing [describe ropa exacta], [gym/outdoor/golden hour], natural light, authentic, not posed, shot on phone"
+- Hashtags: mezcla grande + nicho + marca (#kor #korsv)
+- Responde SOLO con el JSON, sin markdown ni texto extra`
+  });
+
+  const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'content-type': 'application/json',
+      'anthropic-dangerous-direct-browser-client': 'true'
+    },
+    body: JSON.stringify({
+      model: 'claude-opus-4-8',
+      max_tokens: 4096,
+      system: `Eres el agente de contenido de kÖr, marca de activewear premium de El Salvador (@_korsv).
+Tono: auténtico, empoderador, como una chica real que entrena — nunca corporativo, nunca IA.
+Siempre en español excepto los prompts de Higgsfield.
+RESPONDE SOLO CON JSON VÁLIDO, sin texto antes o después.`,
+      messages: [{ role: 'user', content }]
+    })
+  });
+
+  if (!resp.ok) {
+    const err = await resp.json().catch(() => ({}));
+    throw new Error(err.error?.message || `API error ${resp.status}`);
+  }
+
+  const data = await resp.json();
+  const text = data.content[0].text;
+  const start = text.indexOf('{');
+  const end = text.lastIndexOf('}') + 1;
+  if (start === -1) throw new Error('Claude no retornó JSON válido');
+  return JSON.parse(text.slice(start, end));
+}
+
+function renderResults(plan) {
+  const results = document.getElementById('results');
+  let html = '';
+
+  const photos = plan.photos || [];
+  photos.forEach((photo, i) => {
+    html += `<div class="result-card">
+      <div class="result-header">📸 Foto ${i+1}: ${photo.filename || ''}</div>
+      <div class="result-body">`;
+
+    // Analysis
+    if (photo.analysis) {
+      html += `<div class="section">
+        <div class="section-title">Análisis</div>
+        <div style="font-size:14px;line-height:1.6;color:var(--text)">${photo.analysis}</div>
+      </div>`;
+    }
+
+    // Stories
+    const stories = photo.stories || [];
+    if (stories.length) {
+      html += `<div class="section"><div class="section-title">Historias</div>`;
+      stories.forEach(s => {
+        html += `<div class="story-item">
+          <span class="story-type">${s.type}</span>
+          <div class="story-text">"${s.overlay_text}"</div>
+          <div class="story-caption">${s.caption || ''}</div>
+          ${s.sticker ? `<div style="margin-top:6px;font-size:12px;color:var(--text)">💬 ${s.sticker}</div>` : ''}
+        </div>`;
+      });
+      html += `</div>`;
+    }
+
+    // TikTok
+    const tt = photo.tiktok;
+    if (tt && tt.format) {
+      html += `<div class="section"><div class="section-title">TikTok [${tt.format}] — ${tt.duration || ''}</div>`;
+      const script = tt.script || [];
+      if (script.length) {
+        html += `<ul class="tiktok-script">`;
+        script.forEach(step => {
+          if (typeof step === 'object') {
+            html += `<li><span class="timestamp">${step.time || ''}</span>${step.action || JSON.stringify(step)}</li>`;
+          } else {
+            html += `<li>${step}</li>`;
+          }
+        });
+        html += `</ul>`;
+      }
+      if (tt.audio) html += `<div style="margin-top:10px;font-size:13px;color:var(--text)">🎵 Audio: ${tt.audio}</div>`;
+      if (tt.on_screen_text) html += `<div style="font-size:13px;color:var(--text)">📝 Texto: ${tt.on_screen_text}</div>`;
+      html += `</div>`;
+    }
+
+    // Caption
+    if (photo.instagram_caption) {
+      html += `<div class="section">
+        <div class="section-title">Caption Instagram</div>
+        <div class="caption-box">${photo.instagram_caption}</div>
+        <button class="copy-btn" onclick="copyText(this, \`${escJs(photo.instagram_caption)}\`)">Copiar caption</button>
+      </div>`;
+    }
+
+    // Hashtags
+    const tags = photo.hashtags || [];
+    if (tags.length) {
+      html += `<div class="section"><div class="section-title">Hashtags</div><div class="hashtag-box">`;
+      tags.forEach(t => {
+        const tag = t.startsWith('#') ? t : '#'+t;
+        html += `<span class="hashtag">${tag}</span>`;
+      });
+      html += `</div><button class="copy-btn" onclick="copyText(this, '${escJs(tags.map(t=>t.startsWith('#')?t:'#'+t).join(' '))}')">Copiar hashtags</button></div>`;
+    }
+
+    // Higgsfield prompts
+    const prompts = photo.higgsfield_prompts || [];
+    if (prompts.length) {
+      html += `<div class="section"><div class="section-title">Prompts Higgsfield</div>`;
+      prompts.forEach((p, pi) => {
+        html += `<div class="prompt-box" onclick="copyText(this.nextElementSibling, \`${escJs(p)}\`)">${p}</div>
+        <button class="copy-btn" onclick="copyText(this, \`${escJs(p)}\`)">Copiar prompt ${pi+1}</button>`;
+      });
+      html += `</div>`;
+    }
+
+    html += `</div></div>`;
+  });
+
+  if (plan.content_calendar) {
+    html += `<div class="result-card">
+      <div class="result-header">📅 Calendario de Publicación</div>
+      <div class="result-body"><div class="calendar-box">${plan.content_calendar}</div></div>
+    </div>`;
+  }
+
+  results.innerHTML = html;
+}
+
+function escJs(str) {
+  return (str || '').replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$');
+}
+
+async function copyText(btn, text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copiado';
+    btn.style.borderColor = '#4ade80';
+    btn.style.color = '#4ade80';
+    setTimeout(() => { btn.textContent = orig; btn.style.borderColor = ''; btn.style.color = ''; }, 1500);
+  } catch(e) {}
+}
+</script>
+</body>
+</html>
