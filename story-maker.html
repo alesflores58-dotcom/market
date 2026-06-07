@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>kÖr — Story Maker</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0a0a0a;color:#fff;font-family:'Helvetica Neue',Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:24px 16px}
+  h1{font-size:13px;letter-spacing:6px;opacity:.4;margin-bottom:32px;margin-top:8px}
+  .logo{font-size:32px;letter-spacing:2px;font-weight:300;margin-bottom:4px}
+
+  .controls{width:100%;max-width:400px;display:flex;flex-direction:column;gap:12px;margin-bottom:24px}
+
+  label.upload-btn{display:flex;align-items:center;justify-content:center;gap:10px;border:1px solid rgba(255,255,255,.18);border-radius:4px;padding:14px;cursor:pointer;font-size:14px;letter-spacing:1px;transition:.2s}
+  label.upload-btn:hover{border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.04)}
+  input[type=file]{display:none}
+
+  .row{display:flex;gap:10px}
+  select,input[type=range]{width:100%;background:#1a1a1a;border:1px solid rgba(255,255,255,.15);color:#fff;border-radius:4px;padding:10px 12px;font-size:13px;appearance:none;cursor:pointer}
+  select:focus,input:focus{outline:none;border-color:rgba(255,255,255,.4)}
+
+  .field{display:flex;flex-direction:column;gap:6px;flex:1}
+  .field label{font-size:11px;letter-spacing:2px;opacity:.4}
+
+  .overlay-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .overlay-btn{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;border-radius:4px;padding:10px 6px;font-size:11px;letter-spacing:1px;cursor:pointer;transition:.2s;text-align:center}
+  .overlay-btn:hover,.overlay-btn.active{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.4)}
+
+  .preview-wrap{position:relative;width:100%;max-width:360px;aspect-ratio:9/16;background:#111;border-radius:6px;overflow:hidden;margin-bottom:20px}
+  canvas{width:100%;height:100%;display:block}
+
+  .text-inputs{width:100%;max-width:400px;display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+  .text-inputs input{background:#1a1a1a;border:1px solid rgba(255,255,255,.15);color:#fff;border-radius:4px;padding:10px 12px;font-size:13px}
+  .text-inputs input::placeholder{opacity:.35}
+  .text-inputs input:focus{outline:none;border-color:rgba(255,255,255,.4)}
+
+  .download-btn{width:100%;max-width:400px;background:#fff;color:#000;border:none;border-radius:4px;padding:16px;font-size:14px;letter-spacing:3px;font-weight:700;cursor:pointer;transition:.2s}
+  .download-btn:hover{background:#e0e0e0}
+  .download-btn:disabled{opacity:.3;cursor:not-allowed}
+
+  .hint{font-size:11px;opacity:.25;letter-spacing:1px;margin-top:12px;text-align:center}
+</style>
+</head>
+<body>
+
+<div class="logo">kÖr</div>
+<h1>STORY MAKER</h1>
+
+<div class="controls">
+  <label class="upload-btn">
+    <span>＋ SUBIR FOTO</span>
+    <input type="file" id="imgInput" accept="image/*">
+  </label>
+
+  <div class="row">
+    <div class="field">
+      <label>PLANTILLA</label>
+      <select id="template">
+        <option value="minimal">Minimal</option>
+        <option value="shop">Shop</option>
+        <option value="promo">Promo</option>
+        <option value="clean">Clean</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>POSICIÓN FOTO</label>
+      <select id="photoPos">
+        <option value="cover">Completa</option>
+        <option value="top">Arriba</option>
+        <option value="bottom">Abajo</option>
+        <option value="center">Centro</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>OSCURIDAD OVERLAY</label>
+    <input type="range" id="darkness" min="0" max="90" value="40">
+  </div>
+</div>
+
+<div class="text-inputs">
+  <input type="text" id="headlineText" placeholder="TÍTULO  (ej: NUEVA COLECCIÓN)" maxlength="30">
+  <input type="text" id="subText" placeholder="Subtítulo  (ej: Desde $15)" maxlength="40">
+  <input type="text" id="ctaText" placeholder="CTA  (ej: DM para pedir 🖤)" maxlength="40">
+</div>
+
+<div class="preview-wrap">
+  <canvas id="cv" width="1080" height="1920"></canvas>
+</div>
+
+<button class="download-btn" id="dlBtn" disabled>DESCARGAR STORY</button>
+<p class="hint">1080 × 1920 px · PNG listo para Instagram</p>
+
+<script>
+const cv = document.getElementById('cv');
+const ctx = cv.getContext('2d');
+const W = 1080, H = 1920;
+let currentImg = null;
+
+const $ = id => document.getElementById(id);
+
+function draw() {
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0,0,W,H);
+
+  const template = $('template').value;
+  const photoPos = $('photoPos').value;
+  const darkness = parseInt($('darkness').value) / 100;
+  const headline = $('headlineText').value.toUpperCase();
+  const sub = $('subText').value;
+  const cta = $('ctaText').value;
+
+  // Draw photo
+  if (currentImg) {
+    ctx.save();
+    let sx=0, sy=0, sw=currentImg.width, sh=currentImg.height;
+    let dx=0, dy=0, dw=W, dh=H;
+
+    if (photoPos === 'top') {
+      dh = H * 0.65;
+    } else if (photoPos === 'bottom') {
+      dy = H * 0.35; dh = H * 0.65;
+    } else if (photoPos === 'center') {
+      dy = H * 0.2; dh = H * 0.6;
+    }
+
+    // object-fit: cover math
+    const scale = Math.max(dw/currentImg.width, dh/currentImg.height);
+    const iw = currentImg.width * scale;
+    const ih = currentImg.height * scale;
+    const ix = dx + (dw - iw)/2;
+    const iy = dy + (dh - ih)/2;
+    ctx.drawImage(currentImg, ix, iy, iw, ih);
+    ctx.restore();
+  }
+
+  // Overlay gradient
+  const grad = ctx.createLinearGradient(0,0,0,H);
+  grad.addColorStop(0, `rgba(0,0,0,${darkness * 0.6})`);
+  grad.addColorStop(0.4, `rgba(0,0,0,${darkness * 0.2})`);
+  grad.addColorStop(0.7, `rgba(0,0,0,${darkness * 0.7})`);
+  grad.addColorStop(1, `rgba(0,0,0,${Math.min(darkness + 0.3, 0.95)})`);
+  ctx.fillStyle = grad;
+  ctx.fillRect(0,0,W,H);
+
+  // Template layouts
+  if (template === 'minimal') drawMinimal(headline, sub, cta);
+  else if (template === 'shop') drawShop(headline, sub, cta);
+  else if (template === 'promo') drawPromo(headline, sub, cta);
+  else drawClean(headline, sub, cta);
+
+  // Always: kÖr logo top left + handle bottom
+  drawBranding();
+}
+
+function drawMinimal(headline, sub, cta) {
+  ctx.save();
+  // Thin line accent
+  ctx.fillStyle = 'rgba(255,255,255,0.3)';
+  ctx.fillRect(80, 140, 60, 2);
+
+  // Headline big
+  if (headline) {
+    ctx.font = '900 160px "Helvetica Neue", Arial';
+    ctx.fillStyle = '#fff';
+    ctx.letterSpacing = '-4px';
+    wrapText(ctx, headline, 72, 900, W - 80, 180);
+  }
+
+  // Sub
+  if (sub) {
+    ctx.font = '300 52px "Helvetica Neue", Arial';
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.fillText(sub, 80, 1150);
+  }
+
+  // CTA
+  if (cta) {
+    ctx.font = '300 44px "Helvetica Neue", Arial';
+    ctx.fillStyle = 'rgba(255,255,255,0.55)';
+    ctx.fillText(cta, 80, 1300);
+  }
+  ctx.restore();
+}
+
+function drawShop(headline, sub, cta) {
+  ctx.save();
+  ctx.fillStyle = 'rgba(255,255,255,0.25)';
+  ctx.fillRect(80, 640, 60, 2);
+
+  ctx.font = '600 24px "Helvetica Neue", Arial';
+  ctx.fillStyle = 'rgba(255,255,255,0.35)';
+  ctx.fillText('COLECCIÓN', 80, 690);
+
+  if (headline) {
+    ctx.font = '900 200px "Helvetica Neue", Arial';
+    ctx.fillStyle = '#fff';
+    wrapText(ctx, headline, 72, 900, W - 80, 220);
+  }
+
+  // Price badge
+  if (sub) {
+    const bw = Math.min(ctx.measureText(sub).width + 80, 500);
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.roundRect(80, 1130, bw, 88, 4);
+    ctx.fill();
+    ctx.font = '900 46px "Helvetica Neue", Arial';
+    ctx.fillStyle = '#000';
+    ctx.fillText(sub, 80 + bw/2 - ctx.measureText(sub).width/2, 1190);
+  }
+
+  if (cta) {
+    ctx.font = '300 44px "Helvetica Neue", Arial';
+    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+    ctx.fillText(cta, 80, 1320);
+  }
+  ctx.restore();
+}
+
+function drawPromo(headline, sub, cta) {
+  ctx.save();
+  // Big background number style
+  if (sub) {
+    ctx.font = '900 500px "Helvetica Neue", Arial';
+    ctx.fillStyle = 'rgba(255,255,255,0.04)';
+    ctx.fillText(sub.replace(/[^0-9]/g,''), W/2, H*0.55, W);
+  }
+
+  if (headline) {
+    ctx.font = '900 130px "Helvetica Neue", Arial';
+    ctx.fillStyle = '#fff';
+    wrapText(ctx, headline, 72, 800, W-80, 150);
+  }
+
+  if (sub) {
+    // White pill
+    ctx.font = '900 52px "Helvetica Neue", Arial';
+    const tw = ctx.measureText(sub).width;
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.roundRect(80, 1050, tw + 80, 90, 45);
+    ctx.fill();
+    ctx.fillStyle = '#000';
+    ctx.fillText(sub, 120, 1112);
+  }
+
+  if (cta) {
+    ctx.font = '300 42px "Helvetica Neue", Arial';
+    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+    ctx.fillText(cta, 80, 1270);
+  }
+  ctx.restore();
+}
+
+function drawClean(headline, sub, cta) {
+  ctx.save();
+  if (headline) {
+    ctx.font = '700 96px "Helvetica Neue", Arial';
+    ctx.fillStyle = '#fff';
+    wrapText(ctx, headline, 80, 880, W-80, 110);
+  }
+  if (sub) {
+    ctx.font = '300 60px "Helvetica Neue", Arial';
+    ctx.fillStyle = 'rgba(255,255,255,0.65)';
+    ctx.fillText(sub, 80, 1120);
+  }
+  if (cta) {
+    ctx.font = '300 44px "Helvetica Neue", Arial';
+    ctx.fillStyle = 'rgba(255,255,255,0.45)';
+    ctx.fillText(cta, 80, 1260);
+  }
+  ctx.restore();
+}
+
+function drawBranding() {
+  ctx.save();
+  // Top logo
+  ctx.font = '300 36px Georgia, serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.55)';
+  ctx.fillText('kÖr', 80, 200);
+
+  // Bottom separator
+  ctx.fillStyle = 'rgba(255,255,255,0.08)';
+  ctx.fillRect(80, 1810, 920, 1);
+
+  // Handle
+  ctx.font = '400 30px "Helvetica Neue", Arial';
+  ctx.fillStyle = 'rgba(255,255,255,0.35)';
+  ctx.fillText('@_korsv', 80, 1850);
+
+  // Tagline
+  ctx.font = '300 22px "Helvetica Neue", Arial';
+  ctx.fillStyle = 'rgba(255,255,255,0.2)';
+  ctx.fillText('ACTIVEWEAR PREMIUM · EL SALVADOR', 80, 1890);
+  ctx.restore();
+}
+
+function wrapText(ctx, text, x, y, maxW, lineH) {
+  const words = text.split(' ');
+  let line = '';
+  let cy = y;
+  for (let w of words) {
+    const test = line + w + ' ';
+    if (ctx.measureText(test).width > maxW && line) {
+      ctx.fillText(line.trim(), x, cy);
+      line = w + ' ';
+      cy += lineH;
+    } else {
+      line = test;
+    }
+  }
+  if (line.trim()) ctx.fillText(line.trim(), x, cy);
+}
+
+// Events
+$('imgInput').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const img = new Image();
+    img.onload = () => { currentImg = img; draw(); $('dlBtn').disabled = false; };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+});
+
+['template','photoPos','darkness','headlineText','subText','ctaText'].forEach(id => {
+  const el = $(id);
+  el.addEventListener('change', draw);
+  el.addEventListener('input', draw);
+});
+
+$('dlBtn').addEventListener('click', () => {
+  const link = document.createElement('a');
+  link.download = `kor_story_${Date.now()}.png`;
+  link.href = cv.toDataURL('image/png');
+  link.click();
+});
+
+draw();
+</script>
+</body>
+</html>
