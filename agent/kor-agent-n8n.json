@@ -99,14 +99,15 @@
     },
     {
       "parameters": {
-        "respondWith": "html",
-        "responseBody": "={{ $json.html }}",
+        "operation": "completion",
+        "respondWith": "showText",
+        "responseText": "={{ $json.html }}",
         "options": {}
       },
       "id": "respond-node",
-      "name": "Responder al Formulario",
-      "type": "n8n-nodes-base.respondToWebhook",
-      "typeVersion": 1.1,
+      "name": "Mostrar en Pantalla",
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
       "position": [1340, 400]
     }
   ],
@@ -124,7 +125,7 @@
       "main": [[{ "node": "Mostrar Resultado", "type": "main", "index": 0 }]]
     },
     "Mostrar Resultado": {
-      "main": [[{ "node": "Responder al Formulario", "type": "main", "index": 0 }]]
+      "main": [[{ "node": "Mostrar en Pantalla", "type": "main", "index": 0 }]]
     }
   },
   "settings": { "executionOrder": "v1" },
