@@ -133,29 +133,52 @@
     },
     {
       "parameters": {
-        "jsCode": "const plan = $('Parsear Resultado').first().json;\nconst choiceRaw = ($json['¿Cuál enviar a Telegram?'] || 'Historia 1') + '';\nconst num = parseInt(choiceRaw.replace(/[^0-9]/g,'') || '1', 10);\nconst idx = num >= 1 ? num - 1 : 0;\nconst stories = plan.stories || [];\nconst s = stories[idx] || stories[0] || {};\nconst nl = String.fromCharCode(10);\nconst parts = [];\nif (s.overlay_text) parts.push('📲 ' + s.overlay_text);\nif (s.caption) parts.push(s.caption);\nif (plan.hashtags && plan.hashtags.length) parts.push(plan.hashtags.map(t => t.charAt(0)==='#' ? t : '#'+t).join(' '));\nconst caption = parts.join(nl + nl);\nconst buffer = Buffer.from(plan._base64 || '', 'base64');\nconst binaryData = await this.helpers.prepareBinaryData(buffer, 'kor-story.jpg', plan._mediaType || 'image/jpeg');\nreturn [{ json: { caption, choice: choiceRaw }, binary: { data: binaryData } }];"
+        "jsCode": "const plan = $('Parsear Resultado').first().json;\nconst choiceRaw = ($json['¿Cuál enviar a Telegram?'] || 'Historia 1') + '';\nconst num = parseInt(choiceRaw.replace(/[^0-9]/g,'') || '1', 10);\nconst idx = num >= 1 ? num - 1 : 0;\nconst s = (plan.stories||[])[idx] || (plan.stories||[])[0] || {};\nconst imgSrc = plan._base64 ? ('data:' + (plan._mediaType||'image/jpeg') + ';base64,' + plan._base64) : '';\nfunction esc(t){ return (t||'').toString().replace(/</g,'&lt;'); }\nconst t = (s.template||'MOTIVATION').toUpperCase();\nconst head=esc(s.headline), txt=esc(s.overlay_text), prod=esc(s.product), price=esc(s.price), cta=esc(s.cta)||'Ver más';\nconst logo = '<div style=\"position:absolute;top:60px;right:64px;font-family:Georgia,serif;font-size:80px;color:#fff;letter-spacing:8px;text-shadow:0 4px 16px rgba(0,0,0,.6)\">k\\u00d6r</div>';\nconst handle = '<div style=\"position:absolute;bottom:56px;left:0;right:0;text-align:center;color:rgba(255,255,255,.65);font-size:40px;letter-spacing:5px\">@_korsv</div>';\nlet inner = '';\nif(t==='DROP'){ inner = '<div style=\"position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.8),rgba(0,0,0,.1) 55%)\"></div><div style=\"position:absolute;top:230px;left:0;right:0;text-align:center\"><div style=\"display:inline-block;background:#e8175d;color:#fff;font-size:62px;font-weight:800;letter-spacing:14px;padding:26px 60px;transform:rotate(-3deg)\">' + (head||'NUEVO DROP') + '</div></div><div style=\"position:absolute;bottom:230px;left:72px;right:72px\"><div style=\"color:#fff;font-size:96px;font-weight:800;line-height:1.05;text-shadow:0 4px 16px #000\">' + (prod||txt) + '</div>' + (price?'<div style=\"color:#e8175d;font-size:120px;font-weight:900;margin-top:20px;text-shadow:0 4px 12px #000\">' + price + '</div>':'') + '</div>'; }\nelse if(t==='SHOP'){ inner = '<div style=\"position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.85),transparent 60%)\"></div><div style=\"position:absolute;bottom:260px;left:72px;right:72px\"><div style=\"color:#fff;font-size:86px;font-weight:700;text-shadow:0 4px 12px #000\">' + (prod||txt) + '</div>' + (price?'<div style=\"color:#fff;font-size:104px;font-weight:900;margin:20px 0\">' + price + '</div>':'') + '<div style=\"display:inline-block;background:#fff;color:#0a0a0a;font-size:54px;font-weight:800;letter-spacing:4px;padding:34px 72px;border-radius:80px;margin-top:24px\">\\ud83d\\udecd ' + cta + '</div></div>'; }\nelse if(t==='COUNTDOWN'){ inner = '<div style=\"position:absolute;inset:0;background:rgba(0,0,0,.55)\"></div><div style=\"position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:80%;text-align:center\"><div style=\"color:rgba(255,255,255,.85);font-size:52px;letter-spacing:16px;margin-bottom:50px\">PR\\u00d3XIMAMENTE</div><div style=\"background:rgba(255,255,255,.12);border:3px solid rgba(255,255,255,.35);border-radius:64px;padding:70px 50px\"><div style=\"color:#fff;font-size:90px;font-weight:800;line-height:1.15\">' + (txt||head) + '</div><div style=\"color:#e8175d;font-size:44px;font-weight:700;letter-spacing:8px;margin-top:34px\">\\u23f3 ACTIVA EL RECORDATORIO</div></div></div>'; }\nelse if(t==='RESTOCK'){ inner = '<div style=\"position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,.4),rgba(0,0,0,.7))\"></div><div style=\"position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-8deg);width:90%;text-align:center\"><div style=\"border:14px solid #fff;border-radius:40px;padding:50px 30px;background:rgba(232,23,93,.25)\"><div style=\"color:#fff;font-size:130px;font-weight:900;letter-spacing:4px;line-height:1\">DE VUELTA<br>EN STOCK</div></div><div style=\"color:#fff;font-size:60px;font-weight:600;margin-top:44px;text-shadow:0 2px 10px #000\">' + (prod||txt) + '</div></div>'; }\nelse if(t==='UGC'){ const user = esc(s.username)||'@cliente'; inner = '<div style=\"position:absolute;inset:0;background:rgba(0,0,0,.35)\"></div><div style=\"position:absolute;top:210px;left:64px;display:flex;align-items:center;gap:28px;background:rgba(0,0,0,.4);padding:18px 44px 18px 18px;border-radius:90px\"><div style=\"width:96px;height:96px;border-radius:50%;background:linear-gradient(45deg,#e8175d,#8b1fd4)\"></div><div style=\"color:#fff;font-size:50px;font-weight:600\">' + user + '</div></div><div style=\"position:absolute;bottom:250px;left:64px;right:64px;background:rgba(0,0,0,.45);border-radius:50px;padding:40px 52px\"><div style=\"color:#fff;font-size:64px;font-weight:600\">' + (txt||'Repost de la comunidad \\ud83d\\udda4') + '</div><div style=\"color:rgba(255,255,255,.7);font-size:40px;margin-top:14px\">Etiqu\\u00e9tanos con tu fit k\\u00d6r</div></div>'; }\nelse if(t==='POLL'){ const a = esc(s.poll_a)||'S\\u00ed \\ud83d\\udd25', b = esc(s.poll_b)||'Obvio \\ud83d\\udcaa'; inner = '<div style=\"position:absolute;inset:0;background:rgba(0,0,0,.4)\"></div><div style=\"position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);width:84%;text-align:center\"><div style=\"color:#fff;font-size:80px;font-weight:700;text-shadow:0 4px 12px #000;margin-bottom:56px\">' + (txt||head) + '</div><div style=\"display:flex;border-radius:120px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.4)\"><div style=\"flex:1;background:rgba(255,255,255,.92);color:#0a0a0a;font-size:56px;font-weight:700;padding:44px 20px\">' + a + '</div><div style=\"flex:1;background:#e8175d;color:#fff;font-size:56px;font-weight:700;padding:44px 20px\">' + b + '</div></div></div>'; }\nelse { inner = '<div style=\"position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6),rgba(0,0,0,.3))\"></div><div style=\"position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:84%;text-align:center\"><div style=\"color:#fff;font-size:118px;font-weight:800;line-height:1.12;text-shadow:0 4px 20px #000\">' + (txt||head) + '</div></div>'; }\nconst bg = imgSrc ? ('background:url(' + imgSrc + ') center/cover no-repeat;') : 'background:linear-gradient(160deg,#222,#0d0d0d);';\nconst html = '<html><head><meta charset=\"utf-8\"></head><body style=\"margin:0\"><div style=\"position:relative;width:1080px;height:1920px;overflow:hidden;font-family:Helvetica,Arial,sans-serif;' + bg + '\">' + inner + logo + handle + '</div></body></html>';\nconst nl = String.fromCharCode(10);\nconst parts = [];\nif (s.caption) parts.push(s.caption);\nif (plan.hashtags && plan.hashtags.length) parts.push(plan.hashtags.map(x => x.charAt(0)==='#' ? x : '#'+x).join(' '));\nconst caption = parts.join(nl + nl);\nreturn [{ json: { html, caption } }];"
       },
-      "id": "send-prep-node",
-      "name": "Preparar Envío",
+      "id": "build-hd-node",
+      "name": "Armar Historia HD",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [1440, 400]
     },
     {
       "parameters": {
+        "method": "POST",
+        "url": "https://hcti.io/v1/image",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ html: $json.html, viewport_width: 1080, viewport_height: 1920, device_scale: 1 }) }}",
+        "options": {}
+      },
+      "id": "render-img-node",
+      "name": "Render Imagen",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1620, 400],
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "hcti-cred",
+          "name": "HTML to Image"
+        }
+      }
+    },
+    {
+      "parameters": {
         "operation": "sendPhoto",
         "chatId": "TU_CHAT_ID_AQUI",
-        "binaryData": true,
-        "binaryPropertyName": "data",
+        "binaryData": false,
+        "file": "={{ $json.url }}",
         "additionalFields": {
-          "caption": "={{ $json.caption }}"
+          "caption": "={{ $('Armar Historia HD').first().json.caption }}"
         }
       },
       "id": "telegram-node",
       "name": "Enviar a Telegram",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
-      "position": [1640, 400],
+      "position": [1800, 400],
       "credentials": {
         "telegramApi": {
           "id": "telegram-cred",
@@ -167,7 +190,7 @@
       "parameters": {
         "operation": "completion",
         "respondWith": "showText",
-        "responseText": "<div style=\"font-family:Helvetica,Arial,sans-serif;text-align:center;padding:60px 20px;background:#0a0a0a;color:#fff;min-height:100vh\"><div style=\"font-family:Georgia,serif;font-size:30px;letter-spacing:3px;margin-bottom:20px\">kÖr</div><div style=\"font-size:40px;margin-bottom:14px\">📲</div><div style=\"font-size:18px;font-weight:700\">¡Historia enviada a tu Telegram!</div><div style=\"font-size:13px;color:#888;margin-top:10px\">Ábrela, guarda la foto y súbela a tu story de Instagram.</div></div>",
+        "responseText": "<div style=\"font-family:Helvetica,Arial,sans-serif;text-align:center;padding:60px 20px;background:#0a0a0a;color:#fff;min-height:100vh\"><div style=\"font-family:Georgia,serif;font-size:30px;letter-spacing:3px;margin-bottom:20px\">kÖr</div><div style=\"font-size:40px;margin-bottom:14px\">✅</div><div style=\"font-size:18px;font-weight:700\">¡Tu historia está lista en Telegram!</div><div style=\"font-size:13px;color:#888;margin-top:10px\">Ya viene con el texto puesto. Solo guárdala y súbela a tu story.</div></div>",
         "options": {}
       },
       "id": "done-node",
@@ -184,8 +207,9 @@
     "Claude — Generar Contenido": { "main": [[{ "node": "Parsear Resultado", "type": "main", "index": 0 }]] },
     "Parsear Resultado": { "main": [[{ "node": "Armar Previews", "type": "main", "index": 0 }]] },
     "Armar Previews": { "main": [[{ "node": "Elegir Historia", "type": "main", "index": 0 }]] },
-    "Elegir Historia": { "main": [[{ "node": "Preparar Envío", "type": "main", "index": 0 }]] },
-    "Preparar Envío": { "main": [[{ "node": "Enviar a Telegram", "type": "main", "index": 0 }]] },
+    "Elegir Historia": { "main": [[{ "node": "Armar Historia HD", "type": "main", "index": 0 }]] },
+    "Armar Historia HD": { "main": [[{ "node": "Render Imagen", "type": "main", "index": 0 }]] },
+    "Render Imagen": { "main": [[{ "node": "Enviar a Telegram", "type": "main", "index": 0 }]] },
     "Enviar a Telegram": { "main": [[{ "node": "Listo", "type": "main", "index": 0 }]] }
   },
   "settings": { "executionOrder": "v1" },
