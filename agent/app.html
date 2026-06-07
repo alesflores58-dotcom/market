@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0a0a0a">
+<title>kÖr Studio</title>
+<link rel="manifest" href="manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black:#0a0a0a; --white:#fff; --gray:#141414; --line:#262626;
+    --text:#9a9a9a; --accent:#fff;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+  html,body { background:var(--black); color:var(--white);
+    font-family:'Inter',system-ui,sans-serif; overscroll-behavior:none; }
+  body { padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+
+  /* Top bar */
+  .top { display:flex; align-items:center; justify-content:space-between;
+    padding:16px 20px; border-bottom:1px solid var(--line); position:sticky; top:0;
+    background:rgba(10,10,10,.9); backdrop-filter:blur(12px); z-index:10; }
+  .brand { font-family:'Cormorant Garamond',serif; font-size:26px; letter-spacing:3px; }
+  .brand small { font-size:10px; letter-spacing:3px; color:var(--text);
+    font-family:'Inter'; display:block; margin-top:-4px; }
+  .gear { background:none; border:none; color:var(--text); font-size:20px; cursor:pointer; }
+
+  .wrap { padding:20px; max-width:600px; margin:0 auto; }
+
+  /* Step labels */
+  .step-label { font-size:11px; letter-spacing:2px; color:var(--text);
+    text-transform:uppercase; margin:0 0 12px; }
+
+  /* Upload */
+  .drop { border:1.5px dashed var(--line); border-radius:16px; padding:44px 20px;
+    text-align:center; cursor:pointer; transition:.2s; }
+  .drop:active { border-color:var(--white); background:#fff1; }
+  .drop .ic { font-size:44px; margin-bottom:10px; }
+  .drop .t { font-size:16px; font-weight:600; }
+  .drop .s { font-size:13px; color:var(--text); margin-top:4px; }
+  #file { display:none; }
+
+  .thumbs { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+  .thumb { position:relative; width:74px; aspect-ratio:9/16; border-radius:10px;
+    overflow:hidden; background:var(--gray); }
+  .thumb img { width:100%; height:100%; object-fit:cover; }
+  .thumb b { position:absolute; top:4px; right:4px; background:#000a; color:#fff;
+    width:20px; height:20px; border-radius:50%; display:flex; align-items:center;
+    justify-content:center; font-size:13px; cursor:pointer; border:none; }
+
+  /* Button */
+  .btn { width:100%; border:none; border-radius:12px; padding:16px;
+    font-size:15px; font-weight:700; letter-spacing:.5px; cursor:pointer;
+    transition:.15s; font-family:'Inter'; }
+  .btn-primary { background:#fff; color:#000; margin-top:20px; }
+  .btn-primary:active { transform:scale(.98); }
+  .btn-primary:disabled { opacity:.35; }
+  .btn-ghost { background:var(--gray); color:#fff; border:1px solid var(--line); }
+
+  /* Loading */
+  .load { display:none; text-align:center; padding:40px 20px; }
+  .spin { width:38px; height:38px; border:3px solid var(--line);
+    border-top-color:#fff; border-radius:50%; margin:0 auto 16px;
+    animation:sp .8s linear infinite; }
+  @keyframes sp { to { transform:rotate(360deg); } }
+
+  /* Story options carousel */
+  .options { display:none; }
+  .cards { display:flex; gap:14px; overflow-x:auto; padding:4px 0 16px;
+    scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; }
+  .cards::-webkit-scrollbar { display:none; }
+  .card { flex:0 0 78%; scroll-snap-align:center; border-radius:16px;
+    overflow:hidden; border:1px solid var(--line); background:var(--gray); }
+  .card.sel { border-color:#fff; box-shadow:0 0 0 1px #fff; }
+  .card canvas { width:100%; display:block; aspect-ratio:9/16; object-fit:cover; }
+  .card .meta { padding:12px 14px; }
+  .card .tag { font-size:10px; letter-spacing:2px; color:var(--text);
+    text-transform:uppercase; }
+  .card .cap { font-size:13px; color:#ccc; margin-top:6px; line-height:1.4; }
+
+  /* Result */
+  .result { display:none; }
+  .result canvas { width:100%; border-radius:16px; border:1px solid var(--line);
+    aspect-ratio:9/16; }
+  .cap-box { background:var(--gray); border:1px solid var(--line); border-radius:12px;
+    padding:14px; font-size:14px; line-height:1.6; margin-top:16px; white-space:pre-wrap; }
+  .tags-box { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+  .tg { background:#fff1; border:1px solid var(--line); border-radius:20px;
+    padding:4px 11px; font-size:12px; color:#ccc; }
+  .row { display:flex; gap:10px; margin-top:16px; }
+  .row .btn { margin-top:0; }
+
+  /* Settings sheet */
+  .sheet-bg { display:none; position:fixed; inset:0; background:#000a; z-index:50; }
+  .sheet { position:fixed; left:0; right:0; bottom:0; background:var(--gray);
+    border-radius:20px 20px 0 0; padding:24px 20px calc(24px + env(safe-area-inset-bottom));
+    z-index:51; transform:translateY(100%); transition:.25s; }
+  .sheet.open { transform:translateY(0); }
+  .sheet h3 { font-size:16px; margin-bottom:6px; }
+  .sheet p { font-size:13px; color:var(--text); margin-bottom:16px; line-height:1.5; }
+  .sheet label { font-size:11px; letter-spacing:1px; color:var(--text);
+    text-transform:uppercase; display:block; margin-bottom:8px; }
+  .sheet input { width:100%; background:var(--black); border:1px solid var(--line);
+    border-radius:10px; color:#fff; padding:13px 14px; font-size:14px; outline:none; }
+
+  .err { background:#ff33331a; border:1px solid #ff333344; border-radius:12px;
+    padding:14px; color:#ff8080; font-size:14px; margin-top:16px; }
+  .hide { display:none; }
+  .copied { color:#4ade80 !important; }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="brand">kÖr<small>STUDIO</small></div>
+  <button class="gear" onclick="openSheet()">⚙</button>
+</div>
+
+<div class="wrap">
+
+  <!-- STEP 1: Upload -->
+  <div id="s1">
+    <p class="step-label">1 · Sube tu foto</p>
+    <div class="drop" id="drop" onclick="document.getElementById('file').click()">
+      <div class="ic">📸</div>
+      <div class="t">Toca para subir</div>
+      <div class="s">desde tu galería o cámara</div>
+    </div>
+    <input type="file" id="file" accept="image/*" capture="environment">
+    <div class="thumbs" id="thumbs"></div>
+    <button class="btn btn-primary" id="genBtn" onclick="generate()" disabled>Crear historias ✦</button>
+  </div>
+
+  <!-- LOADING -->
+  <div class="load" id="load">
+    <div class="spin"></div>
+    <div>Creando tus historias…</div>
+    <div style="font-size:12px;color:var(--text);margin-top:8px">~15 segundos</div>
+  </div>
+
+  <!-- STEP 2: Choose -->
+  <div class="options" id="s2">
+    <p class="step-label">2 · Elige tu favorita (desliza →)</p>
+    <div class="cards" id="cards"></div>
+    <button class="btn btn-primary" id="pickBtn" onclick="confirmPick()">Usar esta historia ✦</button>
+    <button class="btn btn-ghost" style="margin-top:10px" onclick="reset()">← Empezar de nuevo</button>
+  </div>
+
+  <!-- STEP 3: Result -->
+  <div class="result" id="s3">
+    <p class="step-label">3 · Lista para publicar</p>
+    <canvas id="final"></canvas>
+    <div class="row">
+      <button class="btn btn-primary" onclick="downloadImg()">⬇ Guardar foto</button>
+      <button class="btn btn-ghost" id="shareBtn" onclick="shareImg()">↗ Compartir</button>
+    </div>
+    <p class="step-label" style="margin-top:24px">Caption</p>
+    <div class="cap-box" id="capBox"></div>
+    <div class="tags-box" id="tagsBox"></div>
+    <button class="btn btn-ghost" style="margin-top:14px" id="copyBtn" onclick="copyCaption()">Copiar caption + hashtags</button>
+    <button class="btn btn-ghost" style="margin-top:10px" onclick="reset()">← Crear otra</button>
+  </div>
+
+  <div id="errBox"></div>
+</div>
+
+<!-- Settings -->
+<div class="sheet-bg" id="sheetBg" onclick="closeSheet()"></div>
+<div class="sheet" id="sheet">
+  <h3>Tu API Key de Anthropic</h3>
+  <p>Se guarda solo en tu teléfono. Consíguela en console.anthropic.com</p>
+  <label>API Key</label>
+  <input type="password" id="apiKey" placeholder="sk-ant-..." autocomplete="off">
+  <button class="btn btn-primary" onclick="saveKey()">Guardar</button>
+</div>
+
+<script>
+const W = 1080, H = 1920;
+let files = [];
+let plan = null;          // Claude response
+let cardCanvases = [];    // rendered option canvases
+let selectedIdx = 0;
+let loadedImg = null;     // the uploaded Image element
+let fontReady = false;
+
+/* ---------- Font preload (canvas needs fonts loaded) ---------- */
+async function ensureFonts() {
+  if (fontReady) return;
+  try {
+    await Promise.all([
+      document.fonts.load('400 80px "Cormorant Garamond"'),
+      document.fonts.load('500 80px "Cormorant Garamond"'),
+      document.fonts.load('italic 400 80px "Cormorant Garamond"'),
+      document.fonts.load('600 40px "Inter"'),
+      document.fonts.load('700 40px "Inter"'),
+    ]);
+    await document.fonts.ready;
+  } catch(e){}
+  fontReady = true;
+}
+
+/* ---------- File handling ---------- */
+const drop = document.getElementById('drop');
+['dragover'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();}));
+drop.addEventListener('drop',e=>{e.preventDefault(); addFiles(e.dataTransfer.files);});
+document.getElementById('file').addEventListener('change',e=>{ addFiles(e.target.files); e.target.value=''; });
+
+function addFiles(list){
+  Array.from(list).filter(f=>f.type.startsWith('image/')).forEach(f=>files.push(f));
+  if (files.length>3) files = files.slice(0,3);
+  renderThumbs();
+}
+function renderThumbs(){
+  const t = document.getElementById('thumbs'); t.innerHTML='';
+  files.forEach((f,i)=>{
+    const url = URL.createObjectURL(f);
+    const d = document.createElement('div'); d.className='thumb';
+    d.innerHTML = `<img src="${url}"><button onclick="rm(${i})">×</button>`;
+    t.appendChild(d);
+  });
+  document.getElementById('genBtn').disabled = files.length===0;
+}
+function rm(i){ files.splice(i,1); renderThumbs(); }
+
+function fileToImg(file){
+  return new Promise((res,rej)=>{
+    const img = new Image();
+    img.onload = ()=>res(img);
+    img.onerror = rej;
+    img.src = URL.createObjectURL(file);
+  });
+}
+function fileToB64(file){
+  return new Promise((res,rej)=>{
+    const r = new FileReader();
+    r.onload = ()=>res({ type:file.type, data:r.result.split(',')[1] });
+    r.onerror = rej;
+    r.readAsDataURL(file);
+  });
+}
+
+/* ---------- Settings sheet ---------- */
+function openSheet(){ document.getElementById('sheetBg').style.display='block';
+  setTimeout(()=>document.getElementById('sheet').classList.add('open'),10); }
+function closeSheet(){ document.getElementById('sheet').classList.remove('open');
+  setTimeout(()=>document.getElementById('sheetBg').style.display='none',250); }
+function saveKey(){ localStorage.setItem('kor_key', document.getElementById('apiKey').value.trim()); closeSheet(); }
+window.addEventListener('load',()=>{
+  const k = localStorage.getItem('kor_key');
+  if (k) document.getElementById('apiKey').value = k;
+});
+
+/* ---------- Generate ---------- */
+function showErr(msg){ document.getElementById('errBox').innerHTML = `<div class="err">⚠ ${msg}</div>`; }
+function clearErr(){ document.getElementById('errBox').innerHTML=''; }
+
+async function generate(){
+  clearErr();
+  const key = (localStorage.getItem('kor_key')||'').trim();
+  if (!key){ showErr('Primero agrega tu API Key (toca ⚙ arriba).'); openSheet(); return; }
+  if (!files.length){ showErr('Sube una foto primero.'); return; }
+
+  document.getElementById('s1').classList.add('hide');
+  document.getElementById('load').style.display='block';
+
+  try {
+    await ensureFonts();
+    loadedImg = await fileToImg(files[0]);
+    const b64 = await fileToB64(files[0]);
+    plan = await callClaude(key, b64);
+    buildOptions();
+    document.getElementById('load').style.display='none';
+    document.getElementById('s2').style.display='block';
+  } catch(err){
+    document.getElementById('load').style.display='none';
+    document.getElementById('s1').classList.remove('hide');
+    showErr(err.message || 'Algo salió mal');
+  }
+}
+
+async function callClaude(key, photo){
+  const content = [
+    { type:'image', source:{ type:'base64', media_type:photo.type, data:photo.data } },
+    { type:'text', text:
+`Analiza esta foto para kÖr activewear (@_korsv, El Salvador) y crea 4 conceptos de historia de Instagram, cada uno con un template distinto.
+
+Templates disponibles: DROP (nueva llegada), SHOP (link en bio / compra), COUNTDOWN (cuenta regresiva drop), RESTOCK (vuelve disponible), MOTIVATION (frase de gym), UGC (testimonio/cliente).
+
+Devuelve SOLO JSON válido:
+{
+  "stories": [
+    {
+      "template": "DROP",
+      "headline": "texto principal MUY corto (máx 4 palabras)",
+      "sub": "línea secundaria corta (opcional)",
+      "tag": "etiqueta pequeña arriba, ej NUEVA COLECCIÓN",
+      "caption": "caption completo listo para Instagram, tono real de chica que entrena, nada corporativo",
+      "hashtags": ["kor","korsv","activewear","gymgirl","fitnesssv"]
+    }
+  ]
+}
+
+REGLAS:
+- 4 historias, templates variados
+- Texto en español, corto y editorial (estilo Gymshark/Alphalete premium)
+- Tono auténtico, NO de IA, NO corporativo
+- headline en MAYÚSCULAS cortas funciona bien
+- Solo JSON, sin markdown` }
+  ];
+
+  const resp = await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{
+      'x-api-key':key,
+      'anthropic-version':'2023-06-01',
+      'content-type':'application/json',
+      'anthropic-dangerous-direct-browser-client':'true'
+    },
+    body: JSON.stringify({
+      model:'claude-opus-4-8',
+      max_tokens:2048,
+      system:'Eres el director creativo de kÖr activewear. Respondes SOLO con JSON válido, sin texto extra.',
+      messages:[{ role:'user', content }]
+    })
+  });
+  if (!resp.ok){
+    const e = await resp.json().catch(()=>({}));
+    throw new Error(e.error?.message || ('Error API '+resp.status));
+  }
+  const data = await resp.json();
+  const txt = data.content[0].text;
+  const s = txt.indexOf('{'), en = txt.lastIndexOf('}')+1;
+  if (s===-1) throw new Error('Respuesta inválida de Claude');
+  return JSON.parse(txt.slice(s,en));
+}
+
+/* ================= CANVAS STORY RENDERER ================= */
+function drawCover(ctx, img){
+  const ir = img.width/img.height, cr = W/H;
+  let dw,dh,dx,dy;
+  if (ir > cr){ dh=H; dw=H*ir; dx=(W-dw)/2; dy=0; }
+  else { dw=W; dh=W/ir; dx=0; dy=(H-dh)/2; }
+  ctx.drawImage(img,dx,dy,dw,dh);
+}
+function grad(ctx, stops){
+  const g = ctx.createLinearGradient(0,0,0,H);
+  stops.forEach(([o,c])=>g.addColorStop(o,c));
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+}
+function serif(weight,size,italic){
+  return `${italic?'italic ':''}${weight} ${size}px "Cormorant Garamond", Georgia, serif`;
+}
+function sans(weight,size){ return `${weight} ${size}px "Inter", sans-serif`; }
+function letter(ctx, text, x, y, ls){
+  // draw text with letter spacing, centered at x
+  const chars=[...text];
+  ctx.save();
+  let total=0;
+  chars.forEach(c=>{ total += ctx.measureText(c).width + ls; });
+  total -= ls;
+  let cx = x - total/2;
+  ctx.textAlign='left';
+  chars.forEach(c=>{ ctx.fillText(c,cx,y); cx += ctx.measureText(c).width + ls; });
+  ctx.restore();
+}
+function wrapSerif(ctx, text, size, maxW){
+  ctx.font = serif(500,size);
+  const words=text.split(' '); const lines=[]; let line='';
+  words.forEach(w=>{
+    const test = line?line+' '+w:w;
+    if (ctx.measureText(test).width>maxW && line){ lines.push(line); line=w; }
+    else line=test;
+  });
+  if(line) lines.push(line);
+  return lines;
+}
+
+function renderStory(canvas, img, story){
+  canvas.width=W; canvas.height=H;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle='#000'; ctx.fillRect(0,0,W,H);
+  drawCover(ctx, img);
+
+  const tpl = (story.template||'DROP').toUpperCase();
+  ctx.textAlign='center'; ctx.fillStyle='#fff';
+
+  const head = (story.headline||'').toUpperCase();
+  const sub  = story.sub||'';
+  const tag  = (story.tag||'').toUpperCase();
+
+  if (tpl==='MOTIVATION'){
+    grad(ctx, [[0,'#000c'],[.5,'#0006'],[1,'#000c']]);
+    // centered italic serif quote
+    ctx.fillStyle='#fff';
+    const lines = wrapSerif(ctx, story.headline||'', 96, W*0.78);
+    ctx.font = serif(400,96,true);
+    let y = H/2 - (lines.length-1)*60;
+    lines.forEach(l=>{ ctx.fillText(l, W/2, y); y+=120; });
+    // hairlines
+    ctx.strokeStyle='#fff'; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.moveTo(W/2-60,y+20); ctx.lineTo(W/2+60,y+20); ctx.stroke();
+    if (tag){ ctx.font=sans(600,26); ctx.fillStyle='#fff'; letter(ctx,tag,W/2,y+90,8); }
+    brandMark(ctx);
+    return;
+  }
+
+  if (tpl==='UGC'){
+    grad(ctx, [[0,'#0009'],[.6,'#0003'],[1,'#000d']]);
+    ctx.fillStyle='#fff';
+    ctx.font=serif(400,140); ctx.fillText('"', W/2, 360);
+    const lines = wrapSerif(ctx, story.headline||'', 78, W*0.74);
+    ctx.font = serif(400,78,true);
+    let y=470; lines.forEach(l=>{ ctx.fillText(l,W/2,y); y+=98; });
+    if (sub){ ctx.font=sans(600,28); letter(ctx, sub.toUpperCase(), W/2, y+30, 6); }
+    brandMark(ctx);
+    return;
+  }
+
+  // DROP / SHOP / COUNTDOWN / RESTOCK — editorial bottom block
+  grad(ctx, [[0,'#0007'],[.45,'#0000'],[1,'#000e']]);
+
+  const baseY = H - 360;
+  // top hairline
+  ctx.strokeStyle='#ffffffcc'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.moveTo(W*0.12, baseY-70); ctx.lineTo(W*0.88, baseY-70); ctx.stroke();
+
+  if (tag){ ctx.font=sans(600,28); ctx.fillStyle='#fff'; letter(ctx, tag, W/2, baseY-20, 10); }
+
+  // headline
+  ctx.fillStyle='#fff';
+  const hl = wrapSerif(ctx, head, 120, W*0.82);
+  ctx.font = serif(500,120);
+  let hy = baseY + 110;
+  hl.forEach(l=>{ ctx.fillText(l, W/2, hy); hy += 130; });
+
+  if (sub){ ctx.font=serif(400,52,true); ctx.fillStyle='#eee'; ctx.fillText(sub, W/2, hy+10); hy+=70; }
+
+  // CTA depending on template
+  let cta='';
+  if (tpl==='SHOP') cta='LINK EN BIO';
+  else if (tpl==='COUNTDOWN') cta='MUY PRONTO';
+  else if (tpl==='RESTOCK') cta='DISPONIBLE AHORA';
+  else cta='DESLIZA HACIA ARRIBA';
+  ctx.font=sans(600,26); ctx.fillStyle='#fff';
+  // bottom hairline + cta
+  ctx.strokeStyle='#ffffffcc'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.moveTo(W*0.12, hy+40); ctx.lineTo(W*0.88, hy+40); ctx.stroke();
+  letter(ctx, cta, W/2, hy+95, 8);
+
+  brandMark(ctx);
+}
+
+function brandMark(ctx){
+  ctx.fillStyle='#fff'; ctx.textAlign='center';
+  ctx.font=serif(500,58); ctx.fillText('kÖr', W/2, 130);
+  ctx.font=sans(500,20); letter(ctx,'@_KORSV', W/2, 165, 6);
+}
+
+/* ---------- Build option cards ---------- */
+function buildOptions(){
+  const stories = (plan.stories||[]).slice(0,4);
+  const cont = document.getElementById('cards'); cont.innerHTML=''; cardCanvases=[];
+  stories.forEach((st,i)=>{
+    const card = document.createElement('div');
+    card.className='card'+(i===0?' sel':'');
+    card.onclick = ()=>selectCard(i);
+    const cv = document.createElement('canvas');
+    renderStory(cv, loadedImg, st);
+    cardCanvases.push(cv);
+    card.appendChild(cv);
+    const m = document.createElement('div'); m.className='meta';
+    m.innerHTML = `<div class="tag">${(st.template||'').toUpperCase()}</div>
+      <div class="cap">${st.headline||''}</div>`;
+    card.appendChild(m);
+    cont.appendChild(card);
+  });
+  selectedIdx=0;
+}
+function selectCard(i){
+  selectedIdx=i;
+  document.querySelectorAll('.card').forEach((c,j)=>c.classList.toggle('sel',j===i));
+}
+
+/* ---------- Confirm & final ---------- */
+function confirmPick(){
+  const st = plan.stories[selectedIdx];
+  const cv = document.getElementById('final');
+  renderStory(cv, loadedImg, st);
+  // caption
+  document.getElementById('capBox').textContent = st.caption||'';
+  const tags = (st.hashtags||[]).map(t=>t.startsWith('#')?t:'#'+t);
+  document.getElementById('tagsBox').innerHTML = tags.map(t=>`<span class="tg">${t}</span>`).join('');
+  document.getElementById('s2').style.display='none';
+  document.getElementById('s3').style.display='block';
+  if (!navigator.canShare) document.getElementById('shareBtn').style.display='none';
+  window.scrollTo(0,0);
+}
+
+function canvasToBlob(cv){ return new Promise(r=>cv.toBlob(r,'image/jpeg',0.95)); }
+
+async function downloadImg(){
+  const blob = await canvasToBlob(document.getElementById('final'));
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href=url; a.download='kor-historia.jpg'; a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),2000);
+}
+async function shareImg(){
+  try {
+    const blob = await canvasToBlob(document.getElementById('final'));
+    const file = new File([blob],'kor-historia.jpg',{type:'image/jpeg'});
+    const st = plan.stories[selectedIdx];
+    const tags = (st.hashtags||[]).map(t=>t.startsWith('#')?t:'#'+t).join(' ');
+    if (navigator.canShare && navigator.canShare({files:[file]})){
+      await navigator.share({ files:[file], text:(st.caption||'')+'\n\n'+tags });
+    } else { downloadImg(); }
+  } catch(e){}
+}
+function copyCaption(){
+  const st = plan.stories[selectedIdx];
+  const tags = (st.hashtags||[]).map(t=>t.startsWith('#')?t:'#'+t).join(' ');
+  navigator.clipboard.writeText((st.caption||'')+'\n\n'+tags).then(()=>{
+    const b=document.getElementById('copyBtn'); const o=b.textContent;
+    b.textContent='✓ Copiado'; b.classList.add('copied');
+    setTimeout(()=>{ b.textContent=o; b.classList.remove('copied'); },1500);
+  });
+}
+
+function reset(){
+  files=[]; plan=null; selectedIdx=0; loadedImg=null;
+  renderThumbs(); clearErr();
+  document.getElementById('s2').style.display='none';
+  document.getElementById('s3').style.display='none';
+  document.getElementById('s1').classList.remove('hide');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
