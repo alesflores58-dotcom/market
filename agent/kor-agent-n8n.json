@@ -3,23 +3,43 @@
   "nodes": [
     {
       "parameters": {
-        "httpMethod": "POST",
-        "path": "kor-content",
-        "options": {
-          "binaryPropertyName": "foto"
+        "formTitle": "kÖr Content Agent",
+        "formDescription": "Sube una foto y recibe historias, TikToks, caption y hashtags listos para publicar.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Foto",
+              "fieldType": "file",
+              "acceptFileTypes": ".jpg,.jpeg,.png,.webp",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Qué generar",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  { "option": "both" },
+                  { "option": "stories" },
+                  { "option": "tiktok" }
+                ]
+              },
+              "requiredField": true
+            }
+          ]
         },
-        "responseMode": "lastNode"
+        "responseMode": "lastNode",
+        "options": {}
       },
-      "id": "webhook-node",
+      "id": "form-node",
       "name": "Recibir Foto",
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2,
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
       "position": [240, 400],
       "webhookId": "kor-content-agent"
     },
     {
       "parameters": {
-        "jsCode": "// Convierte la foto recibida a base64 para Claude\nconst items = [];\nfor (const item of $input.all()) {\n  const binaryKeys = Object.keys(item.binary || {});\n  if (binaryKeys.length === 0) {\n    throw new Error('No se recibió ninguna foto. Envía la imagen en el campo \"foto\".');\n  }\n  const key = binaryKeys[0];\n  const binary = item.binary[key];\n  const base64 = binary.data; // n8n ya guarda base64 en .data\n  let mediaType = binary.mimeType || 'image/jpeg';\n  if (!['image/jpeg','image/png','image/webp','image/gif'].includes(mediaType)) {\n    mediaType = 'image/jpeg';\n  }\n  // Modo: ?mode=both|stories|tiktok  (default both)\n  const mode = ($json.query && $json.query.mode) || $json.mode || 'both';\n  items.push({ json: { base64, mediaType, mode, filename: binary.fileName || 'foto' } });\n}\nreturn items;"
+        "jsCode": "// Convierte la foto recibida a base64 para Claude\nconst items = [];\nfor (const item of $input.all()) {\n  const binaryKeys = Object.keys(item.binary || {});\n  if (binaryKeys.length === 0) {\n    throw new Error('No se recibió ninguna foto. Envía la imagen en el campo \"foto\".');\n  }\n  const key = binaryKeys[0];\n  const binary = item.binary[key];\n  const base64 = binary.data; // n8n ya guarda base64 en .data\n  let mediaType = binary.mimeType || 'image/jpeg';\n  if (!['image/jpeg','image/png','image/webp','image/gif'].includes(mediaType)) {\n    mediaType = 'image/jpeg';\n  }\n  // Modo desde el formulario (campo \"Qué generar\")\n  const mode = $json['Qué generar'] || $json.mode || 'both';\n  items.push({ json: { base64, mediaType, mode, filename: binary.fileName || 'foto' } });\n}\nreturn items;"
       },
       "id": "prep-node",
       "name": "Preparar Imagen",
