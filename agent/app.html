@@ -373,7 +373,8 @@ async function callClaude(proxyUrl, photo){
     { type:'text', text:
 `Analiza esta foto para kÖr activewear (@_korsv, El Salvador) y crea 6 conceptos de historia de Instagram (templates variados) + 1 idea de TikTok/Reel.
 
-Templates disponibles: DROP (nueva llegada), SHOP (link en bio/compra), COUNTDOWN (cuenta regresiva drop), RESTOCK (vuelve disponible), MOTIVATION (frase de gym), UGC (testimonio/cliente), SALE (oferta/descuento), POLL (encuesta de 2 opciones), TIP (consejo rápido de entreno o estilo).
+Templates disponibles: DROP (nueva llegada), SHOP (link en bio/compra), COUNTDOWN (cuenta regresiva drop), RESTOCK (vuelve disponible), MOTIVATION (frase de gym), UGC (testimonio/cliente), SALE (oferta/descuento), TIP (consejo rápido de entreno o estilo).
+NO uses POLL/encuesta: si se sube como imagen estática nadie puede votar.
 
 Devuelve SOLO JSON válido:
 {
@@ -401,8 +402,9 @@ Devuelve SOLO JSON válido:
 ${KOR_VOICE}
 
 REGLAS:
-- 6 historias con templates distintos (incluye al menos 1 SALE, 1 POLL y 1 TIP si la foto lo permite)
-- Aplica la VOZ DE MARCA de arriba en CADA headline, sub y caption. Ajusta girly/motivacional según el mood de la foto.
+- 6 historias con templates distintos (NO uses POLL). Incluye variedad: DROP, RESTOCK, SHOP, TIP, MOTIVATION, etc.
+- Aplica la VOZ DE MARCA de arriba en CADA headline, sub y caption.
+- IMPORTANTE — evita el juego de palabras forzado. Frases como "ROSITA PERO PESADA", "NO SE BAJA", "SCRUNCH NO ES SUERTE" son cringe: el modelo intenta ser ingenioso de más. Prefiere SECO y SIMPLE, tipo "PULL-UP DAY" — un hecho real de la foto, sin chiste. Si dudas entre algo ingenioso y algo simple, elige simple.
 - headline en MAYÚSCULAS cortas
 - TikTok: gancho real, accionable, formato vertical
 - Solo JSON, sin markdown` }
