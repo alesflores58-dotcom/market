@@ -337,19 +337,43 @@ async function generate(){
   }
 }
 
-const KOR_VOICE = `VOZ DE MARCA kÖr (estilo Gymshark adaptado, premium streetwear gym de El Salvador):
-- Público: salvadoreño, gente joven hasta ~35 años, que entrena y le importa el estilo. Habla de tú a tú, como uno de ellos, nunca como marca corporativa ni como adulto fuera de onda. Puede sentirse local/salvadoreño de forma natural y sutil, pero SIN forzar modismos ni caer en estereotipo — la base es el cool de Gymshark.
-- Frases CORTAS, con actitud y confianza. Menos es más, mucho silencio.
-- Escribe como Gymshark: empoderamiento gym, directo, aspiracional, frío.
-- LEE EL MOOD DE LA FOTO y ajusta el tono:
-   · Foto suave / femenina / estética → tono GIRLY empoderado (femenino pero fuerte, con clase).
-   · Foto intensa / entreno / sudor / fuerza → tono MOTIVACIONAL (disciplina, esfuerzo, hambre).
-- Español natural; puedes mezclar palabras gym en inglés como las marcas (strong, fit, drop, mood, gym, no excuses) — sin abusar.
-- PROHIBIDO (esto es cringe, NUNCA lo hagas): clichés de Pinterest, "sé tu mejor versión", "el único límite eres tú", "cree en ti", rimas baratas, signos de exclamación de más, emojis forzados, sonar a coach motivacional barato o a IA.
-- NIVEL correcto (ejemplos de estilo, NO copiar literal):
-   girly: "NACÍ PARA ESTO" · "SUAVE PERO LETAL" · "ELLA SABE" · "SIN PEDIR PERMISO" · "MI MOOD, MIS REGLAS"
-   motivacional: "SIN EXCUSAS" · "EL TRABAJO NO MIENTE" · "HOY NO DESCANSO" · "GANAS O APRENDES" · "NADIE VIENE A SALVARTE"
-- Ejemplos MALOS que debes EVITAR: "Sé tu mejor versión", "Cree en ti y lo lograrás", "El único límite eres tú", "Vamos con toda 💪🔥", "Tu cuerpo puede, tu mente decide".`;
+const KOR_VOICE = `VOZ DE MARCA kÖr — guía real de estilo (activewear premium, El Salvador):
+
+FIRMA VISUAL: kÖr usa la Ö/ö DENTRO de palabras como sello de marca. Aplícalo en headlines cuando encaje naturalmente:
+  prÖcess · lÖck in · Gölden · Pöwered · mÖment · strÖng · nÖ excuses · wÖrk · yÖur · fÖr · gÖ
+  NO lo fuerces en cada palabra — solo donde suene natural y se vea bien.
+
+REGLA #1 — ULTRA CORTO: 2 a 5 palabras. Eso es todo. El silencio también vende.
+  Correcto: "LOCK IN" · "THE FIT IS IT" · "NO DAYS OFF" · "A MOMENT FOR THE FIT"
+  Mal: frases largas explicativas que suenan a caption, no a headline.
+
+REGLA #2 — SIN EXCLAMACIONES NI EMOJIS en el copy de la historia. Nunca. El tono es frío, seguro, cool.
+
+REGLA #3 — MEZCLA INGLÉS + ESPAÑOL de forma natural, como hablan en el gym real:
+  "El fit es todo" · "Sin excuses" · "Tu mood, tus reglas" · "The grind is real"
+
+REGLA #4 — LEE EL MOOD DE LA FOTO:
+  · Foto suave / femenina / estética → femenino empoderado, con clase, calladamente poderosa
+  · Foto intensa / entreno / fuerza → disciplina cruda, sin adornos, hambre de ganar
+  · Foto de producto / flat lay → enfócate en el drop, el material, la exclusividad
+
+EJEMPLOS REALES DE kÖr (voz exacta, estilo real):
+  "THE FIT IS HALF THE WORKOUT"
+  "LOCK IN"
+  "NACÍ PARA ESTO"
+  "A MÖMENT FOR THE FIT"
+  "PÖWERED BY THE GRIND"
+  "THE PRÖCESS NEVER STOPS"
+  "GÖLDEN HOUR. GOLDEN FIT."
+  "SIN PEDIR PERMISO"
+  "YOUR GEAR. YOUR RULES."
+  "EL FIT ES TODO"
+
+PROHIBIDO (cringe total, NUNCA):
+  "Sé tu mejor versión" · "El único límite eres tú" · "Cree en ti" · "Vamos con toda 💪🔥"
+  Coach motivacional barato · Pinterest quotes · Rimas forzadas · Sonar a IA o corporativo
+  Exclamaciones · Emojis en el copy de la historia`;
+
 
 async function callClaude(proxyUrl, photo){
   const content = [
