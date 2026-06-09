@@ -337,29 +337,35 @@ async function generate(){
   }
 }
 
-const KOR_VOICE = `VOZ DE MARCA kÖr — activewear PREMIUM, El Salvador. Esto es lo más importante: kÖr es una marca premium. Premium significa CONTENCIÓN. Menos palabras, más confianza. Nunca grita, nunca vende fuerte, nunca hace el chiste obvio.
+const KOR_VOICE = `VOZ DE MARCA kÖr — activewear PREMIUM, El Salvador. kÖr es premium: contención, frialdad, confianza. Nunca grita, nunca vende fuerte, nunca hace el chiste obvio.
 
-EL NIVEL — pensá en Alo, Vuori, Set Active: copy minimal, frío, elegante, seguro. Una marca premium no dice "VOLVIÓ EL PINK" (eso suena a tienda de descuento). Dice menos y deja que la foto y el producto hablen.
+LA VOZ REAL DE kÖr (este es EL nivel, guíate de aquí — no copiar literal, capta el registro):
+  "The fit is half the workout"
+  "A mÖment for the fit"
+  "Pöwered by the fit"
+  Inglés limpio y mínimo, español natural y suelto. Foco en EL FIT, la ropa, el momento — no en motivación.
+  FIRMA: a veces la Ö dentro de una palabra (mÖment, pÖwered, gÖlden, fÖr). Sutil, no en cada frase.
 
-REGLA DE ORO: si una frase suena a anuncio, a chiste, o a que se esfuerza por ser ingeniosa → es cringe, bórrala. El lujo se siente relajado, no esforzado. La mejor línea suele ser la más simple.
+DE QUÉ TRATA EL COPY: de la ROPA y el momento, no de frases motivacionales ni de consejos de gym. El producto es el héroe. Habla del fit, de cómo se siente, de cómo se ve, del color de forma elegante (nunca solo nombrando el color).
 
-CÓMO GENERAR:
-  1. Mira la foto: la prenda, el color, la luz, el momento. ¿Cuál es el detalle real?
-  2. Escribe la línea MÁS SIMPLE y segura posible sobre eso. Si hay ingenio, que sea SUTIL — casi imperceptible, nunca un juego de palabras evidente.
-  3. Spanglish elegante: inglés corto y limpio, con español natural. Como una marca internacional, no como traductor.
+VARÍA SEGÚN EL MOOD de la foto:
+  · Foto mood/estética (mirror, golden hour, relajada) → muchas veces SOLO un headline corto, sin sub. Deja que respire.
+  · Foto de producto/detalle → habla del fit o la tela, sutil.
+  · Foto fuerte/de entreno → seguridad fría, mínima.
 
-LARGO: 1 a 5 palabras. Cuanto más corto, más premium. Sin exclamaciones, sin emojis, sin signos de más. Tono frío, seguro, contenido.
+EL SUB (línea secundaria): es OPCIONAL y casi siempre mejor vacío. Si lo usas, SOLO sobre la ropa (el fit, la tela, cómo cae, cómo se siente). NUNCA un consejo de gym, técnica de ejercicio, ni instrucción ("empieza por la barra" = PROHIBIDO).
+
+LARGO: 1 a 5 palabras el headline. Cuanto más corto, más premium. Sin exclamaciones, sin emojis, sin signos de más.
 
 PROHIBIDO ABSOLUTO — si aparece cualquiera, fallaste:
-  · Juego de palabras evidente o rima: "ROSITA PERO PESADA", "VOLVIÓ EL PINK", "NO SE BAJA", "SCRUNCH NO ES SUERTE". Demasiado esfuerzo = cringe.
-  · Lenguaje de oferta/tienda: "VOLVIÓ", "YA DISPONIBLE!!", "NO TE LO PIERDAS", "ÚLTIMAS UNIDADES", urgencia barata.
+  · Headline que solo nombra el color: "BLUSH", "VOLVIÓ EL PINK", "NEGRO". Vacío y cringe.
+  · Juego de palabras evidente o rima: "ROSITA PERO PESADA", "NO SE BAJA", "SCRUNCH NO ES SUERTE". Esfuerzo = cringe.
+  · Sub con consejo de gym o técnica: "empieza por la barra vacía", "respira en la bajada", etc.
+  · Lenguaje de oferta/tienda: "VOLVIÓ", "YA DISPONIBLE", "NO TE LO PIERDAS", urgencia barata.
   · Cliché de gym: "grind", "no excuses", "no days off", "the process", "beast mode", "lock in" de relleno.
-  · Coach motivacional: "sé tu mejor versión", "cree en ti", "nací para esto", "ella sabe", "vamos con toda".
+  · Coach motivacional: "sé tu mejor versión", "cree en ti", "nací para esto", "ella sabe", "sola en el rack".
   · Cualquier cosa que suene a IA, a Pinterest o a marca corporativa.
-  · NO reutilices ninguna frase de ejemplo de este prompt.
-
-EL LISTÓN (tono premium contenido — NO copiar, solo sentir el registro):
-  Inglés limpio y mínimo, una o dos palabras, frío y seguro. Tipo el nivel de "Form follows function" o "Quietly strong" — pero inventado fresco para ESTA foto. Si te sale algo gracioso, hazlo un 10% más sutil de lo que crees necesario.`;
+  · NO reutilices ninguna frase de ejemplo de este prompt.`;
 
 
 async function callClaude(proxyUrl, photo){
@@ -368,7 +374,7 @@ async function callClaude(proxyUrl, photo){
     { type:'text', text:
 `Analiza esta foto para kÖr activewear (@_korsv, El Salvador) y crea 6 conceptos de historia de Instagram (templates variados) + 1 idea de TikTok/Reel.
 
-Templates disponibles: DROP (nueva llegada), SHOP (link en bio/compra), COUNTDOWN (cuenta regresiva drop), RESTOCK (vuelve disponible), MOTIVATION (frase de gym), UGC (testimonio/cliente), SALE (oferta/descuento), TIP (consejo rápido de entreno o estilo).
+Templates disponibles: DROP (nueva llegada), SHOP (link en bio/compra), COUNTDOWN (cuenta regresiva drop), RESTOCK (vuelve disponible), MOTIVATION (frase corta de actitud, NO motivación cursi), UGC (testimonio/cliente), SALE (oferta/descuento), TIP (tip de ESTILO o FIT — cómo se ve/usa la prenda, NUNCA técnica de gym).
 NO uses POLL/encuesta: si se sube como imagen estática nadie puede votar.
 
 Devuelve SOLO JSON válido:
@@ -376,8 +382,8 @@ Devuelve SOLO JSON válido:
   "stories": [
     {
       "template": "DROP",
-      "headline": "texto principal MUY corto (máx 4 palabras)",
-      "sub": "línea secundaria corta (opcional)",
+      "headline": "texto principal MUY corto (1-4 palabras), sobre la ropa/el fit/el momento",
+      "sub": "DÉJALO VACÍO la mayoría de las veces. Solo si suma: línea corta SOBRE LA ROPA (fit, tela, cómo cae). NUNCA consejo de gym.",
       "tag": "etiqueta pequeña arriba, ej NUEVA COLECCIÓN",
       "optionA": "solo para POLL: opción 1 corta",
       "optionB": "solo para POLL: opción 2 corta",
