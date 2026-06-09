@@ -579,6 +579,26 @@
       overflow: hidden;
       position: relative;
     }
+    /* Auto-focus the card on the actual garment by category.
+       --fz = zoom, --fy = vertical shift (negative = reveal lower body/shorts,
+       positive = reveal upper body/top). Conjuntos stay full-body. */
+    .product-card { --fz: 1; --fy: 0%; }
+    .product-card[data-cat="licra-corta"],
+    .product-card[data-cat="licra-larga"],
+    .product-card[data-cat="short"] { --fz: 1.45; --fy: -15%; }
+    .product-card[data-cat="top"],
+    .product-card[data-cat="sujetador"],
+    .product-card[data-cat="compresion"],
+    .product-card[data-cat="camiseta"],
+    .product-card[data-cat="manga-corta"],
+    .product-card[data-cat="manga-larga"] { --fz: 1.3; --fy: 10%; }
+    .product-image-wrap img {
+      transform: scale(var(--fz)) translateY(var(--fy));
+      transition: transform 0.5s ease;
+    }
+    .product-card:hover .product-image-wrap img {
+      transform: scale(calc(var(--fz) * 1.04)) translateY(var(--fy));
+    }
     .product-placeholder {
       width: 100%;
       height: 100%;
