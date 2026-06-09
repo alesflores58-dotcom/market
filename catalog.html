@@ -135,9 +135,18 @@
       height: 100vh;
       min-height: 600px;
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: center;
       overflow: hidden;
+    }
+    .hero-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+      background: #0a0a0a;
     }
     .hero-bg {
       position: absolute;
@@ -164,13 +173,13 @@
     .hero-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 100%);
+      background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,0.6) 72%, rgba(0,0,0,0.92) 100%);
     }
     .hero-content {
       position: relative;
       z-index: 2;
       text-align: center;
-      padding: 0 20px;
+      padding: 0 20px 9vh;
     }
     .hero-brand {
       margin-bottom: 28px;
@@ -586,18 +595,27 @@
     .product-card[data-cat="licra-corta"],
     .product-card[data-cat="licra-larga"],
     .product-card[data-cat="short"] { --fz: 1.45; --fy: -15%; }
+    /* Women tops focus on torso. Men's photos already framed on the shirt -> no zoom. */
     .product-card[data-cat="top"],
-    .product-card[data-cat="sujetador"],
-    .product-card[data-cat="compresion"],
-    .product-card[data-cat="camiseta"],
-    .product-card[data-cat="manga-corta"],
-    .product-card[data-cat="manga-larga"] { --fz: 1.3; --fy: 10%; }
+    .product-card[data-cat="sujetador"] { --fz: 1.3; --fy: 10%; }
     .product-image-wrap img {
       transform: scale(var(--fz)) translateY(var(--fy));
       transition: transform 0.5s ease;
     }
     .product-card:hover .product-image-wrap img {
       transform: scale(calc(var(--fz) * 1.04)) translateY(var(--fy));
+    }
+    /* Men's photos: studio shots with black background -> show full, no crop. */
+    .product-card[data-cat="compresion"] .product-image-wrap,
+    .product-card[data-cat="camiseta"] .product-image-wrap,
+    .product-card[data-cat="manga-corta"] .product-image-wrap,
+    .product-card[data-cat="manga-larga"] .product-image-wrap { background:#000; }
+    .product-card[data-cat="compresion"] .product-image-wrap img,
+    .product-card[data-cat="camiseta"] .product-image-wrap img,
+    .product-card[data-cat="manga-corta"] .product-image-wrap img,
+    .product-card[data-cat="manga-larga"] .product-image-wrap img {
+      object-fit: contain !important;
+      transform: none !important;
     }
     .product-placeholder {
       width: 100%;
@@ -1124,7 +1142,7 @@
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-placeholder hero-placeholder-img"></div>
+    <img class="hero-img" referrerpolicy="no-referrer" src="photos/p14.jpg" alt="kÖr — activewear premium">
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <div class="hero-brand">
@@ -1265,7 +1283,7 @@
     </div>
     <div class="product-card" data-cat="conjunto" onclick="showProduct('Conjunto Rosa','$27.00',['S','M','L'],'swatch-rosa fig-women')">
       <div class="product-image-wrap">
-        <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3ECaGYPp5fpnJtTSyMKXbmWnRot/hf_20260601_044444_ade79312-0334-4ab9-abca-e479b1075580.png" alt="swatch-rosa fig-women" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
+        <img referrerpolicy="no-referrer" src="photos/p6.jpg" alt="Conjunto Rosa" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
         <div class="product-card-overlay"><span>Ver Producto</span></div>
       </div>
       <div class="product-info">
@@ -1276,7 +1294,7 @@
     </div>
     <div class="product-card" data-cat="conjunto" onclick="showProduct('Conjunto Rojo','$27.00',['S','M','L'],'swatch-rojo fig-women')">
       <div class="product-image-wrap">
-        <div class="product-placeholder swatch-rojo fig-women product-placeholder-inner"></div>
+        <img src="photos/p5.jpg" alt="Conjunto Rojo" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
         <div class="product-card-overlay"><span>Ver Producto</span></div>
       </div>
       <div class="product-info">
@@ -1287,7 +1305,7 @@
     </div>
     <div class="product-card" data-cat="conjunto" onclick="showProduct('Conjunto Marrón Mocha','$27.00',['S','M','L'],'swatch-marron fig-women')">
       <div class="product-image-wrap">
-        <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3ECaGYPp5fpnJtTSyMKXbmWnRot/hf_20260601_024808_9a9e0e53-cead-4686-bc97-aef1151df1a9.png" alt="swatch-marron fig-women" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
+        <img referrerpolicy="no-referrer" src="photos/p1.jpg" alt="Conjunto Marrón Mocha" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
         <div class="product-card-overlay"><span>Ver Producto</span></div>
       </div>
       <div class="product-info">
@@ -1298,7 +1316,7 @@
     </div>
     <div class="product-card" data-cat="conjunto" onclick="showProduct('Conjunto Negro','$27.00',['S','M','L'],'swatch-negro fig-women')">
       <div class="product-image-wrap">
-        <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3ECaGYPp5fpnJtTSyMKXbmWnRot/hf_20260601_052611_b78c1c18-a7da-4a3f-984f-eb1ae19786c2.png" alt="swatch-negro fig-women" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
+        <img referrerpolicy="no-referrer" src="photos/p7.jpg" alt="Conjunto Negro" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
         <div class="product-card-overlay"><span>Ver Producto</span></div>
       </div>
       <div class="product-info">
@@ -1310,7 +1328,7 @@
     <!-- Licras Cortas -->
     <div class="product-card" data-cat="licra-corta" onclick="showProduct('Licra Corta Rosa','$17.00',['S','M','L'],'swatch-rosa fig-women')">
       <div class="product-image-wrap">
-        <div class="product-placeholder swatch-rosa fig-women product-placeholder-inner"></div>
+        <img src="photos/p6.jpg" alt="Licra Corta Rosa" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
         <div class="product-card-overlay"><span>Ver Producto</span></div>
       </div>
       <div class="product-info">
@@ -1321,7 +1339,7 @@
     </div>
     <div class="product-card" data-cat="licra-corta" onclick="showProduct('Licra Corta Rojo','$17.00',['S','M','L'],'swatch-rojo fig-women')">
       <div class="product-image-wrap">
-        <div class="product-placeholder swatch-rojo fig-women product-placeholder-inner"></div>
+        <img src="photos/p5.jpg" alt="Licra Corta Rojo" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
         <div class="product-card-overlay"><span>Ver Producto</span></div>
       </div>
       <div class="product-info">
@@ -1332,7 +1350,7 @@
     </div>
     <div class="product-card" data-cat="licra-corta" onclick="showProduct('Licra Corta Negro','$17.00',['S','M','L'],'swatch-negro fig-women')">
       <div class="product-image-wrap">
-        <div class="product-placeholder swatch-negro fig-women product-placeholder-inner"></div>
+        <img src="photos/p7.jpg" alt="Licra Corta Negro" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
         <div class="product-card-overlay"><span>Ver Producto</span></div>
       </div>
       <div class="product-info">
@@ -1343,7 +1361,7 @@
     </div>
     <div class="product-card" data-cat="licra-corta" onclick="showProduct('Licra Corta Azul Marino','$17.00',['S','M','L'],'swatch-azulmarin fig-women')">
       <div class="product-image-wrap">
-        <div class="product-placeholder swatch-azulmarin fig-women product-placeholder-inner"></div>
+        <img src="photos/p4.jpg" alt="Licra Corta Azul Marino" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
         <div class="product-card-overlay"><span>Ver Producto</span></div>
       </div>
       <div class="product-info">
@@ -1354,7 +1372,7 @@
     </div>
     <div class="product-card" data-cat="licra-corta" onclick="showProduct('Licra Corta Marrón Mocha','$17.00',['S','M','L'],'swatch-marron fig-women')">
       <div class="product-image-wrap">
-        <div class="product-placeholder swatch-marron fig-women product-placeholder-inner"></div>
+        <img src="photos/p1.jpg" alt="Licra Corta Marrón Mocha" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
         <div class="product-card-overlay"><span>Ver Producto</span></div>
       </div>
       <div class="product-info">
@@ -1365,7 +1383,7 @@
     </div>
     <div class="product-card" data-cat="licra-corta" onclick="showProduct('Licra Corta Azul Real','$17.00',['S','M','L'],'swatch-azulreal fig-women')">
       <div class="product-image-wrap">
-        <div class="product-placeholder swatch-azulreal fig-women product-placeholder-inner"></div>
+        <img src="photos/p3.jpg" alt="Licra Corta Azul Real" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
         <div class="product-card-overlay"><span>Ver Producto</span></div>
       </div>
       <div class="product-info">
@@ -1388,7 +1406,7 @@
     <!-- Tops -->
     <div class="product-card" data-cat="top" onclick="showProduct('Top Pequeño Negro','$12.50',['S','M','L'],'swatch-negro fig-women')">
       <div class="product-image-wrap">
-        <div class="product-placeholder swatch-negro fig-women product-placeholder-inner"></div>
+        <img referrerpolicy="no-referrer" src="photos/p7.jpg" alt="Top Pequeño Negro" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
         <div class="product-card-overlay"><span>Ver Producto</span></div>
       </div>
       <div class="product-info">
@@ -1399,7 +1417,7 @@
     </div>
     <div class="product-card" data-cat="top" onclick="showProduct('Top Pequeño Celeste','$12.50',['S','M','L'],'swatch-celeste fig-women')">
       <div class="product-image-wrap">
-        <div class="product-placeholder swatch-celeste fig-women product-placeholder-inner"></div>
+        <img referrerpolicy="no-referrer" src="photos/p8.jpg" alt="Top Pequeño Celeste" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
         <div class="product-card-overlay"><span>Ver Producto</span></div>
       </div>
       <div class="product-info">
@@ -1421,7 +1439,7 @@
     </div>
     <div class="product-card" data-cat="top" onclick="showProduct('Top Pequeño Blanco','$12.50',['S','M','L'],'swatch-blanco fig-women')">
       <div class="product-image-wrap">
-        <div class="product-placeholder swatch-blanco fig-women product-placeholder-inner"></div>
+        <img referrerpolicy="no-referrer" src="photos/p9.jpg" alt="Top Pequeño Blanco" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
         <div class="product-card-overlay"><span>Ver Producto</span></div>
       </div>
       <div class="product-info">
@@ -1499,7 +1517,7 @@
     </div>
     <div class="product-card" data-cat="licra-larga" onclick="showProduct('Licra Larga Azul Marino','$20.00',['S','M','L'],'swatch-azulmarin fig-women')">
       <div class="product-image-wrap">
-        <div class="product-placeholder swatch-azulmarin fig-women product-placeholder-inner"></div>
+        <img src="photos/p10.jpg" alt="Licra Larga Azul Marino" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
         <div class="product-card-overlay"><span>Ver Producto</span></div>
       </div>
       <div class="product-info">
@@ -1511,7 +1529,7 @@
     <!-- Sets Sujetador -->
     <div class="product-card" data-cat="sujetador" onclick="showProduct('Set Sujetador Blanco','$13.99',['S','M','L'],'swatch-blanco fig-women')">
       <div class="product-image-wrap">
-        <div class="product-placeholder swatch-blanco fig-women product-placeholder-inner"></div>
+        <img src="photos/p9.jpg" alt="Set Sujetador Blanco" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
         <div class="product-card-overlay"><span>Ver Producto</span></div>
       </div>
       <div class="product-info">
@@ -1522,7 +1540,7 @@
     </div>
     <div class="product-card" data-cat="sujetador" onclick="showProduct('Set Sujetador Negro','$13.99',['S','M','L'],'swatch-negro fig-women')">
       <div class="product-image-wrap">
-        <div class="product-placeholder swatch-negro fig-women product-placeholder-inner"></div>
+        <img src="photos/p7.jpg" alt="Set Sujetador Negro" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
         <div class="product-card-overlay"><span>Ver Producto</span></div>
       </div>
       <div class="product-info">
@@ -1533,7 +1551,7 @@
     </div>
     <div class="product-card" data-cat="sujetador" onclick="showProduct('Set Sujetador Rosa','$13.99',['S','M','L'],'swatch-rosa fig-women')">
       <div class="product-image-wrap">
-        <div class="product-placeholder swatch-rosa fig-women product-placeholder-inner"></div>
+        <img src="photos/p6.jpg" alt="Set Sujetador Rosa" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
         <div class="product-card-overlay"><span>Ver Producto</span></div>
       </div>
       <div class="product-info">
@@ -1544,7 +1562,7 @@
     </div>
     <div class="product-card" data-cat="sujetador" onclick="showProduct('Set Sujetador Marrón Mocha','$13.99',['S','M','L'],'swatch-marron fig-women')">
       <div class="product-image-wrap">
-        <div class="product-placeholder swatch-marron fig-women product-placeholder-inner"></div>
+        <img src="photos/p1.jpg" alt="Set Sujetador Marrón Mocha" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
         <div class="product-card-overlay"><span>Ver Producto</span></div>
       </div>
       <div class="product-info">
@@ -1607,7 +1625,7 @@
     <!-- Compresión Sin Manga -->
     <div class="product-card" data-cat="compresion" onclick="showProduct('Set Compresión Sin Manga Azul','$11.00',['S','M','L'],'swatch-azulcomp fig-men')">
       <div class="product-image-wrap">
-        <div class="product-placeholder swatch-azulcomp fig-men product-placeholder-inner"></div>
+        <img src="photos/p11.jpg" alt="Set Compresión Sin Manga Azul" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
         <div class="product-card-overlay"><span>Ver Producto</span></div>
       </div>
       <div class="product-info">
@@ -1618,7 +1636,7 @@
     </div>
     <div class="product-card" data-cat="compresion" onclick="showProduct('Set Compresión Sin Manga Blanco','$11.00',['S','M','L'],'swatch-blanco fig-men')">
       <div class="product-image-wrap">
-        <div class="product-placeholder swatch-blanco fig-men product-placeholder-inner"></div>
+        <img src="photos/p13.jpg" alt="Set Compresión Sin Manga Blanco" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
         <div class="product-card-overlay"><span>Ver Producto</span></div>
       </div>
       <div class="product-info">
@@ -1629,7 +1647,7 @@
     </div>
     <div class="product-card" data-cat="compresion" onclick="showProduct('Set Compresión Sin Manga Negro','$11.00',['S','M','L'],'swatch-negro fig-men')">
       <div class="product-image-wrap">
-        <div class="product-placeholder swatch-negro fig-men product-placeholder-inner"></div>
+        <img src="photos/p12.jpg" alt="Set Compresión Sin Manga Negro" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
         <div class="product-card-overlay"><span>Ver Producto</span></div>
       </div>
       <div class="product-info">
@@ -1641,7 +1659,7 @@
     <!-- Camisetas Deportivas -->
     <div class="product-card" data-cat="camiseta" onclick="showProduct('Camiseta Deportiva Negro','$12.00',['S','M','L'],'swatch-negro fig-men')">
       <div class="product-image-wrap">
-        <div class="product-placeholder swatch-negro fig-men product-placeholder-inner"></div>
+        <img src="photos/p12.jpg" alt="Camiseta Deportiva Negro" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
         <div class="product-card-overlay"><span>Ver Producto</span></div>
       </div>
       <div class="product-info">
@@ -1652,7 +1670,7 @@
     </div>
     <div class="product-card" data-cat="camiseta" onclick="showProduct('Camiseta Deportiva Azul','$12.00',['S','M','L'],'swatch-azulcomp fig-men')">
       <div class="product-image-wrap">
-        <div class="product-placeholder swatch-azulcomp fig-men product-placeholder-inner"></div>
+        <img src="photos/p11.jpg" alt="Camiseta Deportiva Azul" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
         <div class="product-card-overlay"><span>Ver Producto</span></div>
       </div>
       <div class="product-info">
@@ -1663,7 +1681,7 @@
     </div>
     <div class="product-card" data-cat="camiseta" onclick="showProduct('Camiseta Deportiva Blanco','$12.00',['S','M','L'],'swatch-blanco fig-men')">
       <div class="product-image-wrap">
-        <div class="product-placeholder swatch-blanco fig-men product-placeholder-inner"></div>
+        <img src="photos/p13.jpg" alt="Camiseta Deportiva Blanco" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
         <div class="product-card-overlay"><span>Ver Producto</span></div>
       </div>
       <div class="product-info">
@@ -1787,7 +1805,7 @@
     <!-- Manga Larga -->
     <div class="product-card" data-cat="manga-larga" onclick="showProduct('Camisa Manga Larga Negra','$12.00',['S','M','L'],'swatch-negro fig-men')">
       <div class="product-image-wrap">
-        <div class="product-placeholder swatch-negro fig-men product-placeholder-inner"></div>
+        <img referrerpolicy="no-referrer" src="photos/p12.jpg" alt="Camisa Manga Larga Negra" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
         <div class="product-card-overlay"><span>Ver Producto</span></div>
       </div>
       <div class="product-info">
@@ -1798,7 +1816,7 @@
     </div>
     <div class="product-card" data-cat="manga-larga" onclick="showProduct('Camisa Manga Larga Azul','$12.00',['S','M','L'],'swatch-azulcomp fig-men')">
       <div class="product-image-wrap">
-        <div class="product-placeholder swatch-azulcomp fig-men product-placeholder-inner"></div>
+        <img referrerpolicy="no-referrer" src="photos/p11.jpg" alt="Camisa Manga Larga Azul" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
         <div class="product-card-overlay"><span>Ver Producto</span></div>
       </div>
       <div class="product-info">
@@ -1809,7 +1827,7 @@
     </div>
     <div class="product-card" data-cat="manga-larga" onclick="showProduct('Camisa Manga Larga Blanca','$12.00',['S','M','L'],'swatch-blanco fig-men')">
       <div class="product-image-wrap">
-        <div class="product-placeholder swatch-blanco fig-men product-placeholder-inner"></div>
+        <img referrerpolicy="no-referrer" src="photos/p13.jpg" alt="Camisa Manga Larga Blanca" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
         <div class="product-card-overlay"><span>Ver Producto</span></div>
       </div>
       <div class="product-info">
