@@ -438,6 +438,29 @@ function fitLines(ctx, text, maxW, startSize, maxLines){
 
 const PAD = 70; // edge padding — text hugs the edges (streetwear)
 
+// White tag pill on top, big headline below, optional sub. Drawn top-down so
+// elements can never overlap. Anchored to the bottom third.
+function drawTagBlock(ctx, tagTxt, head, sub, startSize, maxLines){
+  startSize = startSize||200; maxLines = maxLines||2;
+  ctx.textAlign='left';
+  const { lines, size } = fitLines(ctx, head, W-PAD*2, startSize, maxLines);
+  const lh = size*0.92, capOffset = size*0.74;
+  const pillH = 60, gapPill = 30, gapSub = 26, subH = sub ? 40 : 0;
+  const totalH = pillH + gapPill + lines.length*lh + (sub ? gapSub+subH : 0);
+  let y = H - 150 - totalH; // top of the whole block
+  // pill
+  ctx.font=label(900,32);
+  let pw=0; [...tagTxt].forEach(c=>pw+=ctx.measureText(c).width+2); pw-=2;
+  ctx.fillStyle='#fff'; ctx.fillRect(PAD, y, pw+44, pillH);
+  ctx.fillStyle='#000'; letter(ctx, tagTxt, PAD+22, y+pillH/2+11, 2, 'left');
+  y += pillH + gapPill;
+  // headline
+  ctx.fillStyle='#fff';
+  lines.forEach(l=>{ ctx.font=display(size); ctx.fillText(l, PAD, y+capOffset); y+=lh; });
+  // sub
+  if (sub){ ctx.font=label(800,34); letter(ctx, sub.toUpperCase(), PAD, y+gapSub+subH*0.7, 3, 'left'); }
+}
+
 function renderStory(canvas, img, story){
   canvas.width=W; canvas.height=H;
   const ctx = canvas.getContext('2d');
@@ -481,22 +504,7 @@ function renderStory(canvas, img, story){
 
   if (tpl==='SALE'){
     grad(ctx, [[0,'#0006'],[.4,'#0000'],[.7,'#0009'],[1,'#000f']]);
-    ctx.fillStyle='#fff'; ctx.textAlign='left';
-    const { lines, size } = fitLines(ctx, head, W-PAD*2, 230, 2);
-    const lh = size*0.92;
-    const subH = sub ? 60 : 0;
-    let hy = H - 200 - subH - (lines.length-1)*lh;
-    // OFERTA pill above headline
-    ctx.font=label(900,32);
-    const pillTxt = tag||'OFERTA';
-    let pw=0; [...pillTxt].forEach(c=>pw+=ctx.measureText(c).width+2); pw-=2;
-    const pillY = hy - size*0.80 - 80;
-    ctx.fillStyle='#fff'; ctx.fillRect(PAD, pillY, pw+44, 60);
-    ctx.fillStyle='#000'; letter(ctx, pillTxt, PAD+22, pillY+40, 2, 'left');
-    // headline
-    ctx.fillStyle='#fff';
-    lines.forEach(l=>{ ctx.font=display(size); ctx.fillText(l, PAD, hy); hy+=lh; });
-    if (sub){ ctx.font=label(800,34); letter(ctx, sub, PAD, hy+30, 3, 'left'); }
+    drawTagBlock(ctx, tag||'OFERTA', head, sub);
     brandMark(ctx);
     return;
   }
@@ -522,18 +530,7 @@ function renderStory(canvas, img, story){
 
   if (tpl==='TIP'){
     grad(ctx, [[0,'#0008'],[.5,'#0002'],[1,'#000e']]);
-    ctx.fillStyle='#fff'; ctx.textAlign='left';
-    const { lines, size } = fitLines(ctx, head, W-PAD*2, 130, 4);
-    const lh = size*0.95;
-    const subH = sub ? 54 : 0;
-    let hy = H - 200 - subH - (lines.length-1)*lh;
-    // TIP pill above
-    const pillY = hy - size*0.80 - 80;
-    ctx.fillStyle='#fff'; ctx.fillRect(PAD, pillY, 150, 60);
-    ctx.fillStyle='#000'; ctx.font=label(900,32); letter(ctx,'TIP', PAD+20, pillY+40, 2,'left');
-    ctx.fillStyle='#fff';
-    lines.forEach(l=>{ ctx.font=display(size); ctx.fillText(l, PAD, hy); hy+=lh; });
-    if (sub){ ctx.font=label(700,30); letter(ctx, sub, PAD, hy+24, 3,'left'); }
+    drawTagBlock(ctx, 'TIP', head, sub, 110, 4);
     brandMark(ctx);
     return;
   }
