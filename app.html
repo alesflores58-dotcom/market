@@ -405,7 +405,9 @@ ${KOR_VOICE}
 REGLAS:
 - 6 historias con templates distintos (NO uses POLL). Incluye variedad: DROP, RESTOCK, SHOP, TIP, MOTIVATION, etc.
 - Aplica la VOZ DE MARCA de arriba en CADA headline, sub y caption.
-- IMPORTANTE — evita el juego de palabras forzado. Frases como "ROSITA PERO PESADA", "NO SE BAJA", "SCRUNCH NO ES SUERTE" son cringe: el modelo intenta ser ingenioso de más. Prefiere SECO y SIMPLE, tipo "PULL-UP DAY" — un hecho real de la foto, sin chiste. Si dudas entre algo ingenioso y algo simple, elige simple.
+- IMPORTANTE — evita el juego de palabras forzado. Prefiere SECO y SIMPLE, tipo "PULL-UP DAY" o "PINK SEAMLESS". Si dudas entre ingenioso y simple, elige simple.
+- DROP: la mayoría deben ir SIN tag (solo el nombre/vibe del producto, ej "PINK SEAMLESS"), porque no todo lo que se publica es nuevo. SOLO UNA historia puede llevar tag "NUEVA COLECCIÓN" para cuando de verdad sea lanzamiento.
+- TIP: la frase se muestra SOLA, sin la palabra "TIP". Tiene que entenderse perfecto y ser sobre el ESTILO/FIT de la prenda (cómo se ve, cómo se usa), nunca técnica de gym. Nada de frases cortadas o confusas como "EMPIEZA ASISTIDA".
 - headline en MAYÚSCULAS cortas
 - TikTok: gancho real, accionable, formato vertical
 - Solo JSON, sin markdown` }
@@ -531,17 +533,16 @@ function renderStory(canvas, img, story){
   const sub  = (story.sub||'').toUpperCase();
   const tag  = (story.tag||'').toUpperCase();
 
-  if (tpl==='MOTIVATION'){
-    grad(ctx, [[0,'#000a'],[.5,'#0004'],[1,'#000c']]);
-    ctx.fillStyle='#fff';
-    const { lines, size } = fitLines(ctx, head, W-PAD*2, 150, 4);
-    const lh = size*1.0;
-    let y = H/2 - (lines.length-1)*lh/2;
-    ctx.textAlign='left';
-    lines.forEach(l=>{ ctx.font=display(size); ctx.fillText(l, PAD, y+size*0.34); y+=lh; });
-    // accent line
-    ctx.fillStyle='#fff'; ctx.fillRect(PAD, y+10, 120, 8);
-    if (tag){ ctx.fillStyle='#fff'; ctx.font=label(700,26); letter(ctx,tag,PAD,y+70,6,'left'); }
+  if (tpl==='MOTIVATION' || tpl==='TIP'){
+    // Clean, bottom-anchored, premium. No pill, no accent bar — just the line.
+    grad(ctx, [[0,'#0004'],[.42,'#0000'],[.72,'#0009'],[1,'#000f']]);
+    ctx.fillStyle='#fff'; ctx.textAlign='left';
+    const { lines, size } = fitLines(ctx, head, W-PAD*2, 160, 3);
+    const lh = size*0.92;
+    let y = H - 210 - (lines.length-1)*lh;
+    lines.forEach(l=>{ ctx.font=display(size); ctx.fillText(l, PAD, y); y+=lh; });
+    // optional small sub about the garment
+    if (sub){ ctx.font=label(700,28); letter(ctx, sub, PAD, y+14, 4, 'left'); }
     brandMark(ctx);
     return;
   }
@@ -583,13 +584,6 @@ function renderStory(canvas, img, story){
       ctx.fillStyle=fg; ctx.font=label(800,40);
       letter(ctx, txt, PAD+bw/2, yy+bh/2+14, 3, 'center');
     });
-    brandMark(ctx);
-    return;
-  }
-
-  if (tpl==='TIP'){
-    grad(ctx, [[0,'#0008'],[.5,'#0002'],[1,'#000e']]);
-    drawTagBlock(ctx, 'TIP', head, sub, 110, 4);
     brandMark(ctx);
     return;
   }
