@@ -382,6 +382,7 @@ async function callClaude(proxyUrl, photo){
 `Analiza esta foto para kÖr activewear (@_korsv, El Salvador) y crea 6 conceptos de historia de Instagram (templates variados) + 1 idea de TikTok/Reel.
 
 Templates disponibles: DROP (nueva llegada), SHOP (link en bio/compra), COUNTDOWN (cuenta regresiva drop), RESTOCK (vuelve disponible), MOTIVATION (frase corta de actitud, NO motivación cursi), UGC (testimonio/cliente), SALE (oferta/descuento), TIP (tip de ESTILO o FIT — cómo se ve/usa la prenda, NUNCA técnica de gym).
+CREATIVOS (más editoriales, úsalos para variar): OUTLINE (titular gigante en contorno hueco), GIANT (1-2 palabras enormes a escala fashion), CHROME (titular con efecto cromado/metálico), REPEAT (palabra repetida de fondo como patrón).
 NO uses POLL/encuesta: si se sube como imagen estática nadie puede votar.
 
 Devuelve SOLO JSON válido:
@@ -410,7 +411,8 @@ Devuelve SOLO JSON válido:
 ${KOR_VOICE}
 
 REGLAS:
-- 6 historias con templates distintos (NO uses POLL). Incluye variedad: DROP, RESTOCK, SHOP, TIP, MOTIVATION, etc.
+- 6 historias con templates distintos (NO uses POLL). Mezcla simples (DROP, SHOP, TIP, MOTIVATION) con AL MENOS 2 creativos (OUTLINE, GIANT, CHROME o REPEAT) para que el set tenga variedad visual.
+- Para GIANT y OUTLINE el headline debe ser MUY corto (1-3 palabras), porque va a escala enorme.
 - Aplica la VOZ DE MARCA de arriba en CADA headline, sub y caption.
 - IMPORTANTE — evita el juego de palabras forzado. Prefiere SECO y SIMPLE, tipo "PULL-UP DAY" o "PINK SEAMLESS". Si dudas entre ingenioso y simple, elige simple.
 - DROP: la mayoría deben ir SIN tag (solo el nombre/vibe del producto, ej "PINK SEAMLESS"), porque no todo lo que se publica es nuevo. SOLO UNA historia puede llevar tag "NUEVA COLECCIÓN" para cuando de verdad sea lanzamiento.
@@ -563,6 +565,80 @@ function renderStory(canvas, img, story){
     lines.forEach(l=>{ ctx.font=display(size); ctx.fillText(l, PAD, y); y+=lh; });
     // optional small sub about the garment
     if (sub){ ctx.font=label(700,28); letter(ctx, sub, PAD, y+14, 4, 'left'); }
+    brandMark(ctx);
+    return;
+  }
+
+  // ===== CREATIVE TEMPLATES =====
+
+  // OUTLINE — giant hollow headline, photo shows through the letters (editorial)
+  if (tpl==='OUTLINE'){
+    grad(ctx, [[0,'#0005'],[.5,'#0000'],[1,'#000d']]);
+    ctx.textAlign='left';
+    const { lines, size } = fitLines(ctx, head, W-PAD*2, 240, 3);
+    const lh = lineH(size, lines);
+    let y = H - 240 - (lines.length-1)*lh;
+    ctx.lineJoin='round'; ctx.lineWidth = Math.max(3, size*0.016); ctx.strokeStyle='#fff';
+    lines.forEach(l=>{ ctx.font=display(size); ctx.strokeText(l, PAD, y); y+=lh; });
+    if (sub){ ctx.fillStyle='#fff'; ctx.font=label(700,28); letter(ctx, sub, PAD, y+10, 4, 'left'); }
+    brandMark(ctx);
+    return;
+  }
+
+  // GIANT — one or two enormous words, bleeding, fashion-editorial scale
+  if (tpl==='GIANT'){
+    grad(ctx, [[0,'#0006'],[.45,'#0000'],[.75,'#0009'],[1,'#000f']]);
+    ctx.fillStyle='#fff'; ctx.textAlign='left';
+    const words = head.split(' ').slice(0,3);
+    let size = 460; ctx.font=display(size);
+    const longest = words.reduce((a,b)=>ctx.measureText(b).width>ctx.measureText(a).width?b:a, words[0]||'');
+    while(ctx.measureText(longest).width > W-PAD*1.1 && size>120){ size-=8; ctx.font=display(size); }
+    const lh = size*0.84;
+    let y = H - 170 - (words.length-1)*lh;
+    words.forEach(w=>{ ctx.font=display(size); ctx.fillText(w, PAD-6, y); y+=lh; });
+    brandMark(ctx);
+    return;
+  }
+
+  // CHROME — subtle metallic/silver gradient fill, premium take on Y2K
+  if (tpl==='CHROME'){
+    grad(ctx, [[0,'#0006'],[.5,'#0001'],[1,'#000e']]);
+    ctx.textAlign='left';
+    const { lines, size } = fitLines(ctx, head, W-PAD*2, 200, 3);
+    const lh = lineH(size, lines);
+    let y = H - 230 - (lines.length-1)*lh;
+    lines.forEach(l=>{
+      ctx.font=display(size);
+      const g = ctx.createLinearGradient(0, y-size*0.78, 0, y+size*0.18);
+      g.addColorStop(0,'#ffffff'); g.addColorStop(.42,'#cfcfcf'); g.addColorStop(.5,'#8f8f8f');
+      g.addColorStop(.58,'#f2f2f2'); g.addColorStop(1,'#b4b4b4');
+      ctx.save();
+      ctx.shadowColor='rgba(0,0,0,.45)'; ctx.shadowBlur=12; ctx.shadowOffsetY=4;
+      ctx.fillStyle=g; ctx.fillText(l, PAD, y);
+      ctx.restore();
+      y+=lh;
+    });
+    if (sub){ ctx.fillStyle='#dcdcdc'; ctx.font=label(700,28); letter(ctx, sub, PAD, y+10, 4, 'left'); }
+    brandMark(ctx);
+    return;
+  }
+
+  // REPEAT — faint tiled word pattern behind a clean headline (branding pattern)
+  if (tpl==='REPEAT'){
+    grad(ctx, [[0,'#0007'],[.5,'#0002'],[1,'#000e']]);
+    const word = ((head.split(' ')[0]||head)+'  ');
+    ctx.save();
+    ctx.fillStyle='rgba(255,255,255,0.06)'; ctx.font=label(900,72); ctx.textAlign='left';
+    const rowH=78; const row=word.repeat(10);
+    let r=0;
+    for(let yy=190; yy<H-180; yy+=rowH){ ctx.fillText(row, (r%2? -160:-60), yy); r++; }
+    ctx.restore();
+    ctx.fillStyle='#fff'; ctx.textAlign='left';
+    const { lines, size } = fitLines(ctx, head, W-PAD*2, 175, 3);
+    const lh = lineH(size, lines);
+    let y = H - 220 - (lines.length-1)*lh;
+    lines.forEach(l=>{ ctx.font=display(size); ctx.fillText(l, PAD, y); y+=lh; });
+    if (sub){ ctx.font=label(700,28); letter(ctx, sub, PAD, y+10, 4, 'left'); }
     brandMark(ctx);
     return;
   }
