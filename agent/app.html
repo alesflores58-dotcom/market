@@ -337,42 +337,33 @@ async function generate(){
   }
 }
 
-const KOR_VOICE = `VOZ DE MARCA kÖr — guía real de estilo (activewear premium, El Salvador):
+const KOR_VOICE = `VOZ DE MARCA kÖr — activewear premium, El Salvador. Lee esto y respíralo antes de escribir.
 
-FIRMA VISUAL: kÖr usa la Ö/ö DENTRO de palabras como sello de marca. Aplícalo en headlines cuando encaje naturalmente:
-  prÖcess · lÖck in · Gölden · Pöwered · mÖment · strÖng · nÖ excuses · wÖrk · yÖur · fÖr · gÖ
-  NO lo fuerces en cada palabra — solo donde suene natural y se vea bien.
+LA REGLA DE ORO: el copy tiene que salir de ESTA foto específica, no de una lista de frases de gym. Mira la foto: ¿qué luz hay, qué actitud tiene la persona, qué textura tiene la ropa, qué momento es? Escribe algo que SOLO funcione para esta imagen. Si tu frase serviría para cualquier post de cualquier gym, BÓRRALA y empieza de nuevo.
 
-REGLA #1 — ULTRA CORTO: 2 a 5 palabras. Eso es todo. El silencio también vende.
-  Correcto: "LOCK IN" · "THE FIT IS IT" · "NO DAYS OFF" · "A MOMENT FOR THE FIT"
-  Mal: frases largas explicativas que suenan a caption, no a headline.
+ESTILO: spanglish natural 50/50, como habla la gente joven bilingüe del gym en SV. Varía entre estos tres registros según la foto (no siempre el mismo):
+  1. INGENIOSO / observador — una verdad con giro. Ej: "The fit is half the workout".
+  2. SECO / mínimo — 1 a 3 palabras, frío, deja que la foto hable. Ej: "Lock in." · "El fit."
+  3. LOCAL con textura — sabor salvadoreño sutil, sin estereotipo ni modismo forzado.
 
-REGLA #2 — SIN EXCLAMACIONES NI EMOJIS en el copy de la historia. Nunca. El tono es frío, seguro, cool.
+FIRMA VISUAL: kÖr a veces usa la Ö dentro de palabras (mÖment, gÖlden, fÖr). Úsalo MUY de vez en cuando, solo si la palabra lo aguanta y se ve bien. No en cada headline.
 
-REGLA #3 — MEZCLA INGLÉS + ESPAÑOL de forma natural, como hablan en el gym real:
-  "El fit es todo" · "Sin excuses" · "Tu mood, tus reglas" · "The grind is real"
+LARGO: 2 a 6 palabras. Sin exclamaciones. Sin emojis en el copy de historia. Tono seguro, frío, nunca pidiendo aprobación.
 
-REGLA #4 — LEE EL MOOD DE LA FOTO:
-  · Foto suave / femenina / estética → femenino empoderado, con clase, calladamente poderosa
-  · Foto intensa / entreno / fuerza → disciplina cruda, sin adornos, hambre de ganar
-  · Foto de producto / flat lay → enfócate en el drop, el material, la exclusividad
+PROHIBIDO ABSOLUTO — esta lista es lo que hace el copy genérico y cringe. Si usas CUALQUIERA de estas, fallaste:
+  · Vocabulario cliché de gym: "grind", "the grind", "no excuses / sin excusas", "no days off", "the process / el proceso", "hustle", "beast mode", "grit", "no pain no gain", "trust the process", "rise and grind", "stay hard".
+  · Motivación de coach barato: "sé tu mejor versión", "el único límite eres tú", "cree en ti", "tu cuerpo puede tu mente decide", "vamos con toda".
+  · Frases que servirían para cualquier marca de gym del mundo. Si no menciona o evoca algo de ESTA foto, está mal.
+  · Pinterest quotes, rimas, frases motivacionales genéricas, sonar a marca corporativa o a IA.
 
-EJEMPLOS REALES DE kÖr (voz exacta, estilo real):
-  "THE FIT IS HALF THE WORKOUT"
-  "LOCK IN"
-  "NACÍ PARA ESTO"
-  "A MÖMENT FOR THE FIT"
-  "PÖWERED BY THE GRIND"
-  "THE PRÖCESS NEVER STOPS"
-  "GÖLDEN HOUR. GOLDEN FIT."
-  "SIN PEDIR PERMISO"
-  "YOUR GEAR. YOUR RULES."
-  "EL FIT ES TODO"
-
-PROHIBIDO (cringe total, NUNCA):
-  "Sé tu mejor versión" · "El único límite eres tú" · "Cree en ti" · "Vamos con toda 💪🔥"
-  Coach motivacional barato · Pinterest quotes · Rimas forzadas · Sonar a IA o corporativo
-  Exclamaciones · Emojis en el copy de la historia`;
+EJEMPLOS DEL NIVEL (no copiar literal — son el listón de especificidad y tono):
+  "The fit is half the workout"
+  "A mÖment for the fit"
+  "Se ve mejor en movimiento"
+  "Mírate antes de entrar"
+  "El espejo ya sabe"
+  "Misma rutina, otra energía"
+Cada uno dice algo REAL sobre un momento concreto. Eso es lo que buscamos: menos motivación, más observación con actitud.`;
 
 
 async function callClaude(proxyUrl, photo){
@@ -424,7 +415,8 @@ REGLAS:
       body: JSON.stringify({
         model:'claude-opus-4-8',
         max_tokens:2048,
-        system:'Eres el director creativo de kÖr activewear, marca salvadoreña. Escribes con la voz de Gymshark adaptada a kÖr. Respondes SOLO con JSON válido, sin texto extra.',
+        temperature:1,
+        system:'Eres el director creativo de kÖr activewear, marca salvadoreña. Tu trabajo es escribir copy específico para CADA foto, nunca frases genéricas de gym. Odias el cliché. Respondes SOLO con JSON válido, sin texto extra.',
         messages:[{ role:'user', content }]
       })
     });
@@ -827,8 +819,8 @@ Devuelve SOLO JSON válido:
   let resp;
   try {
     resp = await fetch(proxyUrl,{ method:'POST', headers:{'content-type':'application/json'},
-      body: JSON.stringify({ model:'claude-opus-4-8', max_tokens:1500,
-        system:'Eres el director creativo de kÖr activewear, marca salvadoreña premium. Escribes con la voz de Gymshark adaptada a kÖr. Respondes SOLO con JSON válido.',
+      body: JSON.stringify({ model:'claude-opus-4-8', max_tokens:1500, temperature:1,
+        system:'Eres el director creativo de kÖr activewear, marca salvadoreña premium. Tu trabajo es escribir copy específico para CADA foto, nunca frases genéricas de gym. Odias el cliché. Respondes SOLO con JSON válido.',
         messages:[{ role:'user', content }] }) });
   } catch(e){ throw new Error('No se pudo conectar al Worker. Revisa la URL en ⚙.'); }
   if (!resp.ok){
