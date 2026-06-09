@@ -640,16 +640,8 @@ function renderStory(canvas, img, story){
 }
 
 function brandMark(ctx){
-  // real kÖr logo image top-left, handle top-right
-  if (korLogo.complete && korLogo.naturalWidth){
-    const lw = 200, lh = lw * korLogo.naturalHeight / korLogo.naturalWidth;
-    ctx.drawImage(korLogo, PAD, 80, lw, lh);
-  } else {
-    ctx.textAlign='left'; ctx.fillStyle='#fff';
-    ctx.font=serif(600,70,false); ctx.fillText('kÖr', PAD, 140);
-  }
-  ctx.fillStyle='#fff'; ctx.font=label(700,22);
-  letter(ctx,'@_KORSV', W-PAD, 120, 4, 'right');
+  // Logo y handle removidos: las historias se publican desde la cuenta de kÖr,
+  // así que el logo arriba y el @_korsv son redundantes.
 }
 
 /* ---------- Build option cards ---------- */
