@@ -161,6 +161,13 @@
     <div class="cap-box" id="capBox"></div>
     <div class="tags-box" id="tagsBox"></div>
     <button class="btn btn-ghost" style="margin-top:14px" id="copyBtn" onclick="copyCaption()">Copiar caption + hashtags</button>
+
+    <div id="ttSection" style="display:none">
+      <p class="step-label" style="margin-top:30px">🎬 Idea para TikTok / Reel</p>
+      <div class="cap-box" id="ttBox"></div>
+      <button class="btn btn-ghost" style="margin-top:14px" id="ttCopyBtn" onclick="copyTiktok()">Copiar guion de TikTok</button>
+    </div>
+
     <button class="btn btn-ghost" style="margin-top:10px" onclick="reset()">← Crear otra</button>
   </div>
 
@@ -303,9 +310,9 @@ async function callClaude(proxyUrl, photo){
   const content = [
     { type:'image', source:{ type:'base64', media_type:photo.type, data:photo.data } },
     { type:'text', text:
-`Analiza esta foto para kÖr activewear (@_korsv, El Salvador) y crea 4 conceptos de historia de Instagram, cada uno con un template distinto.
+`Analiza esta foto para kÖr activewear (@_korsv, El Salvador) y crea 6 conceptos de historia de Instagram (templates variados) + 1 idea de TikTok/Reel.
 
-Templates disponibles: DROP (nueva llegada), SHOP (link en bio / compra), COUNTDOWN (cuenta regresiva drop), RESTOCK (vuelve disponible), MOTIVATION (frase de gym), UGC (testimonio/cliente).
+Templates disponibles: DROP (nueva llegada), SHOP (link en bio/compra), COUNTDOWN (cuenta regresiva drop), RESTOCK (vuelve disponible), MOTIVATION (frase de gym), UGC (testimonio/cliente), SALE (oferta/descuento), POLL (encuesta de 2 opciones), TIP (consejo rápido de entreno o estilo).
 
 Devuelve SOLO JSON válido:
 {
@@ -315,17 +322,28 @@ Devuelve SOLO JSON válido:
       "headline": "texto principal MUY corto (máx 4 palabras)",
       "sub": "línea secundaria corta (opcional)",
       "tag": "etiqueta pequeña arriba, ej NUEVA COLECCIÓN",
+      "optionA": "solo para POLL: opción 1 corta",
+      "optionB": "solo para POLL: opción 2 corta",
       "caption": "caption completo listo para Instagram, tono real de chica que entrena, nada corporativo",
       "hashtags": ["kor","korsv","activewear","gymgirl","fitnesssv"]
     }
-  ]
+  ],
+  "tiktok": {
+    "hook": "primeros 3 segundos que frenan el scroll (texto en pantalla)",
+    "scenes": [{"t":"0-3s","do":"qué se ve / qué hace"},{"t":"3-7s","do":"..."},{"t":"7-12s","do":"..."}],
+    "audio": "tipo de sonido o trend sugerido",
+    "overlay": ["texto en pantalla 1","texto en pantalla 2"],
+    "caption": "caption para TikTok, gancho fuerte",
+    "hashtags": ["fyp","gymtok","korsv","fitnesssv"]
+  }
 }
 
 REGLAS:
-- 4 historias, templates variados
-- Texto en español, corto y editorial (estilo Gymshark/Alphalete premium)
-- Tono auténtico, NO de IA, NO corporativo
-- headline en MAYÚSCULAS cortas funciona bien
+- 6 historias con templates distintos (incluye al menos 1 SALE, 1 POLL y 1 TIP si la foto lo permite)
+- Texto en español, corto y crudo (estilo streetwear gym, NADA corporativo)
+- Tono auténtico de chica/chico que entrena, nunca de IA
+- headline en MAYÚSCULAS cortas
+- TikTok: gancho real, accionable, formato vertical
 - Solo JSON, sin markdown` }
   ];
 
@@ -455,6 +473,52 @@ function renderStory(canvas, img, story){
     return;
   }
 
+  if (tpl==='SALE'){
+    grad(ctx, [[0,'#0006'],[.4,'#0000'],[.7,'#0009'],[1,'#000f']]);
+    // big OFERTA tag block + huge headline (the % or price)
+    ctx.fillStyle='#fff'; ctx.fillRect(PAD, H-470, 230, 64);
+    ctx.fillStyle='#000'; ctx.font=label(900,34); letter(ctx, tag||'OFERTA', PAD+18, H-426, 2, 'left');
+    ctx.fillStyle='#fff';
+    const { lines, size } = fitLines(ctx, head, W-PAD*2, 230, 2);
+    let y = H-360; ctx.textAlign='left';
+    lines.forEach(l=>{ ctx.font=display(size); ctx.fillText(l, PAD, y); y+=size*0.92; });
+    if (sub){ ctx.font=label(800,34); letter(ctx, sub, PAD, y+30, 3, 'left'); }
+    brandMark(ctx);
+    return;
+  }
+
+  if (tpl==='POLL'){
+    grad(ctx, [[0,'#0007'],[.45,'#0001'],[1,'#000e']]);
+    ctx.fillStyle='#fff'; ctx.textAlign='left';
+    const { lines, size } = fitLines(ctx, head, W-PAD*2, 110, 3);
+    let y = H-620; lines.forEach(l=>{ ctx.font=display(size); ctx.fillText(l, PAD, y); y+=size*0.95; });
+    // two option bars
+    const a=(story.optionA||'SÍ').toUpperCase(), b=(story.optionB||'NO').toUpperCase();
+    const bw=W-PAD*2, bh=110, gap=24; let by=y+30;
+    [[a,'#fff','#000'],[b,'transparent','#fff']].forEach(([txt,bg,fg],i)=>{
+      const yy=by+i*(bh+gap);
+      if(bg==='transparent'){ ctx.strokeStyle='#fff'; ctx.lineWidth=4; ctx.strokeRect(PAD,yy,bw,bh); }
+      else { ctx.fillStyle=bg; ctx.fillRect(PAD,yy,bw,bh); }
+      ctx.fillStyle=fg; ctx.font=label(800,40);
+      letter(ctx, txt, PAD+bw/2, yy+bh/2+14, 3, 'center');
+    });
+    brandMark(ctx);
+    return;
+  }
+
+  if (tpl==='TIP'){
+    grad(ctx, [[0,'#0008'],[.5,'#0002'],[1,'#000e']]);
+    ctx.fillStyle='#fff'; ctx.fillRect(PAD, H-540, 150, 60);
+    ctx.fillStyle='#000'; ctx.font=label(900,32); letter(ctx,'TIP', PAD+20, H-498, 2,'left');
+    ctx.fillStyle='#fff';
+    const { lines, size } = fitLines(ctx, head, W-PAD*2, 130, 4);
+    let y=H-400; ctx.textAlign='left';
+    lines.forEach(l=>{ ctx.font=display(size); ctx.fillText(l, PAD, y); y+=size*0.95; });
+    if (sub){ ctx.font=label(700,30); letter(ctx, sub, PAD, y+24, 3,'left'); }
+    brandMark(ctx);
+    return;
+  }
+
   // DROP / SHOP / COUNTDOWN / RESTOCK — bottom-anchored streetwear block
   grad(ctx, [[0,'#0006'],[.4,'#0000'],[.72,'#0009'],[1,'#000f']]);
 
@@ -495,7 +559,7 @@ function brandMark(ctx){
 
 /* ---------- Build option cards ---------- */
 function buildOptions(){
-  const stories = (plan.stories||[]).slice(0,4);
+  const stories = (plan.stories||[]).slice(0,6);
   const cont = document.getElementById('cards'); cont.innerHTML=''; cardCanvases=[];
   stories.forEach((st,i)=>{
     const card = document.createElement('div');
@@ -527,10 +591,41 @@ function confirmPick(){
   document.getElementById('capBox').textContent = st.caption||'';
   const tags = (st.hashtags||[]).map(t=>t.startsWith('#')?t:'#'+t);
   document.getElementById('tagsBox').innerHTML = tags.map(t=>`<span class="tg">${t}</span>`).join('');
+  renderTiktok();
   document.getElementById('s2').style.display='none';
   document.getElementById('s3').style.display='block';
   if (!navigator.canShare) document.getElementById('shareBtn').style.display='none';
   window.scrollTo(0,0);
+}
+
+function tiktokText(){
+  const tt = plan.tiktok; if (!tt) return '';
+  let s = '';
+  if (tt.hook) s += '🪝 GANCHO (0-3s):\n'+tt.hook+'\n\n';
+  if (tt.scenes && tt.scenes.length){
+    s += '🎬 ESCENAS:\n';
+    tt.scenes.forEach(sc=>{ s += `• ${sc.t||''}  ${sc.do||''}\n`; });
+    s += '\n';
+  }
+  if (tt.overlay && tt.overlay.length) s += '📝 TEXTO EN PANTALLA:\n'+tt.overlay.map(o=>'• '+o).join('\n')+'\n\n';
+  if (tt.audio) s += '🎵 AUDIO: '+tt.audio+'\n\n';
+  if (tt.caption) s += '✍️ CAPTION:\n'+tt.caption+'\n\n';
+  if (tt.hashtags && tt.hashtags.length) s += tt.hashtags.map(t=>t.startsWith('#')?t:'#'+t).join(' ');
+  return s.trim();
+}
+function renderTiktok(){
+  const sec = document.getElementById('ttSection');
+  const txt = tiktokText();
+  if (!txt){ sec.style.display='none'; return; }
+  document.getElementById('ttBox').textContent = txt;
+  sec.style.display='block';
+}
+function copyTiktok(){
+  navigator.clipboard.writeText(tiktokText()).then(()=>{
+    const b=document.getElementById('ttCopyBtn'); const o=b.textContent;
+    b.textContent='✓ Copiado'; b.classList.add('copied');
+    setTimeout(()=>{ b.textContent=o; b.classList.remove('copied'); },1500);
+  });
 }
 
 function canvasToBlob(cv){ return new Promise(r=>cv.toBlob(r,'image/jpeg',0.95)); }
