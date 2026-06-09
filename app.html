@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0a0a0a">
+<title>kÖr Studio</title>
+<link rel="manifest" href="manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@600;700;800;900&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black:#0a0a0a; --white:#fff; --gray:#141414; --line:#262626;
+    --text:#9a9a9a; --accent:#fff;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+  html,body { background:var(--black); color:var(--white);
+    font-family:'Inter',system-ui,sans-serif; overscroll-behavior:none; }
+  body { padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+
+  /* Top bar */
+  .top { display:flex; align-items:center; justify-content:space-between;
+    padding:16px 20px; border-bottom:1px solid var(--line); position:sticky; top:0;
+    background:rgba(10,10,10,.9); backdrop-filter:blur(12px); z-index:10; }
+  .brand { font-family:'Bodoni Moda',serif; font-size:26px; letter-spacing:3px; }
+  .brand small { font-size:10px; letter-spacing:3px; color:var(--text);
+    font-family:'Inter'; display:block; margin-top:-4px; }
+  .gear { background:none; border:none; color:var(--text); font-size:20px; cursor:pointer; }
+
+  .wrap { padding:20px; max-width:600px; margin:0 auto; }
+
+  /* Step labels */
+  .step-label { font-size:11px; letter-spacing:2px; color:var(--text);
+    text-transform:uppercase; margin:0 0 12px; }
+
+  /* Upload */
+  .drop { border:1.5px dashed var(--line); border-radius:16px; padding:44px 20px;
+    text-align:center; cursor:pointer; transition:.2s; }
+  .drop:active { border-color:var(--white); background:#fff1; }
+  .drop .ic { font-size:44px; margin-bottom:10px; }
+  .drop .t { font-size:16px; font-weight:600; }
+  .drop .s { font-size:13px; color:var(--text); margin-top:4px; }
+  #file { position:absolute; width:1px; height:1px; opacity:0; overflow:hidden; }
+
+  .thumbs { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+  .thumb { position:relative; width:74px; aspect-ratio:9/16; border-radius:10px;
+    overflow:hidden; background:var(--gray); }
+  .thumb img { width:100%; height:100%; object-fit:cover; }
+  .thumb b { position:absolute; top:4px; right:4px; background:#000a; color:#fff;
+    width:20px; height:20px; border-radius:50%; display:flex; align-items:center;
+    justify-content:center; font-size:13px; cursor:pointer; border:none; }
+
+  /* Button */
+  .btn { width:100%; border:none; border-radius:12px; padding:16px;
+    font-size:15px; font-weight:700; letter-spacing:.5px; cursor:pointer;
+    transition:.15s; font-family:'Inter'; }
+  .btn-primary { background:#fff; color:#000; margin-top:20px; }
+  .btn-primary:active { transform:scale(.98); }
+  .btn-primary:disabled { opacity:.35; }
+  .btn-ghost { background:var(--gray); color:#fff; border:1px solid var(--line); }
+
+  /* Loading */
+  .load { display:none; text-align:center; padding:40px 20px; }
+  .spin { width:38px; height:38px; border:3px solid var(--line);
+    border-top-color:#fff; border-radius:50%; margin:0 auto 16px;
+    animation:sp .8s linear infinite; }
+  @keyframes sp { to { transform:rotate(360deg); } }
+
+  /* Story options carousel */
+  .options { display:none; }
+  .cards { display:flex; gap:14px; overflow-x:auto; padding:4px 0 16px;
+    scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; }
+  .cards::-webkit-scrollbar { display:none; }
+  .card { flex:0 0 78%; scroll-snap-align:center; border-radius:16px;
+    overflow:hidden; border:1px solid var(--line); background:var(--gray); }
+  .card.sel { border-color:#fff; box-shadow:0 0 0 1px #fff; }
+  .card canvas { width:100%; display:block; aspect-ratio:9/16; object-fit:cover; }
+  .card .meta { padding:12px 14px; }
+  .card .tag { font-size:10px; letter-spacing:2px; color:var(--text);
+    text-transform:uppercase; }
+  .card .cap { font-size:13px; color:#ccc; margin-top:6px; line-height:1.4; }
+
+  /* Result */
+  .result { display:none; }
+  .result canvas { width:100%; border-radius:16px; border:1px solid var(--line);
+    aspect-ratio:9/16; }
+  .cap-box { background:var(--gray); border:1px solid var(--line); border-radius:12px;
+    padding:14px; font-size:14px; line-height:1.6; margin-top:16px; white-space:pre-wrap; }
+  .tags-box { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+  .tg { background:#fff1; border:1px solid var(--line); border-radius:20px;
+    padding:4px 11px; font-size:12px; color:#ccc; }
+  .row { display:flex; gap:10px; margin-top:16px; }
+  .row .btn { margin-top:0; }
+
+  /* Settings sheet */
+  .sheet-bg { display:none; position:fixed; inset:0; background:#000a; z-index:50; }
+  .sheet { position:fixed; left:0; right:0; bottom:0; background:var(--gray);
+    border-radius:20px 20px 0 0; padding:24px 20px calc(24px + env(safe-area-inset-bottom));
+    z-index:51; transform:translateY(100%); transition:.25s; }
+  .sheet.open { transform:translateY(0); }
+  .sheet h3 { font-size:16px; margin-bottom:6px; }
+  .sheet p { font-size:13px; color:var(--text); margin-bottom:16px; line-height:1.5; }
+  .sheet label { font-size:11px; letter-spacing:1px; color:var(--text);
+    text-transform:uppercase; display:block; margin-bottom:8px; }
+  .sheet input { width:100%; background:var(--black); border:1px solid var(--line);
+    border-radius:10px; color:#fff; padding:13px 14px; font-size:14px; outline:none; }
+
+  .err { background:#ff33331a; border:1px solid #ff333344; border-radius:12px;
+    padding:14px; color:#ff8080; font-size:14px; margin-top:16px; }
+  .hide { display:none; }
+  .copied { color:#4ade80 !important; }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="brand">kÖr<small>STUDIO · v5</small></div>
+  <button class="gear" onclick="openSheet()">⚙</button>
+</div>
+
+<div class="wrap">
+
+  <!-- STEP 1: Upload -->
+  <div id="s1">
+    <p class="step-label">1 · Sube tus fotos</p>
+    <label class="drop" id="drop" for="file">
+      <div class="ic">📸</div>
+      <div class="t">Toca para subir</div>
+      <div class="s">1 foto para historia · 3-5 para TikTok</div>
+    </label>
+    <input type="file" id="file" accept="image/*" multiple>
+    <div class="thumbs" id="thumbs"></div>
+    <button class="btn btn-primary" id="genBtn" onclick="generate()" disabled>Crear historias ✦</button>
+    <button class="btn btn-ghost" id="ttBtn" style="margin-top:10px" onclick="generateTiktok()" disabled>🎬 Crear TikTok (slideshow)</button>
+  </div>
+
+  <!-- LOADING -->
+  <div class="load" id="load">
+    <div class="spin"></div>
+    <div>Creando tus historias…</div>
+    <div style="font-size:12px;color:var(--text);margin-top:8px">~15 segundos</div>
+  </div>
+
+  <!-- STEP 2: Choose -->
+  <div class="options" id="s2">
+    <p class="step-label">2 · Elige tu favorita (desliza →)</p>
+    <div class="cards" id="cards"></div>
+    <button class="btn btn-primary" id="pickBtn" onclick="confirmPick()">Usar esta historia ✦</button>
+    <button class="btn btn-ghost" style="margin-top:10px" onclick="reset()">← Empezar de nuevo</button>
+  </div>
+
+  <!-- STEP 3: Result -->
+  <div class="result" id="s3">
+    <p class="step-label">3 · Lista para publicar</p>
+    <canvas id="final"></canvas>
+    <div class="row">
+      <button class="btn btn-primary" onclick="downloadImg()">⬇ Guardar foto</button>
+      <button class="btn btn-ghost" id="shareBtn" onclick="shareImg()">↗ Compartir</button>
+    </div>
+    <p class="step-label" style="margin-top:24px">Caption</p>
+    <div class="cap-box" id="capBox"></div>
+    <div class="tags-box" id="tagsBox"></div>
+    <button class="btn btn-ghost" style="margin-top:14px" id="copyBtn" onclick="copyCaption()">Copiar caption + hashtags</button>
+
+    <div id="ttSection" style="display:none">
+      <p class="step-label" style="margin-top:30px">🎬 Idea para TikTok / Reel</p>
+      <div class="cap-box" id="ttBox"></div>
+      <button class="btn btn-ghost" style="margin-top:14px" id="ttCopyBtn" onclick="copyTiktok()">Copiar guion de TikTok</button>
+    </div>
+
+    <button class="btn btn-ghost" style="margin-top:10px" onclick="reset()">← Crear otra</button>
+  </div>
+
+  <!-- STEP 4: TikTok video result -->
+  <div class="result" id="s4">
+    <p class="step-label">Tu TikTok está listo</p>
+    <video id="ttVideo" playsinline controls loop style="width:100%;border-radius:16px;border:1px solid var(--line);aspect-ratio:9/16;background:#000"></video>
+    <div class="row">
+      <button class="btn btn-primary" onclick="downloadVideo()">⬇ Guardar video</button>
+      <button class="btn btn-ghost" id="shareVidBtn" onclick="shareVideo()">↗ Compartir</button>
+    </div>
+    <p class="step-label" style="margin-top:24px">Caption</p>
+    <div class="cap-box" id="ttCapBox"></div>
+    <div class="tags-box" id="ttTagsBox"></div>
+    <button class="btn btn-ghost" style="margin-top:14px" id="ttCapCopyBtn" onclick="copyTtCaption()">Copiar caption + hashtags</button>
+
+    <div id="ttScriptSection" style="display:none">
+      <p class="step-label" style="margin-top:30px">🎬 Guion detallado</p>
+      <div class="cap-box" id="ttScriptBox"></div>
+      <button class="btn btn-ghost" style="margin-top:14px" id="ttScriptCopyBtn" onclick="copyTiktok()">Copiar guion</button>
+    </div>
+
+    <button class="btn btn-ghost" style="margin-top:10px" onclick="reset()">← Crear otro</button>
+  </div>
+
+  <div id="errBox"></div>
+</div>
+
+<!-- Settings -->
+<div class="sheet-bg" id="sheetBg" onclick="closeSheet()"></div>
+<div class="sheet" id="sheet">
+  <h3>Conexión</h3>
+  <p>Pega la URL de tu Cloudflare Worker (el puente). Se guarda solo en tu teléfono. Ej: https://kor-studio.tunombre.workers.dev</p>
+  <label>URL del Worker</label>
+  <input type="text" id="apiKey" placeholder="https://...workers.dev" autocomplete="off" autocapitalize="off" spellcheck="false">
+  <button class="btn btn-primary" onclick="saveKey()">Guardar</button>
+</div>
+
+<script>
+const W = 1080, H = 1920;
+let files = [];
+let plan = null;          // Claude response
+let cardCanvases = [];    // rendered option canvases
+let selectedIdx = 0;
+let loadedImg = null;     // the uploaded Image element
+let fontReady = false;
+// kÖr brand logo (white PNG, transparent bg)
+const korLogo = new Image();
+korLogo.src = 'kor-logo.png';
+
+/* ---------- Font preload (canvas needs fonts loaded) ---------- */
+async function ensureFonts() {
+  if (fontReady) return;
+  try {
+    if (!korLogo.complete || !korLogo.naturalWidth){
+      await new Promise(r=>{ korLogo.onload=r; korLogo.onerror=r; });
+    }
+    await Promise.all([
+      document.fonts.load('400 120px "Anton"'),
+      document.fonts.load('500 80px "Bodoni Moda"'),
+      document.fonts.load('600 80px "Bodoni Moda"'),
+      document.fonts.load('italic 500 80px "Bodoni Moda"'),
+      document.fonts.load('800 40px "Archivo"'),
+      document.fonts.load('900 40px "Archivo"'),
+    ]);
+    await document.fonts.ready;
+  } catch(e){}
+  fontReady = true;
+}
+
+/* ---------- File handling ---------- */
+const drop = document.getElementById('drop');
+['dragover'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();}));
+drop.addEventListener('drop',e=>{e.preventDefault(); addFiles(e.dataTransfer.files);});
+document.getElementById('file').addEventListener('change',e=>{ addFiles(e.target.files); e.target.value=''; });
+
+function addFiles(list){
+  Array.from(list).filter(f=>f.type.startsWith('image/')).forEach(f=>files.push(f));
+  if (files.length>5) files = files.slice(0,5);
+  renderThumbs();
+}
+function renderThumbs(){
+  const t = document.getElementById('thumbs'); t.innerHTML='';
+  files.forEach((f,i)=>{
+    const url = URL.createObjectURL(f);
+    const d = document.createElement('div'); d.className='thumb';
+    d.innerHTML = `<img src="${url}"><button onclick="rm(${i})">×</button>`;
+    t.appendChild(d);
+  });
+  document.getElementById('genBtn').disabled = files.length===0;
+  document.getElementById('ttBtn').disabled = files.length<2;
+}
+function rm(i){ files.splice(i,1); renderThumbs(); }
+
+function fileToImg(file){
+  return new Promise((res,rej)=>{
+    const img = new Image();
+    img.onload = ()=>res(img);
+    img.onerror = rej;
+    img.src = URL.createObjectURL(file);
+  });
+}
+function fileToB64(file){
+  return new Promise((res,rej)=>{
+    const r = new FileReader();
+    r.onload = ()=>res({ type:file.type, data:r.result.split(',')[1] });
+    r.onerror = rej;
+    r.readAsDataURL(file);
+  });
+}
+// Compress/resize for the API (iPhone photos are too big otherwise)
+function downscaleToB64(img){
+  const max = 1568; // Anthropic optimal max dimension
+  let w = img.width, h = img.height;
+  if (w > h && w > max){ h = Math.round(h*max/w); w = max; }
+  else if (h >= w && h > max){ w = Math.round(w*max/h); h = max; }
+  const c = document.createElement('canvas');
+  c.width = w; c.height = h;
+  c.getContext('2d').drawImage(img,0,0,w,h);
+  const dataUrl = c.toDataURL('image/jpeg', 0.85);
+  return { type:'image/jpeg', data: dataUrl.split(',')[1] };
+}
+
+/* ---------- Settings sheet ---------- */
+function openSheet(){ document.getElementById('sheetBg').style.display='block';
+  setTimeout(()=>document.getElementById('sheet').classList.add('open'),10); }
+function closeSheet(){ document.getElementById('sheet').classList.remove('open');
+  setTimeout(()=>document.getElementById('sheetBg').style.display='none',250); }
+function normalizeUrl(u){
+  u = (u||'').trim();
+  if (u && !/^https?:\/\//i.test(u)) u = 'https://' + u;
+  return u;
+}
+function saveKey(){ localStorage.setItem('kor_proxy', normalizeUrl(document.getElementById('apiKey').value)); closeSheet(); }
+window.addEventListener('load',()=>{
+  const k = localStorage.getItem('kor_proxy');
+  if (k) document.getElementById('apiKey').value = k;
+});
+
+/* ---------- Generate ---------- */
+function showErr(msg){ document.getElementById('errBox').innerHTML = `<div class="err">⚠ ${msg}</div>`; }
+function clearErr(){ document.getElementById('errBox').innerHTML=''; }
+
+async function generate(){
+  clearErr();
+  const proxy = normalizeUrl(localStorage.getItem('kor_proxy')||'');
+  if (!proxy){ showErr('Primero pega la URL de tu Worker (toca ⚙ arriba).'); openSheet(); return; }
+  if (!files.length){ showErr('Sube una foto primero.'); return; }
+
+  document.getElementById('s1').classList.add('hide');
+  setLoadText('Creando tus historias…');
+  document.getElementById('load').style.display='block';
+
+  try {
+    await ensureFonts();
+    loadedImg = await fileToImg(files[0]);
+    const b64 = downscaleToB64(loadedImg);
+    plan = await callClaude(proxy, b64);
+    buildOptions();
+    document.getElementById('load').style.display='none';
+    document.getElementById('s2').style.display='block';
+  } catch(err){
+    document.getElementById('load').style.display='none';
+    document.getElementById('s1').classList.remove('hide');
+    showErr(err.message || 'Algo salió mal');
+  }
+}
+
+const KOR_VOICE = `VOZ DE MARCA kÖr — guía real de estilo (activewear premium, El Salvador):
+
+FIRMA VISUAL: kÖr usa la Ö/ö DENTRO de palabras como sello de marca. Aplícalo en headlines cuando encaje naturalmente:
+  prÖcess · lÖck in · Gölden · Pöwered · mÖment · strÖng · nÖ excuses · wÖrk · yÖur · fÖr · gÖ
+  NO lo fuerces en cada palabra — solo donde suene natural y se vea bien.
+
+REGLA #1 — ULTRA CORTO: 2 a 5 palabras. Eso es todo. El silencio también vende.
+  Correcto: "LOCK IN" · "THE FIT IS IT" · "NO DAYS OFF" · "A MOMENT FOR THE FIT"
+  Mal: frases largas explicativas que suenan a caption, no a headline.
+
+REGLA #2 — SIN EXCLAMACIONES NI EMOJIS en el copy de la historia. Nunca. El tono es frío, seguro, cool.
+
+REGLA #3 — MEZCLA INGLÉS + ESPAÑOL de forma natural, como hablan en el gym real:
+  "El fit es todo" · "Sin excuses" · "Tu mood, tus reglas" · "The grind is real"
+
+REGLA #4 — LEE EL MOOD DE LA FOTO:
+  · Foto suave / femenina / estética → femenino empoderado, con clase, calladamente poderosa
+  · Foto intensa / entreno / fuerza → disciplina cruda, sin adornos, hambre de ganar
+  · Foto de producto / flat lay → enfócate en el drop, el material, la exclusividad
+
+EJEMPLOS REALES DE kÖr (voz exacta, estilo real):
+  "THE FIT IS HALF THE WORKOUT"
+  "LOCK IN"
+  "NACÍ PARA ESTO"
+  "A MÖMENT FOR THE FIT"
+  "PÖWERED BY THE GRIND"
+  "THE PRÖCESS NEVER STOPS"
+  "GÖLDEN HOUR. GOLDEN FIT."
+  "SIN PEDIR PERMISO"
+  "YOUR GEAR. YOUR RULES."
+  "EL FIT ES TODO"
+
+PROHIBIDO (cringe total, NUNCA):
+  "Sé tu mejor versión" · "El único límite eres tú" · "Cree en ti" · "Vamos con toda 💪🔥"
+  Coach motivacional barato · Pinterest quotes · Rimas forzadas · Sonar a IA o corporativo
+  Exclamaciones · Emojis en el copy de la historia`;
+
+
+async function callClaude(proxyUrl, photo){
+  const content = [
+    { type:'image', source:{ type:'base64', media_type:photo.type, data:photo.data } },
+    { type:'text', text:
+`Analiza esta foto para kÖr activewear (@_korsv, El Salvador) y crea 6 conceptos de historia de Instagram (templates variados) + 1 idea de TikTok/Reel.
+
+Templates disponibles: DROP (nueva llegada), SHOP (link en bio/compra), COUNTDOWN (cuenta regresiva drop), RESTOCK (vuelve disponible), MOTIVATION (frase de gym), UGC (testimonio/cliente), SALE (oferta/descuento), POLL (encuesta de 2 opciones), TIP (consejo rápido de entreno o estilo).
+
+Devuelve SOLO JSON válido:
+{
+  "stories": [
+    {
+      "template": "DROP",
+      "headline": "texto principal MUY corto (máx 4 palabras)",
+      "sub": "línea secundaria corta (opcional)",
+      "tag": "etiqueta pequeña arriba, ej NUEVA COLECCIÓN",
+      "optionA": "solo para POLL: opción 1 corta",
+      "optionB": "solo para POLL: opción 2 corta",
+      "caption": "caption completo listo para Instagram, tono real de chica que entrena, nada corporativo",
+      "hashtags": ["kor","korsv","activewear","gymgirl","fitnesssv"]
+    }
+  ],
+  "tiktok": {
+    "hook": "primeros 3 segundos que frenan el scroll (texto exacto en pantalla)",
+    "scenes": [{"t":"0-3s","do":"qué se ve / qué hace","text":"texto en pantalla de esta toma"},{"t":"3-7s","do":"...","text":"..."},{"t":"7-12s","do":"...","text":"..."},{"t":"12-15s","do":"cierre/CTA","text":"..."}],
+    "audio": "2 opciones de audio trending concretas (nombre de canción o tipo de sonido viral) y por qué pega",
+    "caption": "caption para TikTok, gancho fuerte, 1-2 líneas",
+    "hashtags": ["fyp","gymtok","korsv","fitnesssv","parati"]
+  }
+}
+
+${KOR_VOICE}
+
+REGLAS:
+- 6 historias con templates distintos (incluye al menos 1 SALE, 1 POLL y 1 TIP si la foto lo permite)
+- Aplica la VOZ DE MARCA de arriba en CADA headline, sub y caption. Ajusta girly/motivacional según el mood de la foto.
+- headline en MAYÚSCULAS cortas
+- TikTok: gancho real, accionable, formato vertical
+- Solo JSON, sin markdown` }
+  ];
+
+  let resp;
+  try {
+    resp = await fetch(proxyUrl,{
+      method:'POST',
+      headers:{ 'content-type':'application/json' },
+      body: JSON.stringify({
+        model:'claude-opus-4-8',
+        max_tokens:2048,
+        system:'Eres el director creativo de kÖr activewear, marca salvadoreña. Escribes con la voz de Gymshark adaptada a kÖr. Respondes SOLO con JSON válido, sin texto extra.',
+        messages:[{ role:'user', content }]
+      })
+    });
+  } catch(netErr){
+    throw new Error('No se pudo conectar al Worker. Revisa que la URL en ⚙ esté bien (https://...workers.dev).');
+  }
+  if (!resp.ok){
+    const e = await resp.json().catch(()=>({}));
+    const msg = e.error?.message || ('Error '+resp.status);
+    if (resp.status===403 || resp.status===404) throw new Error('La URL del Worker en ⚙ está mal. Debe ser https://kor-studio.alesflores58.workers.dev');
+    if (resp.status===401) throw new Error('API Key inválida (revísala en el Worker → Settings → Secrets).');
+    if (resp.status===400 && /credit|balance/i.test(msg)) throw new Error('Sin créditos en tu cuenta Anthropic. Agrega saldo en Billing.');
+    throw new Error(msg);
+  }
+  const data = await resp.json();
+  const txt = data.content[0].text;
+  const s = txt.indexOf('{'), en = txt.lastIndexOf('}')+1;
+  if (s===-1) throw new Error('Respuesta inválida de Claude');
+  return JSON.parse(txt.slice(s,en));
+}
+
+/* ================= CANVAS STORY RENDERER ================= */
+function drawCover(ctx, img){
+  const ir = img.width/img.height, cr = W/H;
+  let dw,dh,dx,dy;
+  if (ir > cr){ dh=H; dw=H*ir; dx=(W-dw)/2; dy=0; }
+  else { dw=W; dh=W/ir; dx=0; dy=(H-dh)/2; }
+  ctx.drawImage(img,dx,dy,dw,dh);
+}
+function grad(ctx, stops){
+  const g = ctx.createLinearGradient(0,0,0,H);
+  stops.forEach(([o,c])=>g.addColorStop(o,c));
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+}
+/* ---- Fonts: Anton = titular streetwear, Bodoni = wordmark, Archivo = labels ---- */
+function display(size){ return `400 ${size}px "Anton", Impact, sans-serif`; }
+function serif(weight,size,italic){
+  return `${italic?'italic ':''}${weight} ${size}px "Bodoni Moda", Georgia, serif`;
+}
+function label(weight,size){ return `${weight} ${size}px "Archivo", sans-serif`; }
+
+function letter(ctx, text, x, y, ls, align){
+  // draw text with letter spacing. align: 'center'|'left'|'right' around x
+  const chars=[...text];
+  ctx.save();
+  let total=0;
+  chars.forEach(c=>{ total += ctx.measureText(c).width + ls; });
+  total -= ls;
+  let cx = x;
+  if (align==='center') cx = x - total/2;
+  else if (align==='right') cx = x - total;
+  ctx.textAlign='left';
+  chars.forEach(c=>{ ctx.fillText(c,cx,y); cx += ctx.measureText(c).width + ls; });
+  ctx.restore();
+}
+// wrap uppercase headline to N lines using Anton, auto-fit size to width
+function fitLines(ctx, text, maxW, startSize, maxLines){
+  let size = startSize;
+  for (; size>40; size-=4){
+    ctx.font = display(size);
+    const words = text.split(' '); const lines=[]; let line='';
+    words.forEach(w=>{
+      const test = line?line+' '+w:w;
+      if (ctx.measureText(test).width>maxW && line){ lines.push(line); line=w; }
+      else line=test;
+    });
+    if(line) lines.push(line);
+    if (lines.length<=maxLines && lines.every(l=>ctx.measureText(l).width<=maxW))
+      return { lines, size };
+  }
+  ctx.font = display(size);
+  return { lines:[text], size };
+}
+
+const PAD = 70; // edge padding — text hugs the edges (streetwear)
+
+// White tag pill on top, big headline below, optional sub. Drawn top-down so
+// elements can never overlap. Anchored to the bottom third.
+function drawTagBlock(ctx, tagTxt, head, sub, startSize, maxLines){
+  startSize = startSize||200; maxLines = maxLines||2;
+  ctx.textAlign='left';
+  const { lines, size } = fitLines(ctx, head, W-PAD*2, startSize, maxLines);
+  const lh = size*0.92, capOffset = size*0.74;
+  const pillH = 60, gapPill = 30, gapSub = 26, subH = sub ? 40 : 0;
+  const totalH = pillH + gapPill + lines.length*lh + (sub ? gapSub+subH : 0);
+  let y = H - 150 - totalH; // top of the whole block
+  // pill
+  ctx.font=label(900,32);
+  let pw=0; [...tagTxt].forEach(c=>pw+=ctx.measureText(c).width+2); pw-=2;
+  ctx.fillStyle='#fff'; ctx.fillRect(PAD, y, pw+44, pillH);
+  ctx.fillStyle='#000'; letter(ctx, tagTxt, PAD+22, y+pillH/2+11, 2, 'left');
+  y += pillH + gapPill;
+  // headline
+  ctx.fillStyle='#fff';
+  lines.forEach(l=>{ ctx.font=display(size); ctx.fillText(l, PAD, y+capOffset); y+=lh; });
+  // sub
+  if (sub){ ctx.font=label(800,34); letter(ctx, sub.toUpperCase(), PAD, y+gapSub+subH*0.7, 3, 'left'); }
+}
+
+function renderStory(canvas, img, story){
+  canvas.width=W; canvas.height=H;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle='#000'; ctx.fillRect(0,0,W,H);
+  drawCover(ctx, img);
+
+  const tpl = (story.template||'DROP').toUpperCase();
+  const head = (story.headline||'').toUpperCase();
+  const sub  = (story.sub||'').toUpperCase();
+  const tag  = (story.tag||'').toUpperCase();
+
+  if (tpl==='MOTIVATION'){
+    grad(ctx, [[0,'#000a'],[.5,'#0004'],[1,'#000c']]);
+    ctx.fillStyle='#fff';
+    const { lines, size } = fitLines(ctx, head, W-PAD*2, 150, 4);
+    const lh = size*1.0;
+    let y = H/2 - (lines.length-1)*lh/2;
+    ctx.textAlign='left';
+    lines.forEach(l=>{ ctx.font=display(size); ctx.fillText(l, PAD, y+size*0.34); y+=lh; });
+    // accent line
+    ctx.fillStyle='#fff'; ctx.fillRect(PAD, y+10, 120, 8);
+    if (tag){ ctx.fillStyle='#fff'; ctx.font=label(700,26); letter(ctx,tag,PAD,y+70,6,'left'); }
+    brandMark(ctx);
+    return;
+  }
+
+  if (tpl==='UGC'){
+    grad(ctx, [[0,'#000b'],[.55,'#0003'],[1,'#000d']]);
+    // italic serif quote, big quotation mark
+    ctx.fillStyle='#fff'; ctx.textAlign='left';
+    ctx.font=serif(500,260,false); ctx.fillText('“', PAD-10, 420);
+    const words=(story.headline||'').split(' '); const lines=[]; let line='';
+    ctx.font=serif(500,86,true);
+    words.forEach(w=>{ const t=line?line+' '+w:w; if(ctx.measureText(t).width>W-PAD*2&&line){lines.push(line);line=w;}else line=t;});
+    if(line) lines.push(line);
+    let y=560; lines.forEach(l=>{ ctx.fillText(l,PAD,y); y+=104; });
+    if (sub){ ctx.fillStyle='#fff'; ctx.font=label(700,30); letter(ctx,'— '+sub,PAD,y+20,4,'left'); }
+    brandMark(ctx);
+    return;
+  }
+
+  if (tpl==='SALE'){
+    grad(ctx, [[0,'#0006'],[.4,'#0000'],[.7,'#0009'],[1,'#000f']]);
+    drawTagBlock(ctx, tag||'OFERTA', head, sub);
+    brandMark(ctx);
+    return;
+  }
+
+  if (tpl==='POLL'){
+    grad(ctx, [[0,'#0007'],[.45,'#0001'],[1,'#000e']]);
+    ctx.fillStyle='#fff'; ctx.textAlign='left';
+    const { lines, size } = fitLines(ctx, head, W-PAD*2, 110, 3);
+    let y = H-620; lines.forEach(l=>{ ctx.font=display(size); ctx.fillText(l, PAD, y); y+=size*0.95; });
+    // two option bars
+    const a=(story.optionA||'SÍ').toUpperCase(), b=(story.optionB||'NO').toUpperCase();
+    const bw=W-PAD*2, bh=110, gap=24; let by=y+30;
+    [[a,'#fff','#000'],[b,'transparent','#fff']].forEach(([txt,bg,fg],i)=>{
+      const yy=by+i*(bh+gap);
+      if(bg==='transparent'){ ctx.strokeStyle='#fff'; ctx.lineWidth=4; ctx.strokeRect(PAD,yy,bw,bh); }
+      else { ctx.fillStyle=bg; ctx.fillRect(PAD,yy,bw,bh); }
+      ctx.fillStyle=fg; ctx.font=label(800,40);
+      letter(ctx, txt, PAD+bw/2, yy+bh/2+14, 3, 'center');
+    });
+    brandMark(ctx);
+    return;
+  }
+
+  if (tpl==='TIP'){
+    grad(ctx, [[0,'#0008'],[.5,'#0002'],[1,'#000e']]);
+    drawTagBlock(ctx, 'TIP', head, sub, 110, 4);
+    brandMark(ctx);
+    return;
+  }
+
+  // DROP / SHOP / COUNTDOWN / RESTOCK — bottom-anchored streetwear block
+  grad(ctx, [[0,'#0006'],[.4,'#0000'],[.72,'#0009'],[1,'#000f']]);
+
+  ctx.fillStyle='#fff';
+  const { lines, size } = fitLines(ctx, head, W-PAD*2, 200, 3);
+  const lh = size*0.92;
+  let hy = H - 230 - (lines.length-1)*lh;
+  ctx.textAlign='left';
+
+  // tag label above headline
+  if (tag){
+    ctx.fillStyle='#fff'; ctx.font=label(700,28);
+    letter(ctx, tag, PAD, hy - size*0.72 - 28, 8, 'left');
+  }
+  lines.forEach(l=>{ ctx.font=display(size); ctx.fillStyle='#fff'; ctx.fillText(l, PAD, hy); hy+=lh; });
+
+  // CTA pill bar
+  let cta = tpl==='SHOP' ? 'LINK EN BIO'
+          : tpl==='COUNTDOWN' ? 'MUY PRONTO'
+          : tpl==='RESTOCK' ? 'YA DISPONIBLE'
+          : 'DESLIZA ARRIBA';
+  if (sub) cta = sub;
+  ctx.font=label(800,30);
+  const cw = (()=>{let t=0;[...cta].forEach(c=>t+=ctx.measureText(c).width+4);return t-4;})();
+  const bx=PAD, by=hy+18, bh=78, bw=cw+72;
+  ctx.fillStyle='#fff'; ctx.fillRect(bx,by,bw,bh);
+  ctx.fillStyle='#000'; letter(ctx, cta, bx+36, by+bh/2+11, 4, 'left');
+
+  brandMark(ctx);
+}
+
+function brandMark(ctx){
+  // real kÖr logo image top-left, handle top-right
+  if (korLogo.complete && korLogo.naturalWidth){
+    const lw = 200, lh = lw * korLogo.naturalHeight / korLogo.naturalWidth;
+    ctx.drawImage(korLogo, PAD, 80, lw, lh);
+  } else {
+    ctx.textAlign='left'; ctx.fillStyle='#fff';
+    ctx.font=serif(600,70,false); ctx.fillText('kÖr', PAD, 140);
+  }
+  ctx.fillStyle='#fff'; ctx.font=label(700,22);
+  letter(ctx,'@_KORSV', W-PAD, 120, 4, 'right');
+}
+
+/* ---------- Build option cards ---------- */
+function buildOptions(){
+  const stories = (plan.stories||[]).slice(0,6);
+  const cont = document.getElementById('cards'); cont.innerHTML=''; cardCanvases=[];
+  stories.forEach((st,i)=>{
+    const card = document.createElement('div');
+    card.className='card'+(i===0?' sel':'');
+    card.onclick = ()=>selectCard(i);
+    const cv = document.createElement('canvas');
+    renderStory(cv, loadedImg, st);
+    cardCanvases.push(cv);
+    card.appendChild(cv);
+    const m = document.createElement('div'); m.className='meta';
+    m.innerHTML = `<div class="tag">${(st.template||'').toUpperCase()}</div>
+      <div class="cap">${st.headline||''}</div>`;
+    card.appendChild(m);
+    cont.appendChild(card);
+  });
+  selectedIdx=0;
+}
+function selectCard(i){
+  selectedIdx=i;
+  document.querySelectorAll('.card').forEach((c,j)=>c.classList.toggle('sel',j===i));
+}
+
+/* ---------- Confirm & final ---------- */
+function confirmPick(){
+  const st = plan.stories[selectedIdx];
+  const cv = document.getElementById('final');
+  renderStory(cv, loadedImg, st);
+  // caption
+  document.getElementById('capBox').textContent = st.caption||'';
+  const tags = (st.hashtags||[]).map(t=>t.startsWith('#')?t:'#'+t);
+  document.getElementById('tagsBox').innerHTML = tags.map(t=>`<span class="tg">${t}</span>`).join('');
+  renderTiktok();
+  document.getElementById('s2').style.display='none';
+  document.getElementById('s3').style.display='block';
+  if (!navigator.canShare) document.getElementById('shareBtn').style.display='none';
+  window.scrollTo(0,0);
+}
+
+function tiktokText(){
+  const tt = plan.tiktok; if (!tt) return '';
+  let s = '';
+  if (tt.hook) s += '🪝 GANCHO (0-3s):\n'+tt.hook+'\n\n';
+  if (tt.scenes && tt.scenes.length){
+    s += '🎬 ESCENAS:\n';
+    tt.scenes.forEach(sc=>{
+      s += `• ${sc.t||''}  ${sc.do||''}\n`;
+      if (sc.text) s += `   📝 "${sc.text}"\n`;
+    });
+    s += '\n';
+  }
+  if (tt.overlay && tt.overlay.length) s += '📝 TEXTO EN PANTALLA:\n'+tt.overlay.map(o=>'• '+o).join('\n')+'\n\n';
+  if (tt.audio) s += '🎵 AUDIO: '+tt.audio+'\n\n';
+  if (tt.caption) s += '✍️ CAPTION:\n'+tt.caption+'\n\n';
+  if (tt.hashtags && tt.hashtags.length) s += tt.hashtags.map(t=>t.startsWith('#')?t:'#'+t).join(' ');
+  return s.trim();
+}
+function renderTiktok(){
+  const sec = document.getElementById('ttSection');
+  const txt = tiktokText();
+  if (!txt){ sec.style.display='none'; return; }
+  document.getElementById('ttBox').textContent = txt;
+  sec.style.display='block';
+}
+function copyTiktok(){
+  navigator.clipboard.writeText(tiktokText()).then(()=>{
+    const b=document.getElementById('ttCopyBtn'); const o=b.textContent;
+    b.textContent='✓ Copiado'; b.classList.add('copied');
+    setTimeout(()=>{ b.textContent=o; b.classList.remove('copied'); },1500);
+  });
+}
+
+function canvasToBlob(cv){ return new Promise(r=>cv.toBlob(r,'image/jpeg',0.95)); }
+
+async function downloadImg(){
+  const blob = await canvasToBlob(document.getElementById('final'));
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href=url; a.download='kor-historia.jpg'; a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),2000);
+}
+async function shareImg(){
+  try {
+    const blob = await canvasToBlob(document.getElementById('final'));
+    const file = new File([blob],'kor-historia.jpg',{type:'image/jpeg'});
+    const st = plan.stories[selectedIdx];
+    const tags = (st.hashtags||[]).map(t=>t.startsWith('#')?t:'#'+t).join(' ');
+    if (navigator.canShare && navigator.canShare({files:[file]})){
+      await navigator.share({ files:[file], text:(st.caption||'')+'\n\n'+tags });
+    } else { downloadImg(); }
+  } catch(e){}
+}
+function copyCaption(){
+  const st = plan.stories[selectedIdx];
+  const tags = (st.hashtags||[]).map(t=>t.startsWith('#')?t:'#'+t).join(' ');
+  navigator.clipboard.writeText((st.caption||'')+'\n\n'+tags).then(()=>{
+    const b=document.getElementById('copyBtn'); const o=b.textContent;
+    b.textContent='✓ Copiado'; b.classList.add('copied');
+    setTimeout(()=>{ b.textContent=o; b.classList.remove('copied'); },1500);
+  });
+}
+
+/* ================= TIKTOK SLIDESHOW ================= */
+let ttBlob = null, ttExt = 'mp4';
+
+function setLoadText(msg){
+  const l = document.getElementById('load');
+  l.querySelectorAll('div')[1].textContent = msg;
+}
+
+async function generateTiktok(){
+  clearErr();
+  const proxy = normalizeUrl(localStorage.getItem('kor_proxy')||'');
+  if (!proxy){ showErr('Primero pega la URL de tu Worker (toca ⚙ arriba).'); openSheet(); return; }
+  if (files.length<2){ showErr('Sube al menos 2 fotos para el TikTok.'); return; }
+  if (!window.MediaRecorder){ showErr('Tu navegador no soporta crear video. Actualiza iOS o prueba en Chrome.'); return; }
+
+  document.getElementById('s1').classList.add('hide');
+  document.getElementById('load').style.display='block';
+  setLoadText('Escribiendo tu TikTok…');
+
+  try {
+    await ensureFonts();
+    const imgs = await Promise.all(files.map(fileToImg));
+    const b64s = imgs.map(downscaleToB64);
+    plan = await callSlideshow(proxy, b64s);
+    const slides = (plan.slides||[]).map(s=>typeof s==='string'?{text:s}:s);
+    while (slides.length<imgs.length) slides.push({text:''});
+
+    setLoadText('Montando el video… (no cierres)');
+    ttBlob = await renderSlideshowVideo(imgs, slides.slice(0,imgs.length));
+    ttExt = ttBlob.type.includes('mp4') ? 'mp4' : 'webm';
+
+    document.getElementById('ttVideo').src = URL.createObjectURL(ttBlob);
+    document.getElementById('ttCapBox').textContent = plan.caption||'';
+    const tags = (plan.hashtags||[]).map(t=>t.startsWith('#')?t:'#'+t);
+    document.getElementById('ttTagsBox').innerHTML = tags.map(t=>`<span class="tg">${t}</span>`).join('');
+    if (plan.tiktok){
+      document.getElementById('ttScriptBox').textContent = tiktokText();
+      document.getElementById('ttScriptSection').style.display='block';
+    }
+    document.getElementById('load').style.display='none';
+    document.getElementById('s4').style.display='block';
+    if (!navigator.canShare) document.getElementById('shareVidBtn').style.display='none';
+    window.scrollTo(0,0);
+  } catch(err){
+    document.getElementById('load').style.display='none';
+    document.getElementById('s1').classList.remove('hide');
+    showErr(err.message || 'No se pudo crear el TikTok');
+  }
+}
+
+async function callSlideshow(proxyUrl, photos){
+  const content = photos.map(p=>({ type:'image', source:{ type:'base64', media_type:p.type, data:p.data } }));
+  content.push({ type:'text', text:
+`Estas ${photos.length} fotos son para un TikTok/Reel vertical de kÖr activewear (@_korsv, El Salvador), en orden.
+Crea un slideshow: UNA frase corta y potente en pantalla para CADA foto (en orden), que juntas cuenten una mini-historia o gancho.
+
+${KOR_VOICE}
+
+Aplica esa voz en cada frase y en el caption. Ajusta girly/motivacional según el mood de las fotos.
+
+Devuelve SOLO JSON válido:
+{
+  "slides": [ "frase foto 1 (máx 5 palabras)", "frase foto 2", "..." ],
+  "audio": "2 opciones de audio trending concretas y por qué pegan",
+  "caption": "caption de TikTok con gancho fuerte, 1-2 líneas",
+  "hashtags": ["fyp","gymtok","korsv","fitnesssv","parati"],
+  "tiktok": {
+    "hook": "texto del gancho (primeros 3s)",
+    "scenes": [{"t":"0-3s","do":"qué se ve","text":"texto en pantalla"}],
+    "audio": "mismo audio sugerido",
+    "caption": "mismo caption",
+    "hashtags": ["fyp","gymtok","korsv"]
+  }
+}
+- Exactamente ${photos.length} frases en "slides", una por foto, en orden.
+- Frases MUY cortas, en MAYÚSCULAS funcionan bien.
+- Solo JSON, sin markdown.` });
+
+  let resp;
+  try {
+    resp = await fetch(proxyUrl,{ method:'POST', headers:{'content-type':'application/json'},
+      body: JSON.stringify({ model:'claude-opus-4-8', max_tokens:1500,
+        system:'Eres el director creativo de kÖr activewear, marca salvadoreña premium. Escribes con la voz de Gymshark adaptada a kÖr. Respondes SOLO con JSON válido.',
+        messages:[{ role:'user', content }] }) });
+  } catch(e){ throw new Error('No se pudo conectar al Worker. Revisa la URL en ⚙.'); }
+  if (!resp.ok){
+    const e = await resp.json().catch(()=>({}));
+    if (resp.status===403||resp.status===404) throw new Error('La URL del Worker en ⚙ está mal.');
+    throw new Error(e.error?.message || ('Error '+resp.status));
+  }
+  const data = await resp.json();
+  const txt = data.content[0].text; const s=txt.indexOf('{'), en=txt.lastIndexOf('}')+1;
+  if (s===-1) throw new Error('Respuesta inválida de Claude');
+  return JSON.parse(txt.slice(s,en));
+}
+
+function drawSlide(ctx, img, text, t){
+  ctx.fillStyle='#000'; ctx.fillRect(0,0,W,H);
+  // Ken Burns zoom
+  const zoom = 1.06 + 0.12*t;
+  const ir=img.width/img.height, cr=W/H;
+  let dw,dh; if (ir>cr){ dh=H*zoom; dw=dh*ir; } else { dw=W*zoom; dh=dw/ir; }
+  ctx.drawImage(img,(W-dw)/2,(H-dh)/2,dw,dh);
+  grad(ctx, [[0,'#0007'],[.4,'#0000'],[.7,'#0008'],[1,'#000f']]);
+  // text fade in/out
+  let a=1; if (t<0.14) a=t/0.14; else if (t>0.86) a=(1-t)/0.14;
+  ctx.globalAlpha=Math.max(0,Math.min(1,a));
+  if (text){
+    ctx.fillStyle='#fff'; ctx.textAlign='left';
+    const { lines, size } = fitLines(ctx, text.toUpperCase(), W-PAD*2, 150, 3);
+    const lh=size*0.95; let y=H-280-(lines.length-1)*lh+size*0.74;
+    lines.forEach(l=>{ ctx.font=display(size); ctx.fillText(l, PAD, y); y+=lh; });
+  }
+  ctx.globalAlpha=1;
+  brandMark(ctx);
+}
+
+async function renderSlideshowVideo(imgs, slides){
+  const cv = document.createElement('canvas'); cv.width=W; cv.height=H;
+  const ctx = cv.getContext('2d');
+  if (!cv.captureStream) throw new Error('Tu navegador no soporta grabar video. Prueba en Chrome.');
+  const stream = cv.captureStream(30);
+  let mime=''; ['video/mp4','video/webm;codecs=vp9','video/webm'].forEach(m=>{ if(!mime && MediaRecorder.isTypeSupported(m)) mime=m; });
+  const rec = new MediaRecorder(stream, mime?{mimeType:mime, videoBitsPerSecond:6_000_000}:undefined);
+  const chunks=[]; rec.ondataavailable=e=>{ if(e.data.size) chunks.push(e.data); };
+  const done = new Promise(res=>{ rec.onstop=()=>res(new Blob(chunks,{type:mime||'video/webm'})); });
+  rec.start();
+
+  const per=2300, total=imgs.length*per, start=performance.now();
+  // prime first frame
+  drawSlide(ctx, imgs[0], slides[0]?.text||'', 0);
+  await new Promise(resolve=>{
+    function frame(now){
+      const el=now-start;
+      if (el>=total){ resolve(); return; }
+      const idx=Math.min(imgs.length-1, Math.floor(el/per));
+      const local=(el-idx*per)/per;
+      drawSlide(ctx, imgs[idx], slides[idx]?.text||'', local);
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  });
+  // hold last frame a touch
+  await new Promise(r=>setTimeout(r,200));
+  rec.stop();
+  return await done;
+}
+
+function downloadVideo(){
+  if (!ttBlob) return;
+  const url=URL.createObjectURL(ttBlob);
+  const a=document.createElement('a'); a.href=url; a.download='kor-tiktok.'+ttExt; a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),3000);
+}
+async function shareVideo(){
+  if (!ttBlob) return;
+  try {
+    const file = new File([ttBlob],'kor-tiktok.'+ttExt,{type:ttBlob.type});
+    const tags=(plan.hashtags||[]).map(t=>t.startsWith('#')?t:'#'+t).join(' ');
+    if (navigator.canShare && navigator.canShare({files:[file]})){
+      await navigator.share({ files:[file], text:(plan.caption||'')+'\n\n'+tags });
+    } else { downloadVideo(); }
+  } catch(e){}
+}
+function copyTtCaption(){
+  const tags=(plan.hashtags||[]).map(t=>t.startsWith('#')?t:'#'+t).join(' ');
+  navigator.clipboard.writeText((plan.caption||'')+'\n\n'+tags).then(()=>{
+    const b=document.getElementById('ttCapCopyBtn'); const o=b.textContent;
+    b.textContent='✓ Copiado'; b.classList.add('copied');
+    setTimeout(()=>{ b.textContent=o; b.classList.remove('copied'); },1500);
+  });
+}
+
+function reset(){
+  files=[]; plan=null; selectedIdx=0; loadedImg=null; ttBlob=null;
+  renderThumbs(); clearErr();
+  setLoadText('Creando tus historias…');
+  document.getElementById('s2').style.display='none';
+  document.getElementById('s3').style.display='none';
+  document.getElementById('s4').style.display='none';
+  document.getElementById('ttScriptSection').style.display='none';
+  document.getElementById('s1').classList.remove('hide');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
