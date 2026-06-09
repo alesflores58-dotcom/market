@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#0a0a0a">
 <title>kÖr Studio</title>
 <link rel="manifest" href="manifest.json">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@600;700;800;900&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,500&display=swap" rel="stylesheet">
 <style>
   :root {
     --black:#0a0a0a; --white:#fff; --gray:#141414; --line:#262626;
@@ -23,7 +23,7 @@
   .top { display:flex; align-items:center; justify-content:space-between;
     padding:16px 20px; border-bottom:1px solid var(--line); position:sticky; top:0;
     background:rgba(10,10,10,.9); backdrop-filter:blur(12px); z-index:10; }
-  .brand { font-family:'Cormorant Garamond',serif; font-size:26px; letter-spacing:3px; }
+  .brand { font-family:'Bodoni Moda',serif; font-size:26px; letter-spacing:3px; }
   .brand small { font-size:10px; letter-spacing:3px; color:var(--text);
     font-family:'Inter'; display:block; margin-top:-4px; }
   .gear { background:none; border:none; color:var(--text); font-size:20px; cursor:pointer; }
@@ -191,11 +191,12 @@ async function ensureFonts() {
   if (fontReady) return;
   try {
     await Promise.all([
-      document.fonts.load('400 80px "Cormorant Garamond"'),
-      document.fonts.load('500 80px "Cormorant Garamond"'),
-      document.fonts.load('italic 400 80px "Cormorant Garamond"'),
-      document.fonts.load('600 40px "Inter"'),
-      document.fonts.load('700 40px "Inter"'),
+      document.fonts.load('400 120px "Anton"'),
+      document.fonts.load('500 80px "Bodoni Moda"'),
+      document.fonts.load('600 80px "Bodoni Moda"'),
+      document.fonts.load('italic 500 80px "Bodoni Moda"'),
+      document.fonts.load('800 40px "Archivo"'),
+      document.fonts.load('900 40px "Archivo"'),
     ]);
     await document.fonts.ready;
   } catch(e){}
@@ -365,33 +366,47 @@ function grad(ctx, stops){
   stops.forEach(([o,c])=>g.addColorStop(o,c));
   ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
 }
+/* ---- Fonts: Anton = titular streetwear, Bodoni = wordmark, Archivo = labels ---- */
+function display(size){ return `400 ${size}px "Anton", Impact, sans-serif`; }
 function serif(weight,size,italic){
-  return `${italic?'italic ':''}${weight} ${size}px "Cormorant Garamond", Georgia, serif`;
+  return `${italic?'italic ':''}${weight} ${size}px "Bodoni Moda", Georgia, serif`;
 }
-function sans(weight,size){ return `${weight} ${size}px "Inter", sans-serif`; }
-function letter(ctx, text, x, y, ls){
-  // draw text with letter spacing, centered at x
+function label(weight,size){ return `${weight} ${size}px "Archivo", sans-serif`; }
+
+function letter(ctx, text, x, y, ls, align){
+  // draw text with letter spacing. align: 'center'|'left'|'right' around x
   const chars=[...text];
   ctx.save();
   let total=0;
   chars.forEach(c=>{ total += ctx.measureText(c).width + ls; });
   total -= ls;
-  let cx = x - total/2;
+  let cx = x;
+  if (align==='center') cx = x - total/2;
+  else if (align==='right') cx = x - total;
   ctx.textAlign='left';
   chars.forEach(c=>{ ctx.fillText(c,cx,y); cx += ctx.measureText(c).width + ls; });
   ctx.restore();
 }
-function wrapSerif(ctx, text, size, maxW){
-  ctx.font = serif(500,size);
-  const words=text.split(' '); const lines=[]; let line='';
-  words.forEach(w=>{
-    const test = line?line+' '+w:w;
-    if (ctx.measureText(test).width>maxW && line){ lines.push(line); line=w; }
-    else line=test;
-  });
-  if(line) lines.push(line);
-  return lines;
+// wrap uppercase headline to N lines using Anton, auto-fit size to width
+function fitLines(ctx, text, maxW, startSize, maxLines){
+  let size = startSize;
+  for (; size>40; size-=4){
+    ctx.font = display(size);
+    const words = text.split(' '); const lines=[]; let line='';
+    words.forEach(w=>{
+      const test = line?line+' '+w:w;
+      if (ctx.measureText(test).width>maxW && line){ lines.push(line); line=w; }
+      else line=test;
+    });
+    if(line) lines.push(line);
+    if (lines.length<=maxLines && lines.every(l=>ctx.measureText(l).width<=maxW))
+      return { lines, size };
+  }
+  ctx.font = display(size);
+  return { lines:[text], size };
 }
+
+const PAD = 70; // edge padding — text hugs the edges (streetwear)
 
 function renderStory(canvas, img, story){
   canvas.width=W; canvas.height=H;
@@ -400,78 +415,76 @@ function renderStory(canvas, img, story){
   drawCover(ctx, img);
 
   const tpl = (story.template||'DROP').toUpperCase();
-  ctx.textAlign='center'; ctx.fillStyle='#fff';
-
   const head = (story.headline||'').toUpperCase();
-  const sub  = story.sub||'';
+  const sub  = (story.sub||'').toUpperCase();
   const tag  = (story.tag||'').toUpperCase();
 
   if (tpl==='MOTIVATION'){
-    grad(ctx, [[0,'#000c'],[.5,'#0006'],[1,'#000c']]);
-    // centered italic serif quote
+    grad(ctx, [[0,'#000a'],[.5,'#0004'],[1,'#000c']]);
     ctx.fillStyle='#fff';
-    const lines = wrapSerif(ctx, story.headline||'', 96, W*0.78);
-    ctx.font = serif(400,96,true);
-    let y = H/2 - (lines.length-1)*60;
-    lines.forEach(l=>{ ctx.fillText(l, W/2, y); y+=120; });
-    // hairlines
-    ctx.strokeStyle='#fff'; ctx.lineWidth=1.5;
-    ctx.beginPath(); ctx.moveTo(W/2-60,y+20); ctx.lineTo(W/2+60,y+20); ctx.stroke();
-    if (tag){ ctx.font=sans(600,26); ctx.fillStyle='#fff'; letter(ctx,tag,W/2,y+90,8); }
+    const { lines, size } = fitLines(ctx, head, W-PAD*2, 150, 4);
+    const lh = size*1.0;
+    let y = H/2 - (lines.length-1)*lh/2;
+    ctx.textAlign='left';
+    lines.forEach(l=>{ ctx.font=display(size); ctx.fillText(l, PAD, y+size*0.34); y+=lh; });
+    // accent line
+    ctx.fillStyle='#fff'; ctx.fillRect(PAD, y+10, 120, 8);
+    if (tag){ ctx.fillStyle='#fff'; ctx.font=label(700,26); letter(ctx,tag,PAD,y+70,6,'left'); }
     brandMark(ctx);
     return;
   }
 
   if (tpl==='UGC'){
-    grad(ctx, [[0,'#0009'],[.6,'#0003'],[1,'#000d']]);
-    ctx.fillStyle='#fff';
-    ctx.font=serif(400,140); ctx.fillText('"', W/2, 360);
-    const lines = wrapSerif(ctx, story.headline||'', 78, W*0.74);
-    ctx.font = serif(400,78,true);
-    let y=470; lines.forEach(l=>{ ctx.fillText(l,W/2,y); y+=98; });
-    if (sub){ ctx.font=sans(600,28); letter(ctx, sub.toUpperCase(), W/2, y+30, 6); }
+    grad(ctx, [[0,'#000b'],[.55,'#0003'],[1,'#000d']]);
+    // italic serif quote, big quotation mark
+    ctx.fillStyle='#fff'; ctx.textAlign='left';
+    ctx.font=serif(500,260,false); ctx.fillText('“', PAD-10, 420);
+    const words=(story.headline||'').split(' '); const lines=[]; let line='';
+    ctx.font=serif(500,86,true);
+    words.forEach(w=>{ const t=line?line+' '+w:w; if(ctx.measureText(t).width>W-PAD*2&&line){lines.push(line);line=w;}else line=t;});
+    if(line) lines.push(line);
+    let y=560; lines.forEach(l=>{ ctx.fillText(l,PAD,y); y+=104; });
+    if (sub){ ctx.fillStyle='#fff'; ctx.font=label(700,30); letter(ctx,'— '+sub,PAD,y+20,4,'left'); }
     brandMark(ctx);
     return;
   }
 
-  // DROP / SHOP / COUNTDOWN / RESTOCK — editorial bottom block
-  grad(ctx, [[0,'#0007'],[.45,'#0000'],[1,'#000e']]);
+  // DROP / SHOP / COUNTDOWN / RESTOCK — bottom-anchored streetwear block
+  grad(ctx, [[0,'#0006'],[.4,'#0000'],[.72,'#0009'],[1,'#000f']]);
 
-  const baseY = H - 360;
-  // top hairline
-  ctx.strokeStyle='#ffffffcc'; ctx.lineWidth=1.5;
-  ctx.beginPath(); ctx.moveTo(W*0.12, baseY-70); ctx.lineTo(W*0.88, baseY-70); ctx.stroke();
-
-  if (tag){ ctx.font=sans(600,28); ctx.fillStyle='#fff'; letter(ctx, tag, W/2, baseY-20, 10); }
-
-  // headline
   ctx.fillStyle='#fff';
-  const hl = wrapSerif(ctx, head, 120, W*0.82);
-  ctx.font = serif(500,120);
-  let hy = baseY + 110;
-  hl.forEach(l=>{ ctx.fillText(l, W/2, hy); hy += 130; });
+  const { lines, size } = fitLines(ctx, head, W-PAD*2, 200, 3);
+  const lh = size*0.92;
+  let hy = H - 230 - (lines.length-1)*lh;
+  ctx.textAlign='left';
 
-  if (sub){ ctx.font=serif(400,52,true); ctx.fillStyle='#eee'; ctx.fillText(sub, W/2, hy+10); hy+=70; }
+  // tag label above headline
+  if (tag){
+    ctx.fillStyle='#fff'; ctx.font=label(700,28);
+    letter(ctx, tag, PAD, hy - size*0.72 - 28, 8, 'left');
+  }
+  lines.forEach(l=>{ ctx.font=display(size); ctx.fillStyle='#fff'; ctx.fillText(l, PAD, hy); hy+=lh; });
 
-  // CTA depending on template
-  let cta='';
-  if (tpl==='SHOP') cta='LINK EN BIO';
-  else if (tpl==='COUNTDOWN') cta='MUY PRONTO';
-  else if (tpl==='RESTOCK') cta='DISPONIBLE AHORA';
-  else cta='DESLIZA HACIA ARRIBA';
-  ctx.font=sans(600,26); ctx.fillStyle='#fff';
-  // bottom hairline + cta
-  ctx.strokeStyle='#ffffffcc'; ctx.lineWidth=1.5;
-  ctx.beginPath(); ctx.moveTo(W*0.12, hy+40); ctx.lineTo(W*0.88, hy+40); ctx.stroke();
-  letter(ctx, cta, W/2, hy+95, 8);
+  // CTA pill bar
+  let cta = tpl==='SHOP' ? 'LINK EN BIO'
+          : tpl==='COUNTDOWN' ? 'MUY PRONTO'
+          : tpl==='RESTOCK' ? 'YA DISPONIBLE'
+          : 'DESLIZA ARRIBA';
+  if (sub) cta = sub;
+  ctx.font=label(800,30);
+  const cw = (()=>{let t=0;[...cta].forEach(c=>t+=ctx.measureText(c).width+4);return t-4;})();
+  const bx=PAD, by=hy+18, bh=78, bw=cw+72;
+  ctx.fillStyle='#fff'; ctx.fillRect(bx,by,bw,bh);
+  ctx.fillStyle='#000'; letter(ctx, cta, bx+36, by+bh/2+11, 4, 'left');
 
   brandMark(ctx);
 }
 
 function brandMark(ctx){
-  ctx.fillStyle='#fff'; ctx.textAlign='center';
-  ctx.font=serif(500,58); ctx.fillText('kÖr', W/2, 130);
-  ctx.font=sans(500,20); letter(ctx,'@_KORSV', W/2, 165, 6);
+  // elegant serif wordmark top-left, handle top-right
+  ctx.textAlign='left'; ctx.fillStyle='#fff';
+  ctx.font=serif(600,70,false); ctx.fillText('kÖr', PAD, 140);
+  ctx.font=label(700,22); letter(ctx,'@_KORSV', W-PAD, 132, 4, 'right');
 }
 
 /* ---------- Build option cards ---------- */
