@@ -596,6 +596,18 @@
     .product-card:hover .product-image-wrap img {
       transform: scale(calc(var(--fz) * 1.04)) translateY(var(--fy));
     }
+    /* Men's photos: studio shots with black background -> show full, no crop. */
+    .product-card[data-cat="compresion"] .product-image-wrap,
+    .product-card[data-cat="camiseta"] .product-image-wrap,
+    .product-card[data-cat="manga-corta"] .product-image-wrap,
+    .product-card[data-cat="manga-larga"] .product-image-wrap { background:#000; }
+    .product-card[data-cat="compresion"] .product-image-wrap img,
+    .product-card[data-cat="camiseta"] .product-image-wrap img,
+    .product-card[data-cat="manga-corta"] .product-image-wrap img,
+    .product-card[data-cat="manga-larga"] .product-image-wrap img {
+      object-fit: contain !important;
+      transform: none !important;
+    }
     .product-placeholder {
       width: 100%;
       height: 100%;
