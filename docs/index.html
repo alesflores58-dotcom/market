@@ -192,11 +192,17 @@ let cardCanvases = [];    // rendered option canvases
 let selectedIdx = 0;
 let loadedImg = null;     // the uploaded Image element
 let fontReady = false;
+// kÖr brand logo (white PNG, transparent bg)
+const korLogo = new Image();
+korLogo.src = 'kor-logo.png';
 
 /* ---------- Font preload (canvas needs fonts loaded) ---------- */
 async function ensureFonts() {
   if (fontReady) return;
   try {
+    if (!korLogo.complete || !korLogo.naturalWidth){
+      await new Promise(r=>{ korLogo.onload=r; korLogo.onerror=r; });
+    }
     await Promise.all([
       document.fonts.load('400 120px "Anton"'),
       document.fonts.load('500 80px "Bodoni Moda"'),
@@ -551,10 +557,16 @@ function renderStory(canvas, img, story){
 }
 
 function brandMark(ctx){
-  // elegant serif wordmark top-left, handle top-right
-  ctx.textAlign='left'; ctx.fillStyle='#fff';
-  ctx.font=serif(600,70,false); ctx.fillText('kÖr', PAD, 140);
-  ctx.font=label(700,22); letter(ctx,'@_KORSV', W-PAD, 132, 4, 'right');
+  // real kÖr logo image top-left, handle top-right
+  if (korLogo.complete && korLogo.naturalWidth){
+    const lw = 200, lh = lw * korLogo.naturalHeight / korLogo.naturalWidth;
+    ctx.drawImage(korLogo, PAD, 80, lw, lh);
+  } else {
+    ctx.textAlign='left'; ctx.fillStyle='#fff';
+    ctx.font=serif(600,70,false); ctx.fillText('kÖr', PAD, 140);
+  }
+  ctx.fillStyle='#fff'; ctx.font=label(700,22);
+  letter(ctx,'@_KORSV', W-PAD, 120, 4, 'right');
 }
 
 /* ---------- Build option cards ---------- */
