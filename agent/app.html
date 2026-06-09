@@ -481,14 +481,22 @@ function renderStory(canvas, img, story){
 
   if (tpl==='SALE'){
     grad(ctx, [[0,'#0006'],[.4,'#0000'],[.7,'#0009'],[1,'#000f']]);
-    // big OFERTA tag block + huge headline (the % or price)
-    ctx.fillStyle='#fff'; ctx.fillRect(PAD, H-470, 230, 64);
-    ctx.fillStyle='#000'; ctx.font=label(900,34); letter(ctx, tag||'OFERTA', PAD+18, H-426, 2, 'left');
-    ctx.fillStyle='#fff';
+    ctx.fillStyle='#fff'; ctx.textAlign='left';
     const { lines, size } = fitLines(ctx, head, W-PAD*2, 230, 2);
-    let y = H-360; ctx.textAlign='left';
-    lines.forEach(l=>{ ctx.font=display(size); ctx.fillText(l, PAD, y); y+=size*0.92; });
-    if (sub){ ctx.font=label(800,34); letter(ctx, sub, PAD, y+30, 3, 'left'); }
+    const lh = size*0.92;
+    const subH = sub ? 60 : 0;
+    let hy = H - 200 - subH - (lines.length-1)*lh;
+    // OFERTA pill above headline
+    ctx.font=label(900,32);
+    const pillTxt = tag||'OFERTA';
+    let pw=0; [...pillTxt].forEach(c=>pw+=ctx.measureText(c).width+2); pw-=2;
+    const pillY = hy - size*0.80 - 80;
+    ctx.fillStyle='#fff'; ctx.fillRect(PAD, pillY, pw+44, 60);
+    ctx.fillStyle='#000'; letter(ctx, pillTxt, PAD+22, pillY+40, 2, 'left');
+    // headline
+    ctx.fillStyle='#fff';
+    lines.forEach(l=>{ ctx.font=display(size); ctx.fillText(l, PAD, hy); hy+=lh; });
+    if (sub){ ctx.font=label(800,34); letter(ctx, sub, PAD, hy+30, 3, 'left'); }
     brandMark(ctx);
     return;
   }
@@ -514,13 +522,18 @@ function renderStory(canvas, img, story){
 
   if (tpl==='TIP'){
     grad(ctx, [[0,'#0008'],[.5,'#0002'],[1,'#000e']]);
-    ctx.fillStyle='#fff'; ctx.fillRect(PAD, H-540, 150, 60);
-    ctx.fillStyle='#000'; ctx.font=label(900,32); letter(ctx,'TIP', PAD+20, H-498, 2,'left');
-    ctx.fillStyle='#fff';
+    ctx.fillStyle='#fff'; ctx.textAlign='left';
     const { lines, size } = fitLines(ctx, head, W-PAD*2, 130, 4);
-    let y=H-400; ctx.textAlign='left';
-    lines.forEach(l=>{ ctx.font=display(size); ctx.fillText(l, PAD, y); y+=size*0.95; });
-    if (sub){ ctx.font=label(700,30); letter(ctx, sub, PAD, y+24, 3,'left'); }
+    const lh = size*0.95;
+    const subH = sub ? 54 : 0;
+    let hy = H - 200 - subH - (lines.length-1)*lh;
+    // TIP pill above
+    const pillY = hy - size*0.80 - 80;
+    ctx.fillStyle='#fff'; ctx.fillRect(PAD, pillY, 150, 60);
+    ctx.fillStyle='#000'; ctx.font=label(900,32); letter(ctx,'TIP', PAD+20, pillY+40, 2,'left');
+    ctx.fillStyle='#fff';
+    lines.forEach(l=>{ ctx.font=display(size); ctx.fillText(l, PAD, hy); hy+=lh; });
+    if (sub){ ctx.font=label(700,30); letter(ctx, sub, PAD, hy+24, 3,'left'); }
     brandMark(ctx);
     return;
   }
