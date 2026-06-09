@@ -379,7 +379,7 @@ async function callClaude(proxyUrl, photo){
   const content = [
     { type:'image', source:{ type:'base64', media_type:photo.type, data:photo.data } },
     { type:'text', text:
-`Analiza esta foto para kÖr activewear (@_korsv, El Salvador) y crea 6 conceptos de historia de Instagram (templates variados) + 1 idea de TikTok/Reel.
+`Analiza esta foto para kÖr activewear (@_korsv, El Salvador) y crea 9 conceptos de historia de Instagram (templates variados) + 1 idea de TikTok/Reel.
 
 Templates disponibles: DROP (nueva llegada), SHOP (link en bio/compra), COUNTDOWN (cuenta regresiva drop), RESTOCK (vuelve disponible), MOTIVATION (frase corta de actitud, NO motivación cursi), UGC (testimonio/cliente), SALE (oferta/descuento), TIP (tip de ESTILO o FIT — cómo se ve/usa la prenda, NUNCA técnica de gym).
 CREATIVOS (más editoriales, úsalos para variar): OUTLINE (titular gigante en contorno hueco), GIANT (1-2 palabras enormes a escala fashion), CHROME (titular con efecto cromado/metálico), REPEAT (palabra repetida de fondo como patrón).
@@ -411,7 +411,7 @@ Devuelve SOLO JSON válido:
 ${KOR_VOICE}
 
 REGLAS:
-- 6 historias: las 4 creativas SIEMPRE (OUTLINE, GIANT, CHROME, REPEAT) + 2 simples distintas (de: DROP, SHOP, TIP, MOTIVATION, RESTOCK). Una de cada plantilla, sin repetir.
+- 9 historias: las 4 creativas SIEMPRE (OUTLINE, GIANT, CHROME, REPEAT) + 5 simples distintas (DROP, SHOP, TIP, MOTIVATION, RESTOCK). Una de cada plantilla, sin repetir, para que el set tenga TODOS los estilos.
 - Para GIANT y OUTLINE el headline debe ser MUY corto (1-3 palabras), porque va a escala enorme.
 - El "sub" (cuando lo uses) máximo 5 palabras — debe caber en una línea sin cortarse.
 - Aplica la VOZ DE MARCA de arriba en CADA headline, sub y caption.
@@ -430,7 +430,7 @@ REGLAS:
       headers:{ 'content-type':'application/json' },
       body: JSON.stringify({
         model:'claude-opus-4-8',
-        max_tokens:2048,
+        max_tokens:4096,
         temperature:1,
         system:'Eres el director creativo de kÖr activewear, marca salvadoreña. Tu trabajo es escribir copy específico para CADA foto, nunca frases genéricas de gym. Odias el cliché. Respondes SOLO con JSON válido, sin texto extra.',
         messages:[{ role:'user', content }]
@@ -734,7 +734,7 @@ function brandMark(ctx){
 
 /* ---------- Build option cards ---------- */
 function buildOptions(){
-  const stories = (plan.stories||[]).slice(0,6);
+  const stories = (plan.stories||[]).slice(0,9);
   const cont = document.getElementById('cards'); cont.innerHTML=''; cardCanvases=[];
   stories.forEach((st,i)=>{
     const card = document.createElement('div');
