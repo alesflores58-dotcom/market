@@ -605,7 +605,7 @@ function renderStory(canvas, img, story){
     let size = 460; ctx.font=display(size);
     const longest = words.reduce((a,b)=>ctx.measureText(b).width>ctx.measureText(a).width?b:a, words[0]||'');
     while(ctx.measureText(longest).width > W-PAD*1.1 && size>120){ size-=8; ctx.font=display(size); }
-    const lh = size*0.84;
+    const lh = lineH(size, words);
     let y = H - 170 - (words.length-1)*lh;
     words.forEach(w=>{ ctx.font=display(size); ctx.fillText(w, PAD-6, y); y+=lh; });
     brandMark(ctx);
