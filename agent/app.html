@@ -506,14 +506,27 @@ function fitLines(ctx, text, maxW, startSize, maxLines){
 
 const PAD = 70; // edge padding — text hugs the edges (streetwear)
 
+// The Ö/ö (and other diaeresis marks) sit ABOVE the cap height. With the tight
+// streetwear line spacing they collide with the line/label above them. These
+// helpers give extra breathing room whenever a diacritic is present.
+const RE_DIA = /[ÖöÄäÅåÜüËëÏï]/;
+function hasDia(t){ return RE_DIA.test(t||''); }
+// line height: looser when any line carries diacritic dots so they never touch
+function lineH(size, lines){
+  const arr = Array.isArray(lines) ? lines : [lines];
+  return size * (arr.some(hasDia) ? 1.06 : 0.92);
+}
+// extra space to reserve ABOVE the first line for its dots
+function diaTop(size, firstLine){ return hasDia(firstLine) ? size*0.20 : 0; }
+
 // White tag pill on top, big headline below, optional sub. Drawn top-down so
 // elements can never overlap. Anchored to the bottom third.
 function drawTagBlock(ctx, tagTxt, head, sub, startSize, maxLines){
   startSize = startSize||200; maxLines = maxLines||2;
   ctx.textAlign='left';
   const { lines, size } = fitLines(ctx, head, W-PAD*2, startSize, maxLines);
-  const lh = size*0.92, capOffset = size*0.74;
-  const pillH = 60, gapPill = 30, gapSub = 26, subH = sub ? 40 : 0;
+  const lh = lineH(size, lines), capOffset = size*0.74;
+  const pillH = 60, gapPill = 30 + diaTop(size, lines[0]), gapSub = 26, subH = sub ? 40 : 0;
   const totalH = pillH + gapPill + lines.length*lh + (sub ? gapSub+subH : 0);
   let y = H - 150 - totalH; // top of the whole block
   // pill
@@ -545,7 +558,7 @@ function renderStory(canvas, img, story){
     grad(ctx, [[0,'#0004'],[.42,'#0000'],[.72,'#0009'],[1,'#000f']]);
     ctx.fillStyle='#fff'; ctx.textAlign='left';
     const { lines, size } = fitLines(ctx, head, W-PAD*2, 160, 3);
-    const lh = size*0.92;
+    const lh = lineH(size, lines);
     let y = H - 210 - (lines.length-1)*lh;
     lines.forEach(l=>{ ctx.font=display(size); ctx.fillText(l, PAD, y); y+=lh; });
     // optional small sub about the garment
@@ -600,14 +613,14 @@ function renderStory(canvas, img, story){
 
   ctx.fillStyle='#fff';
   const { lines, size } = fitLines(ctx, head, W-PAD*2, 200, 3);
-  const lh = size*0.92;
+  const lh = lineH(size, lines);
   let hy = H - 230 - (lines.length-1)*lh;
   ctx.textAlign='left';
 
-  // tag label above headline
+  // tag label above headline — pushed up extra if the headline's first line has dots
   if (tag){
     ctx.fillStyle='#fff'; ctx.font=label(700,28);
-    letter(ctx, tag, PAD, hy - size*0.72 - 28, 8, 'left');
+    letter(ctx, tag, PAD, hy - size*0.72 - 28 - diaTop(size, lines[0]), 8, 'left');
   }
   lines.forEach(l=>{ ctx.font=display(size); ctx.fillStyle='#fff'; ctx.fillText(l, PAD, hy); hy+=lh; });
 
@@ -853,7 +866,7 @@ function drawSlide(ctx, img, text, t){
   if (text){
     ctx.fillStyle='#fff'; ctx.textAlign='left';
     const { lines, size } = fitLines(ctx, text.toUpperCase(), W-PAD*2, 150, 3);
-    const lh=size*0.95; let y=H-280-(lines.length-1)*lh+size*0.74;
+    const lh=lineH(size, lines); let y=H-280-(lines.length-1)*lh+size*0.74;
     lines.forEach(l=>{ ctx.font=display(size); ctx.fillText(l, PAD, y); y+=lh; });
   }
   ctx.globalAlpha=1;
