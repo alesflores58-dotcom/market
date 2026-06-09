@@ -337,33 +337,34 @@ async function generate(){
   }
 }
 
-const KOR_VOICE = `VOZ DE MARCA kÖr — activewear premium, El Salvador. Lee esto y respíralo antes de escribir.
+const KOR_VOICE = `VOZ DE MARCA kÖr — activewear premium, El Salvador. Lee esto entero antes de escribir una sola palabra.
 
-LA REGLA DE ORO: el copy tiene que salir de ESTA foto específica, no de una lista de frases de gym. Mira la foto: ¿qué luz hay, qué actitud tiene la persona, qué textura tiene la ropa, qué momento es? Escribe algo que SOLO funcione para esta imagen. Si tu frase serviría para cualquier post de cualquier gym, BÓRRALA y empieza de nuevo.
+REFERENCIA REAL — así escribe Gymshark hoy (campaña "We Do Gym"). NO es motivación, son VERDADES de gym con humor seco que solo entiende quien entrena (IYKYK, "if you know you know"):
+  "Never skip egg day"
+  "The real pain starts 2 days after leg day"
+  "Chicken, rice & broccoli for dinner again"
+  "Squat rack, shorts hack"
+  "Built from the squat rack, not the running track"
+  "The brand who gets pre-workout zoomies"
+Fíjate: relajado, gracioso, autoconsciente, slang de gym, cero inspiración cursi. Suena a alguien que VIVE en el gym, no a marca que te quiere motivar. ESE es el nivel.
 
-ESTILO: spanglish natural 50/50, como habla la gente joven bilingüe del gym en SV. Varía entre estos tres registros según la foto (no siempre el mismo):
-  1. INGENIOSO / observador — una verdad con giro. Ej: "The fit is half the workout".
-  2. SECO / mínimo — 1 a 3 palabras, frío, deja que la foto hable. Ej: "Lock in." · "El fit."
-  3. LOCAL con textura — sabor salvadoreño sutil, sin estereotipo ni modismo forzado.
+TU TRABAJO: adaptar ESE tono a kÖr, en spanglish salvadoreño natural, partiendo de lo que se ve en ESTA foto. No frases bonitas — observaciones reales, chistes internos de gym, verdades que dan risa de reconocimiento.
 
-FIRMA VISUAL: kÖr a veces usa la Ö dentro de palabras (mÖment, gÖlden, fÖr). Úsalo MUY de vez en cuando, solo si la palabra lo aguanta y se ve bien. No en cada headline.
+CÓMO GENERAR (en orden):
+  1. Mira la foto: ¿qué prenda, qué color, qué momento (antes de entrenar, mirror selfie, post-leg day, golden hour)? ¿qué detalle real hay?
+  2. Escribe una verdad/observación sobre ESE momento, con humor seco o actitud. Que solo funcione para esta foto.
+  3. Spanglish 50/50 natural, como habla gente joven bilingüe del gym en SV. Nada de traductor literal.
 
-LARGO: 2 a 6 palabras. Sin exclamaciones. Sin emojis en el copy de historia. Tono seguro, frío, nunca pidiendo aprobación.
+LARGO: 2 a 7 palabras. Sin exclamaciones. Sin emojis en el copy de historia. Tono relajado-seguro, nunca pidiendo aprobación.
 
-PROHIBIDO ABSOLUTO — esta lista es lo que hace el copy genérico y cringe. Si usas CUALQUIERA de estas, fallaste:
-  · Vocabulario cliché de gym: "grind", "the grind", "no excuses / sin excusas", "no days off", "the process / el proceso", "hustle", "beast mode", "grit", "no pain no gain", "trust the process", "rise and grind", "stay hard".
-  · Motivación de coach barato: "sé tu mejor versión", "el único límite eres tú", "cree en ti", "tu cuerpo puede tu mente decide", "vamos con toda".
-  · Frases que servirían para cualquier marca de gym del mundo. Si no menciona o evoca algo de ESTA foto, está mal.
-  · Pinterest quotes, rimas, frases motivacionales genéricas, sonar a marca corporativa o a IA.
+PROHIBIDO ABSOLUTO — si usas CUALQUIERA, fallaste y empieza de nuevo:
+  · Cliché de gym: "grind", "no excuses / sin excusas", "no days off", "the process / el proceso", "hustle", "beast mode", "grit", "no pain no gain", "trust the process", "lock in" como relleno.
+  · Coach motivacional: "sé tu mejor versión", "el único límite eres tú", "cree en ti", "tu cuerpo puede tu mente decide", "vamos con toda", "ella sabe", "nací para esto".
+  · Frases que servirían para cualquier gym del mundo, o que suenan a IA / Pinterest / marca corporativa.
+  · NO reutilices NINGUNA frase de ejemplo de este prompt. Son referencia de TONO, no para copiar. Inventa nuevas.
 
-EJEMPLOS DEL NIVEL (no copiar literal — son el listón de especificidad y tono):
-  "The fit is half the workout"
-  "A mÖment for the fit"
-  "Se ve mejor en movimiento"
-  "Mírate antes de entrar"
-  "El espejo ya sabe"
-  "Misma rutina, otra energía"
-Cada uno dice algo REAL sobre un momento concreto. Eso es lo que buscamos: menos motivación, más observación con actitud.`;
+LISTÓN (solo para sentir el tono, PROHIBIDO copiarlas):
+  Gymshark lo hace con "the real pain starts 2 days after leg day". Vos haz lo equivalente para kÖr y para ESTA foto, en spanglish, fresco e inesperado.`;
 
 
 async function callClaude(proxyUrl, photo){
