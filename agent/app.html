@@ -115,7 +115,7 @@
 <body>
 
 <div class="top">
-  <div class="brand">kÖr<small>STUDIO · v4</small></div>
+  <div class="brand">kÖr<small>STUDIO · v5</small></div>
   <button class="gear" onclick="openSheet()">⚙</button>
 </div>
 
@@ -337,6 +337,20 @@ async function generate(){
   }
 }
 
+const KOR_VOICE = `VOZ DE MARCA kÖr (estilo Gymshark adaptado, premium streetwear gym de El Salvador):
+- Público: salvadoreño, gente joven hasta ~35 años, que entrena y le importa el estilo. Habla de tú a tú, como uno de ellos, nunca como marca corporativa ni como adulto fuera de onda. Puede sentirse local/salvadoreño de forma natural y sutil, pero SIN forzar modismos ni caer en estereotipo — la base es el cool de Gymshark.
+- Frases CORTAS, con actitud y confianza. Menos es más, mucho silencio.
+- Escribe como Gymshark: empoderamiento gym, directo, aspiracional, frío.
+- LEE EL MOOD DE LA FOTO y ajusta el tono:
+   · Foto suave / femenina / estética → tono GIRLY empoderado (femenino pero fuerte, con clase).
+   · Foto intensa / entreno / sudor / fuerza → tono MOTIVACIONAL (disciplina, esfuerzo, hambre).
+- Español natural; puedes mezclar palabras gym en inglés como las marcas (strong, fit, drop, mood, gym, no excuses) — sin abusar.
+- PROHIBIDO (esto es cringe, NUNCA lo hagas): clichés de Pinterest, "sé tu mejor versión", "el único límite eres tú", "cree en ti", rimas baratas, signos de exclamación de más, emojis forzados, sonar a coach motivacional barato o a IA.
+- NIVEL correcto (ejemplos de estilo, NO copiar literal):
+   girly: "NACÍ PARA ESTO" · "SUAVE PERO LETAL" · "ELLA SABE" · "SIN PEDIR PERMISO" · "MI MOOD, MIS REGLAS"
+   motivacional: "SIN EXCUSAS" · "EL TRABAJO NO MIENTE" · "HOY NO DESCANSO" · "GANAS O APRENDES" · "NADIE VIENE A SALVARTE"
+- Ejemplos MALOS que debes EVITAR: "Sé tu mejor versión", "Cree en ti y lo lograrás", "El único límite eres tú", "Vamos con toda 💪🔥", "Tu cuerpo puede, tu mente decide".`;
+
 async function callClaude(proxyUrl, photo){
   const content = [
     { type:'image', source:{ type:'base64', media_type:photo.type, data:photo.data } },
@@ -368,10 +382,11 @@ Devuelve SOLO JSON válido:
   }
 }
 
+${KOR_VOICE}
+
 REGLAS:
 - 6 historias con templates distintos (incluye al menos 1 SALE, 1 POLL y 1 TIP si la foto lo permite)
-- Texto en español, corto y crudo (estilo streetwear gym, NADA corporativo)
-- Tono auténtico de chica/chico que entrena, nunca de IA
+- Aplica la VOZ DE MARCA de arriba en CADA headline, sub y caption. Ajusta girly/motivacional según el mood de la foto.
 - headline en MAYÚSCULAS cortas
 - TikTok: gancho real, accionable, formato vertical
 - Solo JSON, sin markdown` }
@@ -385,7 +400,7 @@ REGLAS:
       body: JSON.stringify({
         model:'claude-opus-4-8',
         max_tokens:2048,
-        system:'Eres el director creativo de kÖr activewear. Respondes SOLO con JSON válido, sin texto extra.',
+        system:'Eres el director creativo de kÖr activewear, marca salvadoreña. Escribes con la voz de Gymshark adaptada a kÖr. Respondes SOLO con JSON válido, sin texto extra.',
         messages:[{ role:'user', content }]
       })
     });
@@ -761,7 +776,11 @@ async function callSlideshow(proxyUrl, photos){
   const content = photos.map(p=>({ type:'image', source:{ type:'base64', media_type:p.type, data:p.data } }));
   content.push({ type:'text', text:
 `Estas ${photos.length} fotos son para un TikTok/Reel vertical de kÖr activewear (@_korsv, El Salvador), en orden.
-Crea un slideshow: UNA frase corta y potente en pantalla para CADA foto (en orden), que juntas cuenten una mini-historia o gancho. Estilo streetwear gym, español, crudo, NADA corporativo ni de IA.
+Crea un slideshow: UNA frase corta y potente en pantalla para CADA foto (en orden), que juntas cuenten una mini-historia o gancho.
+
+${KOR_VOICE}
+
+Aplica esa voz en cada frase y en el caption. Ajusta girly/motivacional según el mood de las fotos.
 
 Devuelve SOLO JSON válido:
 {
@@ -785,7 +804,7 @@ Devuelve SOLO JSON válido:
   try {
     resp = await fetch(proxyUrl,{ method:'POST', headers:{'content-type':'application/json'},
       body: JSON.stringify({ model:'claude-opus-4-8', max_tokens:1500,
-        system:'Eres el director creativo de kÖr activewear. Respondes SOLO con JSON válido.',
+        system:'Eres el director creativo de kÖr activewear, marca salvadoreña premium. Escribes con la voz de Gymshark adaptada a kÖr. Respondes SOLO con JSON válido.',
         messages:[{ role:'user', content }] }) });
   } catch(e){ throw new Error('No se pudo conectar al Worker. Revisa la URL en ⚙.'); }
   if (!resp.ok){
