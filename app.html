@@ -411,8 +411,9 @@ Devuelve SOLO JSON válido:
 ${KOR_VOICE}
 
 REGLAS:
-- 6 historias con templates distintos (NO uses POLL). Mezcla simples (DROP, SHOP, TIP, MOTIVATION) con AL MENOS 2 creativos (OUTLINE, GIANT, CHROME o REPEAT) para que el set tenga variedad visual.
+- 6 historias con templates distintos (NO uses POLL). Mezcla simples (DROP, SHOP, TIP, MOTIVATION) con AL MENOS 3 creativos distintos (de: OUTLINE, GIANT, CHROME, REPEAT) para que el set tenga mucha variedad visual.
 - Para GIANT y OUTLINE el headline debe ser MUY corto (1-3 palabras), porque va a escala enorme.
+- El "sub" (cuando lo uses) máximo 5 palabras — debe caber en una línea sin cortarse.
 - Aplica la VOZ DE MARCA de arriba en CADA headline, sub y caption.
 - IMPORTANTE — evita el juego de palabras forzado. Prefiere SECO y SIMPLE, tipo "PULL-UP DAY" o "PINK SEAMLESS". Si dudas entre ingenioso y simple, elige simple.
 - DROP: la mayoría deben ir SIN tag (solo el nombre/vibe del producto, ej "PINK SEAMLESS"), porque no todo lo que se publica es nuevo. SOLO UNA historia puede llevar tag "NUEVA COLECCIÓN" para cuando de verdad sea lanzamiento.
@@ -520,6 +521,17 @@ function lineH(size, lines){
 }
 // extra space to reserve ABOVE the first line for its dots
 function diaTop(size, firstLine){ return hasDia(firstLine) ? size*0.20 : 0; }
+// pick a sub-label font size so the spaced text fits the content width, then set it
+function subFont(ctx, text, start){
+  let size = start||28;
+  for(; size>15; size--){
+    ctx.font = label(700, size);
+    let w=0; [...(text||'')].forEach(c=>w+=ctx.measureText(c).width+4); w-=4;
+    if (w <= W-PAD*2){ break; }
+  }
+  ctx.font = label(700, size);
+  return size;
+}
 
 // White tag pill on top, big headline below, optional sub. Drawn top-down so
 // elements can never overlap. Anchored to the bottom third.
@@ -564,7 +576,7 @@ function renderStory(canvas, img, story){
     let y = H - 210 - (lines.length-1)*lh;
     lines.forEach(l=>{ ctx.font=display(size); ctx.fillText(l, PAD, y); y+=lh; });
     // optional small sub about the garment
-    if (sub){ ctx.font=label(700,28); letter(ctx, sub, PAD, y+14, 4, 'left'); }
+    if (sub){ subFont(ctx, sub, 28); letter(ctx, sub, PAD, y+14, 4, 'left'); }
     brandMark(ctx);
     return;
   }
@@ -580,7 +592,7 @@ function renderStory(canvas, img, story){
     let y = H - 240 - (lines.length-1)*lh;
     ctx.lineJoin='round'; ctx.lineWidth = Math.max(3, size*0.016); ctx.strokeStyle='#fff';
     lines.forEach(l=>{ ctx.font=display(size); ctx.strokeText(l, PAD, y); y+=lh; });
-    if (sub){ ctx.fillStyle='#fff'; ctx.font=label(700,28); letter(ctx, sub, PAD, y+10, 4, 'left'); }
+    if (sub){ ctx.fillStyle='#fff'; subFont(ctx, sub, 28); letter(ctx, sub, PAD, y+10, 4, 'left'); }
     brandMark(ctx);
     return;
   }
@@ -618,7 +630,7 @@ function renderStory(canvas, img, story){
       ctx.restore();
       y+=lh;
     });
-    if (sub){ ctx.fillStyle='#dcdcdc'; ctx.font=label(700,28); letter(ctx, sub, PAD, y+10, 4, 'left'); }
+    if (sub){ ctx.fillStyle='#dcdcdc'; subFont(ctx, sub, 28); letter(ctx, sub, PAD, y+10, 4, 'left'); }
     brandMark(ctx);
     return;
   }
@@ -638,7 +650,7 @@ function renderStory(canvas, img, story){
     const lh = lineH(size, lines);
     let y = H - 220 - (lines.length-1)*lh;
     lines.forEach(l=>{ ctx.font=display(size); ctx.fillText(l, PAD, y); y+=lh; });
-    if (sub){ ctx.font=label(700,28); letter(ctx, sub, PAD, y+10, 4, 'left'); }
+    if (sub){ subFont(ctx, sub, 28); letter(ctx, sub, PAD, y+10, 4, 'left'); }
     brandMark(ctx);
     return;
   }
