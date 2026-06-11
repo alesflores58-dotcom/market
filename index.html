@@ -11,6 +11,9 @@
   <meta property="og:title" content="kÖr — Activewear Premium El Salvador" />
   <meta property="og:description" content="Ropa deportiva seamless de alto rendimiento. Diseñado para los que no paran." />
   <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800;900&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&display=swap" rel="stylesheet">
   <!-- Google Analytics placeholder -->
   <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script> -->
   <style>
@@ -23,9 +26,15 @@
       --mid:   #2D2D2D;
       --gray:  #888888;
       --light-gray: #CCCCCC;
-      --font: 'PP Neue Montreal', 'Neue Haas Grotesk', 'Helvetica Neue', Arial, sans-serif;
+      --font: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+      --serif: 'Bodoni Moda', 'Didot', Georgia, serif;
       --transition: 0.3s ease;
     }
+    ::selection { background: var(--white); color: var(--black); }
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: #0a0a0a; }
+    ::-webkit-scrollbar-thumb { background: #2d2d2d; border-radius: 5px; }
+    ::-webkit-scrollbar-thumb:hover { background: #444; }
     html { scroll-behavior: smooth; }
     body {
       background: var(--black);
@@ -38,9 +47,6 @@
     a { color: inherit; text-decoration: none; }
     img { display: block; width: 100%; height: 100%; object-fit: cover; }
     button { cursor: pointer; border: none; background: none; font-family: var(--font); }
-
-    /* ─── GOOGLE FONTS ─────────────────────────────── */
-    @import url('https://fonts.cdnfonts.com/css/pp-neue-montreal');
 
     /* ─── NAVIGATION ───────────────────────────────── */
     nav {
@@ -63,12 +69,15 @@
       align-items: center;
     }
     .nav-logo-symbol {
-      font-family: 'Cormorant Garamond', 'Playfair Display', 'Bodoni Moda', Georgia, serif;
-      font-size: 28px;
-      font-weight: 400;
+      font-family: var(--serif);
+      font-size: 26px;
+      font-weight: 500;
       color: #FFFFFF;
       line-height: 1;
-      letter-spacing: 0;
+      letter-spacing: 0.02em;
+    }
+    .nav-logo-symbol em {
+      font-style: normal;
     }
     .nav-links {
       display: flex;
@@ -150,6 +159,11 @@
       object-fit: cover;
       object-position: center 30%;
       background: #0a0a0a;
+      animation: heroZoom 14s ease-out forwards;
+    }
+    @keyframes heroZoom {
+      from { transform: scale(1.08); }
+      to   { transform: scale(1); }
     }
     .hero-bg {
       position: absolute;
@@ -198,12 +212,14 @@
       filter: drop-shadow(0 0 50px rgba(0,0,0,0.5));
     }
     .hero-tagline {
-      font-size: clamp(14px, 2.5vw, 20px);
-      font-weight: 300;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--light-gray);
-      margin-bottom: 48px;
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: clamp(17px, 2.8vw, 24px);
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      text-transform: none;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 44px;
     }
     .btn-primary {
       display: inline-block;
@@ -262,6 +278,38 @@
     @keyframes scrollPulse {
       0%, 100% { opacity: 0.4; transform: scaleY(1); }
       50% { opacity: 1; transform: scaleY(1.1); }
+    }
+
+    /* ─── BRAND MARQUEE ────────────────────────────── */
+    .marquee {
+      overflow: hidden;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 18px 0;
+      background: var(--black);
+      white-space: nowrap;
+    }
+    .marquee-track {
+      display: inline-block;
+      animation: marqueeMove 36s linear infinite;
+    }
+    .marquee-track span {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin: 0 28px;
+    }
+    .marquee-track i {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 13px;
+      color: rgba(255,255,255,0.35);
+    }
+    @keyframes marqueeMove {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
     }
 
     /* ─── COLLECTIONS SPLIT ────────────────────────── */
@@ -393,9 +441,11 @@
       margin-bottom: 8px;
     }
     .instagram-sub {
-      font-size: 13px;
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 15px;
       color: var(--gray);
-      letter-spacing: 0.1em;
+      letter-spacing: 0.04em;
     }
     .instagram-grid {
       display: grid;
@@ -410,11 +460,12 @@
       background: var(--mid);
       position: relative;
     }
-    .ig-item:hover::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(255,255,255,0.06);
+    .ig-item img {
+      transition: transform 0.6s ease, opacity 0.6s ease;
+    }
+    .ig-item:hover img {
+      transform: scale(1.05);
+      opacity: 0.85;
     }
     .ig-placeholder {
       width: 100%;
@@ -448,9 +499,11 @@
       display: block;
     }
     .footer-sub {
-      font-size: 12px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: none;
       color: var(--gray);
       margin-bottom: 32px;
     }
@@ -519,11 +572,15 @@
     .catalog-hero-title {
       font-size: clamp(48px, 8vw, 100px);
       font-weight: 900;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.02em;
       text-transform: uppercase;
       line-height: 1;
       position: relative;
       z-index: 1;
+    }
+    .catalog-hero-title::first-letter {
+      font-family: var(--serif);
+      font-weight: 500;
     }
     .catalog-hero-sub {
       position: relative;
@@ -636,38 +693,45 @@
     .product-card-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(0,0,0,0.4);
+      background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.05) 45%, transparent 70%);
       display: flex;
-      align-items: center;
-      justify-content: center;
+      align-items: flex-end;
+      justify-content: flex-start;
+      padding: 22px;
       opacity: 0;
       transition: opacity var(--transition);
       z-index: 2;
     }
     .product-card-overlay span {
       font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.2em;
+      font-weight: 600;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--white);
-      border: 1px solid var(--white);
-      padding: 10px 24px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid var(--white);
+      transform: translateY(6px);
+      transition: transform var(--transition);
     }
+    .product-card:hover .product-card-overlay span { transform: translateY(0); }
     .product-info {
-      padding: 20px 20px 24px;
+      padding: 18px 20px 24px;
+      border-top: 1px solid rgba(255,255,255,0.05);
     }
     .product-name {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       margin-bottom: 6px;
     }
     .product-price {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--white);
-      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.75);
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
+      font-variant-numeric: tabular-nums;
     }
     .product-sizes {
       display: flex;
@@ -675,11 +739,11 @@
       flex-wrap: wrap;
     }
     .size-tag {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      color: var(--gray);
-      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.45);
+      border: 1px solid rgba(255,255,255,0.1);
       padding: 3px 8px;
     }
 
@@ -1113,7 +1177,7 @@
 <!-- ═══ NAVIGATION ═══════════════════════════════════════ -->
 <nav id="mainNav">
   <div class="nav-logo" onclick="showPage('home')" style="cursor:pointer">
-    <span class="nav-logo-symbol">Ö</span>
+    <span class="nav-logo-symbol">kÖr</span>
   </div>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home');return false">Inicio</a></li>
@@ -1160,12 +1224,18 @@
     </div>
   </section>
 
+  <!-- BRAND MARQUEE -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Seamless</span><i>kÖr</i><span>Alto Rendimiento</span><i>kÖr</i><span>Envíos a todo El Salvador</span><i>kÖr</i><span>The fit is half the workout</span><i>kÖr</i><span>Seamless</span><i>kÖr</i><span>Alto Rendimiento</span><i>kÖr</i><span>Envíos a todo El Salvador</span><i>kÖr</i><span>The fit is half the workout</span><i>kÖr</i>
+    </div>
+  </div>
+
   <!-- COLLECTIONS SPLIT -->
   <section class="collections-split">
     <div class="col-divider"></div>
     <div class="collection-item" onclick="showPage('women')">
-      <div class="col-bg col-bg-women"></div>
-      <div class="col-silhouette col-silhouette-women"></div>
+      <img class="col-bg" src="photos/p6.jpg?v=4" alt="Colección Mujeres" style="object-fit:cover;object-position:center 20%;">
       <div class="collection-overlay"></div>
       <div class="collection-content">
         <p class="collection-label">Nueva Colección</p>
@@ -1174,8 +1244,7 @@
       </div>
     </div>
     <div class="collection-item" onclick="showPage('men')">
-      <div class="col-bg col-bg-men"></div>
-      <div class="col-silhouette col-silhouette-men"></div>
+      <img class="col-bg" src="photos/p12.jpg?v=4" alt="Colección Hombres" style="object-fit:cover;object-position:center 12%;">
       <div class="collection-overlay"></div>
       <div class="collection-content">
         <p class="collection-label">Nueva Colección</p>
@@ -1215,16 +1284,16 @@
     </div>
     <div class="instagram-grid reveal reveal-delay-1">
       <a class="ig-item" href="https://instagram.com/_korsv" target="_blank" rel="noopener">
-        <div class="ig-placeholder fig-women swatch-negro" style="width:100%;height:100%;"></div>
+        <img src="photos/p7.jpg?v=4" alt="kÖr look" loading="lazy" style="object-position:center 18%;">
       </a>
       <a class="ig-item" href="https://instagram.com/_korsv" target="_blank" rel="noopener">
-        <div class="ig-placeholder fig-women swatch-rosa" style="width:100%;height:100%;"></div>
+        <img src="photos/p1.jpg?v=4" alt="kÖr look" loading="lazy" style="object-position:center 18%;">
       </a>
       <a class="ig-item" href="https://instagram.com/_korsv" target="_blank" rel="noopener">
-        <div class="ig-placeholder fig-women swatch-rojo" style="width:100%;height:100%;"></div>
+        <img src="photos/p4.jpg?v=4" alt="kÖr look" loading="lazy" style="object-position:center 18%;">
       </a>
       <a class="ig-item" href="https://instagram.com/_korsv" target="_blank" rel="noopener">
-        <div class="ig-placeholder fig-women swatch-amarillo" style="width:100%;height:100%;"></div>
+        <img src="photos/p13.jpg?v=4" alt="kÖr look" loading="lazy" style="object-position:center 18%;">
       </a>
     </div>
     <div class="instagram-cta reveal reveal-delay-2">
@@ -2127,8 +2196,20 @@
     document.getElementById('pd-breadcrumb').textContent = name;
 
     const img = document.getElementById('pd-image');
-    img.className = 'product-placeholder ' + imageClass;
-    img.style.height = '100%';
+    // Use the real product photo if the card has one; fall back to the swatch.
+    let photoSrc = null;
+    document.querySelectorAll('.product-card').forEach(card => {
+      const n = card.querySelector('.product-name');
+      const ph = card.querySelector('.product-image-wrap img');
+      if (n && ph && n.textContent.trim() === name) photoSrc = ph.getAttribute('src');
+    });
+    if (photoSrc) {
+      img.className = '';
+      img.style.cssText = 'height:100%;background:#000 url(' + photoSrc + ') center 15%/cover no-repeat;';
+    } else {
+      img.className = 'product-placeholder ' + imageClass;
+      img.style.cssText = 'height:100%;';
+    }
 
     const sizesEl = document.getElementById('pd-sizes');
     sizesEl.innerHTML = sizes.map(s =>
