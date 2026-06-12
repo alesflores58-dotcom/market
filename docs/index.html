@@ -48,10 +48,29 @@
     img { display: block; width: 100%; height: 100%; object-fit: cover; }
     button { cursor: pointer; border: none; background: none; font-family: var(--font); }
 
+    /* ─── ANNOUNCEMENT BAR ─────────────────────────── */
+    .announce-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1001;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--white);
+      color: var(--black);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      overflow: hidden;
+    }
+    .announce-bar span { white-space: nowrap; }
+
     /* ─── NAVIGATION ───────────────────────────────── */
     nav {
       position: fixed;
-      top: 0; left: 0; right: 0;
+      top: 34px; left: 0; right: 0;
       z-index: 1000;
       padding: 0 40px;
       height: 72px;
@@ -121,7 +140,7 @@
     .mobile-menu {
       display: none;
       position: fixed;
-      top: 72px; left: 0; right: 0; bottom: 0;
+      top: 106px; left: 0; right: 0; bottom: 0;
       background: var(--black);
       z-index: 999;
       flex-direction: column;
@@ -545,7 +564,7 @@
     }
 
     /* ─── CATALOG ───────────────────────────────────── */
-    .catalog-page { padding-top: 72px; }
+    .catalog-page { padding-top: 106px; }
     .catalog-hero {
       height: 40vh;
       min-height: 300px;
@@ -748,16 +767,16 @@
     }
 
     /* ─── PRODUCT PAGE ──────────────────────────────── */
-    .product-detail-page { padding-top: 72px; }
+    .product-detail-page { padding-top: 106px; }
     .product-detail-layout {
       display: grid;
       grid-template-columns: 60% 40%;
-      min-height: calc(100vh - 72px);
+      min-height: calc(100vh - 106px);
     }
     .product-detail-image {
       position: sticky;
-      top: 72px;
-      height: calc(100vh - 72px);
+      top: 106px;
+      height: calc(100vh - 106px);
       background: var(--dark);
       overflow: hidden;
     }
@@ -877,7 +896,7 @@
     }
 
     /* ─── FAQ PAGE ──────────────────────────────────── */
-    .faq-page { padding-top: 72px; }
+    .faq-page { padding-top: 106px; }
     .faq-hero {
       padding: 100px 60px 60px;
       border-bottom: 1px solid rgba(255,255,255,0.06);
@@ -980,7 +999,7 @@
     }
 
     /* ─── CONTACT PAGE ──────────────────────────────── */
-    .contact-page { padding-top: 72px; }
+    .contact-page { padding-top: 106px; }
     .contact-layout {
       min-height: calc(100vh - 72px);
       display: flex;
@@ -1170,9 +1189,31 @@
       .hero-brand img { height: 84px; }
       .product-detail-layout { grid-template-columns: 1fr; }
     }
+
+    /* ─── FEATURED / DESTACADOS ────────────────────── */
+    .featured { padding: 100px 40px; border-top: 1px solid rgba(255,255,255,0.04); }
+    .featured-header { display:flex; align-items:baseline; justify-content:space-between; max-width:1400px; margin:0 auto 40px; }
+    .featured-label { font-size:11px; font-weight:600; letter-spacing:0.3em; text-transform:uppercase; color:var(--gray); }
+    .featured-title { font-family:var(--serif); font-size:clamp(28px,4vw,44px); font-weight:500; letter-spacing:0.02em; }
+    .featured-row { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; max-width:1400px; margin:0 auto; }
+    .featured-card { cursor:pointer; }
+    .featured-img { aspect-ratio:3/4; overflow:hidden; background:var(--dark); }
+    .featured-img img { transition: transform 0.6s ease; }
+    .featured-card:hover .featured-img img { transform: scale(1.05); }
+    .featured-name { margin-top:14px; font-size:13px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; }
+    .featured-price { font-size:13px; color:var(--gray); margin-top:4px; }
+    @media (max-width: 900px) {
+      .featured { padding: 64px 20px; }
+      .featured-row { grid-template-columns:repeat(2,1fr); }
+      .featured-header { flex-direction:column; gap:8px; }
+      .announce-bar { font-size:10px; letter-spacing:0.14em; }
+    }
   </style>
 </head>
 <body>
+
+<!-- ANNOUNCEMENT BAR -->
+<div class="announce-bar"><span>Envíos a todo El Salvador · Entrega 24h · @_korsv</span></div>
 
 <!-- ═══ NAVIGATION ═══════════════════════════════════════ -->
 <nav id="mainNav">
@@ -1250,6 +1291,37 @@
         <p class="collection-label">Nueva Colección</p>
         <h2 class="collection-title">Hombres</h2>
         <span class="collection-arrow">Ver Catálogo</span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- DESTACADOS -->
+  <section class="featured">
+    <div class="featured-header reveal">
+      <p class="featured-label">Lo Más Buscado</p>
+      <h2 class="featured-title">Destacados</h2>
+    </div>
+    <div class="featured-row reveal reveal-delay-1">
+      <div class="featured-card" onclick="showPage('women')">
+        <div class="featured-img"><img src="photos/p6.jpg?v=5" alt="Conjunto kÖr mujer" loading="lazy"></div>
+        <p class="featured-name">Conjuntos Mujer</p>
+        <p class="featured-price">Desde $25.00</p>
+      </div>
+      <div class="featured-card" onclick="showPage('men')">
+        <div class="featured-img"><img src="photos/p18.jpg?v=5" alt="Manga larga kÖr" loading="lazy"></div>
+        <p class="featured-name">Manga Larga Compresión</p>
+        <p class="featured-price">$12.00</p>
+      </div>
+      <div class="featured-card" onclick="showPage('men')">
+        <div class="featured-img"><img src="photos/p19.jpg?v=5" alt="Sin manga kÖr" loading="lazy"></div>
+        <p class="featured-name">Sin Manga Compresión</p>
+        <p class="featured-price">$11.00</p>
+      </div>
+      <div class="featured-card" onclick="showPage('women')">
+        <div class="featured-img"><img src="photos/p4.jpg?v=5" alt="Top kÖr mujer" loading="lazy"></div>
+        <p class="featured-name">Tops & Licras</p>
+        <p class="featured-price">Desde $13.00</p>
       </div>
     </div>
   </section>
